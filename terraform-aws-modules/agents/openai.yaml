@@ -1,0 +1,4 @@
+interface:
+  display_name: "Terraform AWS Modules"
+  short_description: "Workflow for Terraform AWS module generation"
+  default_prompt: "Use $terraform-aws-modules to plan and create new module and example in this Terraform AWS modules repo."

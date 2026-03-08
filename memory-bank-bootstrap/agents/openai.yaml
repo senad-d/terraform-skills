@@ -1,0 +1,4 @@
+interface:
+  display_name: "Memory Bank Bootstrap"
+  short_description: "Initialize memory-bank and fill TODOs from project rules"
+  default_prompt: "Create or complete the memory-bank for this repository following project instructions."

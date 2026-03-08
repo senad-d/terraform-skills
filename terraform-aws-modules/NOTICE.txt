@@ -1,0 +1,10 @@
+Source:
+- Path: skills/terraform-aws-modules/SKILL.md
+- References: skills/terraform-aws-modules/references
+
+Licensed under the Apache License, Version 2.0.
+See LICENSE.txt in this directory.
+
+Modifications:
+- Adapted for the Codex skill collection.
+- Added a wrapper script and local reference guides.
