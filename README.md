@@ -150,7 +150,7 @@ After the memory bank is created, a `Rules/` directory is added at the root of t
 Use the `terraform-aws-modules` skill to plan, scaffold, and refine modules. For example, in CODEX you might start a task like:
 
 ```text
-new task -> create aws module for cloud-map, and client-vpn using $terraform-aws-modules
+new task -> create aws module for cloud-map using $terraform-aws-modules
 ```
 
 Behind the scenes, CODEX can leverage scripts such as:
