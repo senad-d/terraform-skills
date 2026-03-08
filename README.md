@@ -77,8 +77,7 @@ If the command prints help output, CODEX is correctly installed and on your `PAT
 Clone this repository into a location where you manage your CODEX skills:
 
 ```bash
-git clone https://github.com/senad-d/terraform-skills.git
-cd terraform-skills
+git clone https://github.com/senad-d/terraform-skills.git && cd terraform-skills && [ -d "$HOME/.codex" ] && cp -R memory-bank-bootstrap terraform-aws-modules "$HOME/.codex"/ || echo 'Error: $HOME/.codex does not exist or clone failed'
 ```
 
 ### 3. Register the skills with CODEX
