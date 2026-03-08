@@ -2,8 +2,6 @@
 
 Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that turns a blank Terraform/AWS repository into a guided, MCP-aware workspace. It provides a reusable memory bank, opinionated workflows, and ready-to-run scripts for designing, testing, and documenting high-quality Terraform AWS modules with minimal boilerplate.
 
----
-
 ## Features
 
 - **MCP-aware Terraform workspace**  
@@ -21,7 +19,6 @@ Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that turns a b
 - **Opinionated, repeatable process**  
   Encourages consistent patterns across modules (structure, interfaces, testing, docs) that are easy to scale across teams.
 
----
 
 ## Repository Structure
 
@@ -46,7 +43,6 @@ This repository contains multiple skills that are meant to be used together as a
 
 The top-level [`LICENSE`](LICENSE:1) applies to the content in this repository.
 
----
 
 ## Prerequisites
 
@@ -63,7 +59,6 @@ You should be comfortable with:
 - AWS IAM and resource management
 - Running shell scripts on your platform (macOS, Linux, or WSL)
 
----
 
 ## Installation
 
@@ -95,7 +90,6 @@ Follow the CODEX CLI documentation for registering local skills. In most setups,
 
 Refer to [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md:1) and [`terraform-aws-modules/SKILL.md`](terraform-aws-modules/SKILL.md:1) for skill-specific integration details.
 
----
 
 ## Configuration
 
@@ -133,7 +127,6 @@ Notes:
 - Ensure `npx` and `uvx` (from [uv](https://github.com/astral-sh/uv)) are available on your `PATH`.
 - Restart CODEX CLI or reload its configuration after updating the file.
 
----
 
 ## Usage
 
@@ -181,7 +174,6 @@ As you create modules, the memory bank accumulates:
 
 Subsequent CODEX tasks (for example, refactoring an existing module or adding a new one) can reuse this context automatically, reducing duplication and helping maintain consistency across your Terraform codebase.
 
----
 
 ## Development
 
@@ -193,7 +185,6 @@ If you want to extend or customize these skills:
 
 Refer to the individual [`SKILL.md`](memory-bank-bootstrap/SKILL.md:1) files for implementation details and conventions.
 
----
 
 ## Contributing
 
@@ -205,7 +196,6 @@ Contributions are welcome. Common contribution paths include:
 
 Please open an issue or pull request in this repository with a clear description of the change and rationale.
 
----
 
 ## License
 
