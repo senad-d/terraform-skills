@@ -24,24 +24,24 @@ Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that turns a b
 
 This repository contains multiple skills that are meant to be used together as a bundle:
 
-- [`memory-bank-bootstrap`](memory-bank-bootstrap/SKILL.md:1)  
+- [`memory-bank-bootstrap`](memory-bank-bootstrap/SKILL.md)  
   Bootstrap scripts and agent definitions for creating and maintaining a project-specific memory bank. This seeds the workspace with context that CODEX can reuse across all Terraform module tasks.
   - Key files:
-    - [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md:1) – high-level description of the skill
-    - [`memory-bank-bootstrap/scripts/create-memory.sh`](memory-bank-bootstrap/scripts/create-memory.sh:1) – initializes the memory bank for this repo
-    - [`memory-bank-bootstrap/scripts/add-agents.sh`](memory-bank-bootstrap/scripts/add-agents.sh:1) – registers AGENTS rules for this project
+    - [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md) – high-level description of the skill
+    - [`memory-bank-bootstrap/scripts/create-memory.sh`](memory-bank-bootstrap/scripts/create-memory.sh) – initializes the memory bank for this repo
+    - [`memory-bank-bootstrap/scripts/add-agents.sh`](memory-bank-bootstrap/scripts/add-agents.sh) – registers AGENTS rules for this project
 
-- [`terraform-aws-modules`](terraform-aws-modules/SKILL.md:1)  
+- [`terraform-aws-modules`](terraform-aws-modules/SKILL.md)  
   Opinionated workflows and scripts that help you plan, scaffold, test, and document Terraform AWS modules.
   - Key files:
-    - [`terraform-aws-modules/SKILL.md`](terraform-aws-modules/SKILL.md:1) – skill overview and usage details
-    - [`terraform-aws-modules/references/`](terraform-aws-modules/references/01-overview-and-lifecycle.md:1) – reference docs on module lifecycle, structure, testing, versioning, etc.
-    - [`terraform-aws-modules/scripts/create-module.sh`](terraform-aws-modules/scripts/create-module.sh:1) – scaffold a new module
-    - [`terraform-aws-modules/scripts/create-examples.sh`](terraform-aws-modules/scripts/create-examples.sh:1) – generate examples for a module
-    - [`terraform-aws-modules/scripts/create-documentation.sh`](terraform-aws-modules/scripts/create-documentation.sh:1) – generate documentation
-    - [`terraform-aws-modules/scripts/test-module.sh`](terraform-aws-modules/scripts/test-module.sh:1) – run tests for a module
+    - [`terraform-aws-modules/SKILL.md`](terraform-aws-modules/SKILL.md) – skill overview and usage details
+    - [`terraform-aws-modules/references/`](terraform-aws-modules/references/) – reference docs on module lifecycle, structure, testing, versioning, etc.
+    - [`terraform-aws-modules/scripts/create-module.sh`](terraform-aws-modules/scripts/create-module.sh) – scaffold a new module
+    - [`terraform-aws-modules/scripts/create-examples.sh`](terraform-aws-modules/scripts/create-examples.sh) – generate examples for a module
+    - [`terraform-aws-modules/scripts/create-documentation.sh`](terraform-aws-modules/scripts/create-documentation.sh) – generate documentation
+    - [`terraform-aws-modules/scripts/test-module.sh`](terraform-aws-modules/scripts/test-module.sh) – run tests for a module
 
-The top-level [`LICENSE`](LICENSE:1) applies to the content in this repository.
+The top-level [`LICENSE`](LICENSE) applies to the content in this repository.
 
 
 ## Prerequisites
@@ -87,7 +87,7 @@ Follow the CODEX CLI documentation for registering local skills. In most setups,
 - Point CODEX to this repository as a skill bundle
 - Reference the skills by name (for example, `$memory-bank-bootstrap` and `$terraform-aws-modules`) in your tasks
 
-Refer to [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md:1) and [`terraform-aws-modules/SKILL.md`](terraform-aws-modules/SKILL.md:1) for skill-specific integration details.
+Refer to [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md) and [`terraform-aws-modules/SKILL.md`](terraform-aws-modules/SKILL.md) for skill-specific integration details.
 
 
 ## Configuration
@@ -102,7 +102,7 @@ To get the most out of this bundle, configure your CODEX MCP servers so tasks ca
 
 ### Example CODEX MCP configuration
 
-Add the following MCP configuration to your CODEX CLI configuration file (commonly [`config.toml`](config.toml:1)):
+Add the following MCP configuration to your CODEX CLI configuration file (commonly `config.toml`):
 
 ```toml
 [mcp_servers.context7]
@@ -154,11 +154,11 @@ new task -> create aws module for cloud-map using $terraform-aws-modules
 
 Behind the scenes, CODEX can leverage scripts such as:
 
-- [`terraform-aws-modules/scripts/create-module.sh`](terraform-aws-modules/scripts/create-module.sh:1)
-- [`terraform-aws-modules/scripts/create-examples.sh`](terraform-aws-modules/scripts/create-examples.sh:1)
-- [`terraform-aws-modules/scripts/create-plan.sh`](terraform-aws-modules/scripts/create-plan.sh:1)
-- [`terraform-aws-modules/scripts/test-module.sh`](terraform-aws-modules/scripts/test-module.sh:1)
-- [`terraform-aws-modules/scripts/create-documentation.sh`](terraform-aws-modules/scripts/create-documentation.sh:1)
+- [`terraform-aws-modules/scripts/create-module.sh`](terraform-aws-modules/scripts/create-module.sh)
+- [`terraform-aws-modules/scripts/create-examples.sh`](terraform-aws-modules/scripts/create-examples.sh)
+- [`terraform-aws-modules/scripts/create-plan.sh`](terraform-aws-modules/scripts/create-plan.sh)
+- [`terraform-aws-modules/scripts/test-module.sh`](terraform-aws-modules/scripts/test-module.sh)
+- [`terraform-aws-modules/scripts/create-documentation.sh`](terraform-aws-modules/scripts/create-documentation.sh)
 
 These workflows encourage consistent module structure, testing, and documentation aligned with `terraform-aws-modules` best practices.
 
@@ -182,7 +182,7 @@ If you want to extend or customize these skills:
 2. Modify the relevant skill definitions and scripts under `memory-bank-bootstrap/` or `terraform-aws-modules/`.
 3. Test locally by pointing your CODEX workspace at your modified checkout.
 
-Refer to the individual [`SKILL.md`](memory-bank-bootstrap/SKILL.md:1) files for implementation details and conventions.
+Refer to the individual [`SKILL.md`](memory-bank-bootstrap/SKILL.md) files for implementation details and conventions.
 
 
 ## Contributing
@@ -198,4 +198,4 @@ Please open an issue or pull request in this repository with a clear description
 
 ## License
 
-This project is licensed under the terms described in [`LICENSE`](LICENSE:1).
+This project is licensed under the terms described in [`LICENSE`](LICENSE).
