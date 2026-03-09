@@ -52,6 +52,7 @@ Before using these skills, ensure you have:
 - **AWS account** with credentials configured locally (e.g., via `aws configure` or environment variables)
 - **CODEX CLI** installed and available on your `PATH`
 - **MCP-capable environment** (CODEX configured to talk to MCP servers)
+- **Tooling** installed `tflint`, `tfsec`, `rg`, `yq` (It is optional, but it is recommended to use loclastack.)
 
 You should be comfortable with:
 
