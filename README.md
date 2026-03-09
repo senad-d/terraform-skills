@@ -78,9 +78,9 @@ Clone this repository into a location where you manage your CODEX skills:
 
 ```bash
 git clone https://github.com/senad-d/terraform-skills.git && \
-cd terraform-skills && \
-[ -d "$HOME/.codex" ] && \
-cp -R memory-bank-bootstrap terraform-aws-modules "$HOME/.codex"/ || echo 'Error: $HOME/.codex does not exist or clone failed'
+    cd terraform-skills && \
+    [ -d "$HOME/.codex" ] && \
+    cp -R memory-bank-bootstrap terraform-aws-modules "$HOME/.codex"/ || echo 'Error: $HOME/.codex does not exist or clone failed'
 ```
 
 ### 3. Register the skills with CODEX
