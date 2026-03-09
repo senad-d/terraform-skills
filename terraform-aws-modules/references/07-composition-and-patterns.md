@@ -1,19 +1,37 @@
 ---
-page_title: Module Composition and Patterns
+page_title: Composition Patterns and Root Module Design
 description: >-
-  Defines how to compose modules into larger systems, enforce shallow hierarchies, and use data-only modules and remote state for wiring.
+  Defines how to compose modules into larger systems, design root modules from a
+  consumer perspective, enforce shallow hierarchies, and use data-only modules
+  and remote state for wiring.
 ---
 
-# Module Composition and Patterns
+# Composition Patterns and Root Module Design
 
 ## Audience
-Engineers designing larger systems by composing modules.
+Engineers designing larger systems by composing modules and shaping root modules
+for specific stacks or environments.
 
 ## Purpose
-Capture composition patterns, flat hierarchy rules, and data-only module usage.
+Capture composition patterns, flat hierarchy rules, data-only module usage, and
+root module responsibilities from a consumer perspective.
+
+## Root Module Responsibilities
+Root modules represent concrete stacks or environments. They are responsible for:
+- Configuring providers and backends (see
+  `05-providers-state-and-backends.md`).
+- Composing reusable modules into a coherent topology.
+- Supplying environment- and account-specific values to child modules.
+- Wiring data-only modules and remote state to share information between stacks.
+
+Root modules should avoid embedding complex, reusable logic that would be better
+served as a dedicated module. When a root module’s internal wiring becomes
+repetitive across stacks, extract a reusable module and keep the root focused on
+composition.
 
 ## Flat Composition
-Prefer a flat module tree with a single level of child modules. Compose modules in the root module by passing outputs from one module into inputs of another.
+Prefer a flat module tree with a single level of child modules. Compose modules
+in the root module by passing outputs from one module into inputs of another.
 
 Example:
 ```hcl
@@ -32,7 +50,9 @@ module "consul_cluster" {
 This keeps modules small and reusable and avoids deep module trees.
 
 ## Dependency Inversion
-Pass dependencies into modules rather than having modules create their own supporting infrastructure. This improves flexibility and allows refactors where dependencies are satisfied via data sources instead of managed resources.
+Pass dependencies into modules rather than having modules create their own
+supporting infrastructure. This improves flexibility and allows refactors where
+dependencies are satisfied via data sources instead of managed resources.
 
 Example:
 ```hcl
@@ -53,15 +73,20 @@ module "consul_cluster" {
 
 Why this matters:
 - Modules that accept dependencies can be reused in different topologies.
-- Refactors can swap resource creation for data lookups without changing the module interface.
-- It becomes easier for multiple systems to share common infrastructure without forcing a specific topology.
+- Refactors can swap resource creation for data lookups without changing the
+  module interface.
+- It becomes easier for multiple systems to share common infrastructure without
+  forcing a specific topology.
 
 ## Conditional Creation Through Inputs
-Avoid complex conditional branches inside modules. Accept inputs that can be sourced either from resources or data sources and let the caller decide what exists.
+Avoid complex conditional branches inside modules. Accept inputs that can be
+sourced either from resources or data sources and let the caller decide what
+exists.
 
 Example pattern:
 - Define an input object with only the attributes the module needs.
-- Allow the caller to pass either a managed resource or a data source that matches that shape.
+- Allow the caller to pass either a managed resource or a data source that
+  matches that shape.
 
 ```hcl
 variable "ami" {
@@ -103,10 +128,13 @@ module "example" {
 }
 ```
 
-This keeps the module declarative and makes it clear which environments create infrastructure and which reuse existing assets.
+This keeps the module declarative and makes it clear which environments create
+infrastructure and which reuse existing assets.
 
 ## Assumptions and Guarantees
-Every module has assumptions and guarantees. Use validations or preconditions to document and enforce them so consumers understand expectations and failures earlier.
+Every module has assumptions and guarantees. Use validations or preconditions to
+document and enforce them so consumers understand expectations and failures
+earlier.
 
 Definitions:
 - Assumption: A condition that must be true for the module to operate correctly.
@@ -124,8 +152,13 @@ output "api_base_url" {
 }
 ```
 
+Interface-level validation and output design guidelines are covered in
+`04-module-interfaces-and-arguments.md`.
+
 ## Multi-Cloud Abstractions
-Terraform does not abstract across providers, but you can build lightweight multi-cloud abstractions by defining common object types and module interfaces that map to different providers.
+Terraform does not abstract across providers, but you can build lightweight
+multi-cloud abstractions by defining common object types and module interfaces
+that map to different providers.
 
 Example:
 ```hcl
@@ -139,7 +172,9 @@ variable "recordsets" {
 }
 ```
 
-You can then implement provider-specific modules that accept the same `recordsets` input, allowing you to swap the underlying provider implementation with minimal change to higher-level modules.
+You can then implement provider-specific modules that accept the same
+`recordsets` input, allowing you to swap the underlying provider implementation
+with minimal change to higher-level modules.
 
 Example pattern:
 ```hcl
@@ -149,7 +184,8 @@ module "dns_records" {
 }
 ```
 
-If you later switch providers, implement a new module with the same input shape and update only the module source.
+If you later switch providers, implement a new module with the same input shape
+and update only the module source.
 
 ### Example: DNS Recordsets Composition
 ```hcl
@@ -183,7 +219,8 @@ module "dns_records" {
 }
 ```
 
-This pattern keeps DNS logic stable while allowing the DNS provider implementation to change.
+This pattern keeps DNS logic stable while allowing the DNS provider
+implementation to change.
 
 ### Example: Interchangeable Kubernetes Modules
 ```hcl
@@ -197,10 +234,13 @@ module "monitoring_tools" {
 }
 ```
 
-If you implement a different cluster module that exposes the same `hostname` output, the monitoring module can remain unchanged.
+If you implement a different cluster module that exposes the same `hostname`
+output, the monitoring module can remain unchanged.
 
 ## Data-Only Modules
-Data-only modules retrieve information about existing infrastructure without creating resources. Use them when they raise the level of abstraction by encapsulating how data is retrieved.
+Data-only modules retrieve information about existing infrastructure without
+creating resources. Use them when they raise the level of abstraction by
+encapsulating how data is retrieved.
 
 Example:
 ```hcl
@@ -215,17 +255,26 @@ module "k8s_cluster" {
 }
 ```
 
-Data-only modules may use provider data sources or `terraform_remote_state` to retrieve shared information. Prefer `terraform_remote_state` for wiring internal stacks in this repo and data sources for external or AWS-managed resources. See `05-providers-state-and-backends.md` for remote state conventions.
+Data-only modules may use provider data sources or `terraform_remote_state` to
+retrieve shared information. Prefer `terraform_remote_state` for wiring internal
+stacks in this repo and data sources for external or AWS-managed resources. See
+`05-providers-state-and-backends.md` for remote state conventions.
 
 Common retrieval patterns:
 - AWS data sources such as `aws_vpc` and `aws_subnet_ids`.
-- External system data sources such as `consul_keys` when configuration data is stored in Consul.
-- `terraform_remote_state` outputs from the stack that owns the shared infrastructure.
+- External system data sources such as `consul_keys` when configuration data is
+  stored in Consul.
+- `terraform_remote_state` outputs from the stack that owns the shared
+  infrastructure.
 
-When a data-only module is designed to mirror the outputs of a managed module, you can swap between the two during refactors with minimal changes to callers.
+When a data-only module is designed to mirror the outputs of a managed module,
+you can swap between the two during refactors with minimal changes to callers.
 
 ## Related Guides
-- `04-module-interfaces-and-arguments.md` for input design patterns.
+- `04-module-interfaces-and-arguments.md` for input and output design
+  patterns.
 - `05-providers-state-and-backends.md` for provider and state layout rules.
-- `02-module-creation-and-fundamentals.md` for when composition justifies a new module.
-
+- `02-module-creation-and-fundamentals.md` for when composition justifies a new
+  module.
+- `08-security-naming-and-tagging.md` for security and tagging
+  considerations that apply to composed stacks.

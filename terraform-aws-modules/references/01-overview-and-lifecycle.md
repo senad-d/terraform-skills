@@ -39,12 +39,12 @@ Lifecycle automation touchpoints:
 ## Production Readiness Checklist
 - Module purpose and abstraction are clear and not a thin wrapper (`02-module-creation-and-fundamentals.md`).
 - Standard layout and required files exist (`03-module-structure-and-layout.md`).
-- Inputs, outputs, types, and meta-arguments are well defined (`04-module-interfaces-and-arguments.md`).
+- Inputs, outputs, types, variables, and validation are well defined (`04-module-interfaces-and-arguments.md`).
 - Provider requirements and state/backends follow repo conventions (`05-providers-state-and-backends.md`).
 - Security baseline, naming, and tagging are enforced (`08-security-naming-and-tagging.md`).
 - Examples and documentation are complete and generated (`10-examples-and-docs-automation.md`).
 - Local validation and CI gates pass (`09-testing-and-ci.md`).
-- Versioning and upgrade guidance is documented (`11-versioning-refactors-and-upgrades.md`).
+- Distribution, versioning, and upgrade guidance is documented (`06-sources-and-distribution.md`).
 
 ## Module Review Checklist
 - Scope and non-goals are explicit; no hidden behavior or implicit dependencies.
@@ -66,19 +66,37 @@ Lifecycle automation touchpoints:
 - After implementation and documentation are complete, update all relevant Plan files and memory files for the task. The task is not done until Plan and memory are fully updated.
 
 ## Documentation Map
-- `01-overview-and-lifecycle.md`: Navigation, lifecycle, and sources of truth.
-- `02-module-creation-and-fundamentals.md`: When to create a module, what a module is, and how it relates to root modules.
-- `03-module-structure-and-layout.md`: Required files, layout, and module and example directory structure.
-- `04-module-interfaces-and-arguments.md`: Inputs, outputs, types, and meta-argument usage.
-- `05-providers-state-and-backends.md`: Provider rules, backends, and state topology.
-- `06-sources-and-distribution.md`: Module source types and distribution strategy.
-- `07-composition-and-patterns.md`: Composition, shallow hierarchies, and data-only modules.
-- `08-security-naming-and-tagging.md`: Security baseline, naming, tagging, and meta module conventions.
-- `09-testing-and-ci.md`: Local testing workflow and CI gates.
-- `10-examples-and-docs-automation.md`: Example design and documentation automation scripts.
-- `11-versioning-refactors-and-upgrades.md`: Semantic versioning, moved blocks, and upgrade playbooks.
-- `12-dynamic-blocks-and-conditional-sections.md`: Dynamic block usage and conditional nested configuration.
-- `13-variables-and-validation.md`: Variable standards, validation rules, and error messages.
+
+### Decide and Design
+- `02-module-creation-and-fundamentals.md`: Module fundamentals and design principles (when and why to create a module, what belongs in a module vs a root module).
+- `07-composition-and-patterns.md`: Composition patterns and root module design (canonical guide for how modules are combined).
+
+### Implement
+- `03-module-structure-and-layout.md`: Module structure and repository layout (root module files, nested modules, and examples directory structure).
+- `04-module-interfaces-and-arguments.md`: Module interfaces, variables, and validation (canonical guide for inputs, outputs, types, and validation rules).
+- `05-providers-state-and-backends.md`: Providers, state, backends, and environments (canonical guide for provider configuration and remote state layout).
+- `08-security-naming-and-tagging.md`: Security, naming, and tagging guidelines (canonical security and tagging guide).
+- `10-examples-and-docs-automation.md`: Examples, documentation, and user-facing docs (canonical guide for examples and documentation workflow).
+
+### Publish and Evolve
+- `06-sources-and-distribution.md`: Module distribution, versioning, and upgrades (canonical guide for source selection, versioning policy, and upgrade playbooks).
+- Supporting references:
+  - `05-providers-state-and-backends.md` for backend and environment layouts.
+  - `07-composition-and-patterns.md` for composition implications.
+  - `08-security-naming-and-tagging.md` for security and tagging impact.
+
+### Test and Operate
+- `09-testing-and-ci.md`: Testing, examples, and CI automation (canonical testing and CI guide).
+- `10-examples-and-docs-automation.md`: Examples as documentation and test assets; documentation generation workflow.
+
+### Topic Canonical Guides
+- Interfaces, variables, and validation → `04-module-interfaces-and-arguments.md`.
+- Providers, state, backends, and environments → `05-providers-state-and-backends.md`.
+- Composition and root module design → `07-composition-and-patterns.md`.
+- Security, naming, and tagging → `08-security-naming-and-tagging.md`.
+- Distribution, versioning, and upgrades → `06-sources-and-distribution.md`.
+- Testing and CI → `09-testing-and-ci.md`.
+- Examples and documentation → `10-examples-and-docs-automation.md`.
 
 ## Sources of Truth
 As each new guide is filled, it becomes the authoritative source for that topic and the corresponding legacy sections will be replaced with pointers.

@@ -139,21 +139,18 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
 ## References
 
-Always read all references when planing.
+Always read all references when planning module changes.
 
-- `references/01-overview-and-lifecycle.md`: Navigation, lifecycle, and sources of truth.
-- `references/02-module-creation-and-fundamentals.md`: When to create a module, what a module is, and how it relates to root modules.
-- `references/03-module-structure-and-layout.md`: Required files, layout, and module and example directory structure.
-- `references/04-module-interfaces-and-arguments.md`: Inputs, outputs, types, and meta-argument usage.
-- `references/05-providers-state-and-backends.md`: Provider rules, backends, and state topology.
-- `references/06-sources-and-distribution.md`: Module source types and distribution strategy.
-- `references/07-composition-and-patterns.md`: Composition, shallow hierarchies, and data-only modules.
-- `references/08-security-naming-and-tagging.md`: Security baseline, naming, tagging, and meta module conventions.
-- `references/09-testing-and-ci.md`: Local testing workflow and CI gates.
-- `references/10-examples-and-docs-automation.md`: Example design and documentation automation scripts.
-- `references/11-versioning-refactors-and-upgrades.md`: Semantic versioning, moved blocks, and upgrade playbooks.
-- `references/12-dynamic-blocks-and-conditional-sections.md`: Dynamic block usage and conditional nested configuration.
-- `references/13-variables-and-validation.md`: Variable standards, validation rules, and error messages.
+- `references/01-overview-and-lifecycle.md`: Navigation, lifecycle, and documentation map (sources of truth by topic).
+- `references/02-module-creation-and-fundamentals.md`: Module fundamentals, design principles, and when to create modules.
+- `references/03-module-structure-and-layout.md`: Module structure and repository layout, including modules/ and examples/.
+- `references/04-module-interfaces-and-arguments.md`: Module interfaces, variables, validation rules, outputs, meta-arguments, and dynamic/conditional patterns.
+- `references/05-providers-state-and-backends.md`: Provider rules, remote state/backends, and multi-account/environment provider usage.
+- `references/06-sources-and-distribution.md`: Module distribution, semantic versioning, refactors using moved blocks, and upgrade strategy.
+- `references/07-composition-and-patterns.md`: Composition patterns and root module design (flat composition, data-only modules, dependency inversion).
+- `references/08-security-naming-and-tagging.md`: Security baseline, naming conventions, tagging standards, and secure module checklist.
+- `references/09-testing-and-ci.md`: Local testing workflow, examples as tests, test-module.sh behavior, and CI gates.
+- `references/10-examples-and-docs-automation.md`: Example design, documentation structure, and automation scripts for examples and READMEs.
 
 ## DO NOT DO
 - DO NOT RUN `terraform appy` at any point!
