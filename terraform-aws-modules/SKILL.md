@@ -21,9 +21,16 @@ export TEST="$CODEX_HOME/skills/terraform-aws-modules/scripts/test-module.sh"
 export EXAMPLE="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-examples.sh"
 export DOCUMENT="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-documentation.sh"
 export CLEAN_TF="$CODEX_HOME/skills/terraform-aws-modules/scripts/cleanup.sh"
+export READ="$CODEX_HOME/skills/terraform-aws-modules/scripts/read.sh"
 ```
 
 User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
+
+## Reading files
+- Use `read.sh` to read multiple files and format the output:
+```bash
+"$READN" -d <directory> [-n <name-pattern>]
+```
 
 ## Planning Template
 - Use `create-plan.sh` to create the plan for new module:
@@ -93,7 +100,7 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
           D) ...
      3. Examples:
           A) basic only
-          B) basic + advanced
+          B) ...
           C) ...
           D) ...
       Reply with your picks (e.g., “1A, 2B, 3A”) and any extra constraints.
@@ -103,7 +110,7 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
 3. Prepare files
    - Use automation scripts from this skill to create files and directories for new module and only basic example for testing the module.
-   - You may create files like `.tpl`, `.tfvars`, and `.json` manually only if they are missing from the automation script.
+   - You may create files like `.tftpl`, `.tfvars`, and `.json` manually only if they are missing from the automation script.
 
 4. Implement in small, focused steps
    - Follow the plan.
@@ -139,18 +146,21 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
 ## References
 
-Always read all references when planning module changes.
+Always read all references when planing.
 
-- `references/01-overview-and-lifecycle.md`: Navigation, lifecycle, and documentation map (sources of truth by topic).
-- `references/02-module-creation-and-fundamentals.md`: Module fundamentals, design principles, and when to create modules.
-- `references/03-module-structure-and-layout.md`: Module structure and repository layout, including modules/ and examples/.
-- `references/04-module-interfaces-and-arguments.md`: Module interfaces, variables, validation rules, outputs, meta-arguments, and dynamic/conditional patterns.
-- `references/05-providers-state-and-backends.md`: Provider rules, remote state/backends, and multi-account/environment provider usage.
-- `references/06-sources-and-distribution.md`: Module distribution, semantic versioning, refactors using moved blocks, and upgrade strategy.
-- `references/07-composition-and-patterns.md`: Composition patterns and root module design (flat composition, data-only modules, dependency inversion).
-- `references/08-security-naming-and-tagging.md`: Security baseline, naming conventions, tagging standards, and secure module checklist.
-- `references/09-testing-and-ci.md`: Local testing workflow, examples as tests, test-module.sh behavior, and CI gates.
-- `references/10-examples-and-docs-automation.md`: Example design, documentation structure, and automation scripts for examples and READMEs.
+- `references/01-overview-and-lifecycle.md`: Navigation, lifecycle, and sources of truth.
+- `references/02-module-creation-and-fundamentals.md`: When to create a module, what a module is, and how it relates to root modules.
+- `references/03-module-structure-and-layout.md`: Required files, layout, and module and example directory structure.
+- `references/04-module-interfaces-and-arguments.md`: Inputs, outputs, types, and meta-argument usage.
+- `references/05-providers-state-and-backends.md`: Provider rules, backends, and state topology.
+- `references/06-sources-and-distribution.md`: Module source types and distribution strategy.
+- `references/07-composition-and-patterns.md`: Composition, shallow hierarchies, and data-only modules.
+- `references/08-security-naming-and-tagging.md`: Security baseline, naming, tagging, and meta module conventions.
+- `references/09-testing-and-ci.md`: Local testing workflow and CI gates.
+- `references/10-examples-and-docs-automation.md`: Example design and documentation automation scripts.
+- `references/11-versioning-refactors-and-upgrades.md`: Semantic versioning, moved blocks, and upgrade playbooks.
+- `references/12-dynamic-blocks-and-conditional-sections.md`: Dynamic block usage and conditional nested configuration.
+- `references/13-variables-and-validation.md`: Variable standards, validation rules, and error messages.
 
 ## DO NOT DO
 - DO NOT RUN `terraform appy` at any point!

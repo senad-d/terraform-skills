@@ -71,7 +71,9 @@ cat > "${readme_path}" <<EOF
 
 ## Usage Example
 
+```hcl
 <!-- TODO: Replace this comment and provide a minimal but complete HCL example for using this module -->
+```
 
 ## Architecture Notes
 
