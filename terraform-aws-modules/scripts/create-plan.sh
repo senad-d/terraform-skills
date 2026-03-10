@@ -94,6 +94,7 @@ cat > "${plan_path}" <<EOF
 4. [ ] Create examples via `\$EXAMPLE` and update reqired fealds. 
     - <!-- TODO: describe example scenarios -->
 5. [ ] Generate README via "\$DOCUMENT" and fill template sections. 
+    - Only generate documentation when all validations pass successfully.
     - <!-- TODO: list sections to complete -->
 
 # Example usage
@@ -122,6 +123,8 @@ cat > "${plan_path}" <<EOF
 # Investigation information
 Plan is based on investigation for ${module_name}:
 <!-- TODO: Summarize findings from investigation steps where you used AWS documentation to find information related to the module. -->
+Steps taken and tools used for ${module_name} investigation:
+<!-- TODO: List of investigation steps and MCP tools that you used. -->
 EOF
 
 echo "Created plan at ${plan_path}" >&2

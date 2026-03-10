@@ -15,13 +15,13 @@ Follow the repository workflow for planning, implementing, validating, and docum
 Automation scripts:
 ```bash
 export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+export READ="$CODEX_HOME/skills/terraform-aws-modules/scripts/read.sh"
 export PLAN="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-plan.sh"
 export CREATE="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-module.sh"
 export TEST="$CODEX_HOME/skills/terraform-aws-modules/scripts/test-module.sh"
 export EXAMPLE="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-examples.sh"
 export DOCUMENT="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-documentation.sh"
 export CLEAN_TF="$CODEX_HOME/skills/terraform-aws-modules/scripts/cleanup.sh"
-export READ="$CODEX_HOME/skills/terraform-aws-modules/scripts/read.sh"
 ```
 
 User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
@@ -29,7 +29,7 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 ## Reading files
 - Use `read.sh` to read multiple files and format the output:
 ```bash
-"$READN" -d <directory> [-n <name-pattern>]
+"$READ" -d <directory> [-n <name-pattern>]
 ```
 
 ## Planning Template
