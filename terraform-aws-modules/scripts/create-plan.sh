@@ -86,12 +86,12 @@ cat > "${plan_path}" <<EOF
 - Compensating controls: <!-- TODO: list additional controls applied -->
 
 # Plan
-1. [ ] Scaffold module via `\$CREATE` and update reqired fealds.
+1. [ ] Scaffold module via "\$CREATE" and update reqired fealds.
 2. [ ] Implement module logic and interface. 
     - <!-- TODO: describe major implementation steps -->
 3. [ ] Define outputs. 
     - <!-- TODO: list key outputs to expose -->
-4. [ ] Create examples via `\$EXAMPLE` and update reqired fealds. 
+4. [ ] Create examples via "\$EXAMPLE" and update reqired fealds. 
     - <!-- TODO: describe example scenarios -->
 5. [ ] Generate README via "\$DOCUMENT" and fill template sections. 
     - Only generate documentation when all validations pass successfully.

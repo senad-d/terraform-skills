@@ -33,8 +33,8 @@ This guide is the entry point for the module documentation set. It explains how 
 Lifecycle automation touchpoints:
 - Scaffolding: `scripts/create-module.sh`
 - Examples: `scripts/create-examples.sh`
-- Documentation: `scripts/create-documentation.sh` and `terraform-docs`
 - Validation: `scripts/test-module.sh`
+- Documentation: `scripts/create-documentation.sh` and `terraform-docs`
 
 ## Production Readiness Checklist
 - Module purpose and abstraction are clear and not a thin wrapper (`02-module-creation-and-fundamentals.md`).

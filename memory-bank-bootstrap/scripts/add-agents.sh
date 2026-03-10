@@ -351,7 +351,6 @@ NEVER use grep for project-wide searches (slow, ignores .gitignore). ALWAYS use 
 ## Agent Instructions
 
 - Replace commands: grep→rg, find→rg --files/fd, ls -R→rg --files, cat|grep→rg pattern file
-- Cap reads at 250 lines; prefer `rg -n -A 3 -B 3` for context
 - Use `jq` for JSON instead of regex
 EOF
 )

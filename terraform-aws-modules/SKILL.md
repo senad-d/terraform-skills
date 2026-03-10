@@ -27,7 +27,7 @@ export CLEAN_TF="$CODEX_HOME/skills/terraform-aws-modules/scripts/cleanup.sh"
 User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## Reading files
-- Use `read.sh` to read multiple files and format the output:
+- Use `read.sh` to read files:
 ```bash
 "$READ" -d <directory> [-n <name-pattern>]
 ```
