@@ -27,7 +27,7 @@ export CLEAN_TF="$CODEX_HOME/skills/terraform-aws-modules/scripts/cleanup.sh"
 User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## Reading files
-- Use `read.sh` to read files:
+- Use `read.sh` to read files by selecting a directory and optionally specifying the file name:
 ```bash
 "$READ" -d <directory> [-n <name-pattern>]
 ```
@@ -81,7 +81,7 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
 ## Required Workflow
 
-1. Investigate first
+1. Investigate first via `$READ`
    - Read `Rules/` and `$CODEX_HOME/skills/terraform-aws-modules/references` standards and review existing patterns before changing code.
    - Confirm behavior against official Terraform and AWS documentation; capture links and findings in the plan.
 
@@ -92,17 +92,17 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
           A) ...
           B) ...
           C) ...
-          D) ...
+          D) Custom name.
      2. Scope:
-          A) ...
-          B) ...
-          C) ...
-          D) ...
+          A) ... (A wrapper module around terraform-aws-modules when available, extended with additional resources where required.)
+          B) ... (A module built entirely from Terraform resources, without relying on a community module.)
+          C) ... (Use a module from terraform-aws-modules organization when available, without modification.)
+          D) Describe custom requirements.
      3. Examples:
           A) basic only
-          B) ...
-          C) ...
-          D) ...
+          B) basic + advanced
+          C) ... (basic + advanced + iclude any edge cases or complex setups.)
+          D) Describe custom requirements.
       Reply with your picks (e.g., “1A, 2B, 3A”) and any extra constraints.
      ```
    - Create a plan file in the `Plan/` directory using the provided information along with the `$PLAN` automation script.
