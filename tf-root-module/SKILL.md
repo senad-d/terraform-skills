@@ -75,7 +75,6 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 ## Terraform state cleanup
 - Use `cleanup.sh` to clean up terraform state after testing.
 ```bash
-"$CLEAN_TF" --quiet modules/<module_name>
 "$CLEAN_TF" --quiet examples/<module_name>
 ```
 
@@ -89,8 +88,8 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
    - Ask the user to clarify the module name, the scope for the module, and the types of examples to create. Provide clear choices for all questions based on investigation, e.g.:
      ```markdown
      1. Name:
-          A) ...
-          B) ...
+          A) ... 
+          B) ... 
           C) ...
           D) Custom name.
      2. Scope:
@@ -119,6 +118,8 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 5. Validate
    - Use automation scripts from skill for running tests.
    - Note assumptions or workarounds in the plan and docs.
+   - Address any issues identified by the tests and rerun them until resolved. 
+   - If you encounter problems that you cannot resolve independently, seek guidance from the user.
 
 6. Document
    - Create module documentation using the `$DOCUMENT`.
@@ -126,6 +127,7 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
 7. Cleanup
    - Use `$CLEAN_TF` to clean up after testing and documentation is done.
+
 ---
 
 ## Best-Practice Expectations

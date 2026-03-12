@@ -1,0 +1,10 @@
+Source:
+- Path: skills/tf-root-module/SKILL.md
+- References: skills/tf-root-module/references
+
+Licensed under the Apache License, Version 2.0.
+See LICENSE.txt in this directory.
+
+Modifications:
+- Adapted for the Codex skill collection.
+- Added a wrapper script and local reference guides.
