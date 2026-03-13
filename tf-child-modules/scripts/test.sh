@@ -68,12 +68,10 @@ if [[ -z "${module_name}" ]]; then
   exit 1
 fi
 
-# Default example type if none provided
 if [[ ${#example_types[@]} -eq 0 ]]; then
   example_types=("basic")
 fi
 
-# Verify all example directories exist before running any Terraform commands
 for example_type in "${example_types[@]}"; do
   example_dir="examples/${module_name}/${example_type}"
   if [[ ! -d "${example_dir}" ]]; then
@@ -82,26 +80,22 @@ for example_type in "${example_types[@]}"; do
   fi
 done
 
-# Detect tflint availability once and guide installation if missing
 if command -v tflint >/dev/null 2>&1; then
   tflint_available="true"
 else
   echo "Warning: tflint not found. Skipping tflint checks. Install it with: brew install tflint" >&2
 fi
 
-# Detect tfsec availability once and guide installation if missing
 if command -v tfsec >/dev/null 2>&1; then
   tfsec_available="true"
 else
   echo "Warning: tfsec not found. Skipping tfsec checks. Install it with: brew install tfsec" >&2
 fi
 
-# --- Markdown header ---
 
 echo "# Terraform test for module \`${module_name}\`"
 echo
 
-# Join example types for display
 if [[ ${#example_types[@]} -gt 0 ]]; then
   IFS=", " read -r -a _tmp <<< "${example_types[*]}"
   echo "Examples: \`$(printf "%s" "${_tmp[*]}")\`"
@@ -119,13 +113,11 @@ echo '## Running: terraform fmt -recursive'
 
 echo '```text'
 terraform fmt -recursive
-# raw terraform fmt output is preserved as-is
 
 echo '```'
 
 echo
 
-# Run init/validate/tfsec/tflint/plan for each example type
 for example_type in "${example_types[@]}"; do
   example_dir="examples/${module_name}/${example_type}"
 
@@ -135,14 +127,12 @@ for example_type in "${example_types[@]}"; do
   echo "### Running: terraform -chdir=${example_dir} init -backend=false"
   echo '```text'
   terraform -chdir="${example_dir}" init -backend=false
-  # raw terraform init output is preserved as-is
   echo '```'
   echo
 
   echo "### Running: terraform -chdir=${example_dir} validate -no-color"
   echo '```text'
   terraform -chdir="${example_dir}" validate -no-color
-  # raw terraform validate output is preserved as-is
   echo '```'
   echo
 
@@ -178,7 +168,6 @@ for example_type in "${example_types[@]}"; do
     echo "### Running: terraform -chdir=${example_dir} plan -input=false -refresh=false -lock=false"
     echo '```text'
     terraform -chdir="${example_dir}" plan -input=false -refresh=false -lock=false
-    # raw terraform plan output is preserved as-is
     echo '```'
     echo
   else

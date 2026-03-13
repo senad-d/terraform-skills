@@ -166,13 +166,13 @@ Before implementing a new module, document the following in a short plan:
 - Security defaults and any required exceptions.
 - Example scenario(s) and supporting modules required.
 
-## Script Usage: `create-plan.sh`
+## Script Usage: `plan.sh`
 Use the plan scaffolding script to create a standardized planning document before
 implementing a new module.
 
 Canonical invocation:
 ```bash
-./scripts/create-plan.sh -m <module_name> [-g <short_goal>]
+./scripts/plan.sh -m <module_name> [-g <short_goal>]
 ```
 
 Inputs:

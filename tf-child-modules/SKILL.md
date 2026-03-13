@@ -1,5 +1,5 @@
 ---
-name: terraform-aws-modules
+name: tf-child-modules
 description: Workflow and standards for updating the Terraform AWS Modules repository. Use when adding, modifying, or reviewing Terraform modules, variables, outputs, documentation, or validation in this repo, especially when planning changes or enforcing security, reliability, and cost-aware defaults.
 ---
 
@@ -16,11 +16,11 @@ Automation scripts:
 ```bash
 export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 export READ="$CODEX_HOME/skills/terraform-aws-modules/scripts/read.sh"
-export PLAN="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-plan.sh"
-export CREATE="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-module.sh"
-export TEST="$CODEX_HOME/skills/terraform-aws-modules/scripts/test-module.sh"
-export EXAMPLE="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-examples.sh"
-export DOCUMENT="$CODEX_HOME/skills/terraform-aws-modules/scripts/create-documentation.sh"
+export PLAN="$CODEX_HOME/skills/terraform-aws-modules/scripts/plan.sh"
+export CREATE="$CODEX_HOME/skills/terraform-aws-modules/scripts/child-module.sh"
+export TEST="$CODEX_HOME/skills/terraform-aws-modules/scripts/test.sh"
+export EXAMPLE="$CODEX_HOME/skills/terraform-aws-modules/scripts/root-modules.sh"
+export DOCUMENT="$CODEX_HOME/skills/terraform-aws-modules/scripts/document.sh"
 export CLEAN_TF="$CODEX_HOME/skills/terraform-aws-modules/scripts/cleanup.sh"
 ```
 
@@ -33,7 +33,7 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 ```
 
 ## Planning Template
-- Use `create-plan.sh` to create the plan for new module:
+- Use `plan.sh` to create the plan for new module:
 ```bash
 "$PLAN" -m <module_name> [-g <short_goal>]
 ```
@@ -45,13 +45,13 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 ```bash
 "$CREATE" -m <module_name> [-rv <tf_required_version>] [-av <aws_provider_version>]
 ```
-- To create a new module example directories and files, use the automation script:
+- To create a new module for testing in example directories, use the automation script:
 ```bash
 "$EXAMPLE" -m <module1,module2> [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>] [-f]
 ```
 
 ## Testing Guidelines
-- For any change, add or update an example under `modules/<module_name>/` and `examples/<module_name>/<example_type>/` run tests for that example only using `test-module.sh`, e.g.:
+- For any change, add or update an example under `modules/<module_name>/` and `examples/<module_name>/<example_type>/` run tests for that example only using `test.sh`, e.g.:
 ```bash
 "$TEST" -m <module_name> [-t <example_type> ...]
 ```
@@ -75,7 +75,6 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 ## Terraform state cleanup
 - Use `cleanup.sh` to clean up terraform state after testing.
 ```bash
-"$CLEAN_TF" --quiet modules/<module_name>
 "$CLEAN_TF" --quiet examples/<module_name>
 ```
 
@@ -126,6 +125,7 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
 7. Cleanup
    - Use `$CLEAN_TF` to clean up after testing and documentation is done.
+
 ---
 
 ## Best-Practice Expectations
@@ -158,9 +158,7 @@ Always read all references when planing.
 - `references/08-security-naming-and-tagging.md`: Security baseline, naming, tagging, and meta module conventions.
 - `references/09-testing-and-ci.md`: Local testing workflow and CI gates.
 - `references/10-examples-and-docs-automation.md`: Example design and documentation automation scripts.
-- `references/11-versioning-refactors-and-upgrades.md`: Semantic versioning, moved blocks, and upgrade playbooks.
-- `references/12-dynamic-blocks-and-conditional-sections.md`: Dynamic block usage and conditional nested configuration.
-- `references/13-variables-and-validation.md`: Variable standards, validation rules, and error messages.
+
 
 ## DO NOT DO
 - DO NOT RUN `terraform appy` at any point!

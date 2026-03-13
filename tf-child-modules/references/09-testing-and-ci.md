@@ -59,12 +59,12 @@ Typical CI steps:
 Security scan coverage and tagging conventions are defined in
 `08-security-naming-and-tagging.md`.
 
-## Script Usage: `test-module.sh`
+## Script Usage: `test.sh`
 Use the test script to validate module examples consistently.
 
 Canonical invocation:
 ```bash
-./scripts/test-module.sh -m <module_name> [-t <example_type> ...] [--plan <true|false>]
+./scripts/test.sh -m <module_name> [-t <example_type> ...] [--plan <true|false>]
 ```
 
 Inputs:

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Default versions (can be overridden via CLI flags)
 DEFAULT_TF_REQUIRED_VERSION=">= 1.14.3"
 DEFAULT_AWS_PROVIDER_VERSION=">= 6.14.1"
 
@@ -65,16 +64,13 @@ fi
 
 module_dir="modules/${module_name}"
 
-# If module directory already exists, skip creation and stop
 if [[ -d "${module_dir}" ]]; then
   echo "Module '${module_name}' already exists at '${module_dir}'. Skipping creation." >&2
   exit 0
 fi
 
-# Create module skeleton directory
 mkdir -p "${module_dir}"
 
-# TODO comments in non-versions files
 todo_comment="# TODO: configure required inputs for ${module_name}"
 
 # main.tf
@@ -86,7 +82,6 @@ printf '%s\n\n' "${todo_comment}" > "${module_dir}/variables.tf"
 # outputs.tf
 printf '%s\n\n' "${todo_comment}" > "${module_dir}/outputs.tf"
 
-# versions.tf with overridable versions
 cat > "${module_dir}/versions.tf" <<EOF
 terraform {
   required_version = "${tf_required_version}"

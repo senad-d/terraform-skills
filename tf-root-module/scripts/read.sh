@@ -67,7 +67,6 @@ if ! command -v jq >/dev/null 2>&1; then
   exit 1
 fi
 
-# Determine file listing command: prefer fd/fdfind, fallback to rg --files
 list_files_cmd=("rg" "--files" "${root_dir}")
 
 if command -v fd >/dev/null 2>&1; then
@@ -82,30 +81,25 @@ else
   list_files_cmd=("rg" "--files" "${root_dir}")
 fi
 
-# Collect file list
 file_list=""
 if [[ -n "${name_pattern}" ]]; then
   if ! command -v rg >/dev/null 2>&1; then
     echo "Error: ripgrep (rg) is required for --name-pattern filtering" >&2
     exit 1
   fi
-  # Use rg as a filter over the raw list of files
   file_list="$("${list_files_cmd[@]}" | rg "${name_pattern}" || true)"
 else
   file_list="$("${list_files_cmd[@]}" || true)"
 fi
 
-# Prepare temp file for per-file JSON objects
 files_json_tmp="$(mktemp)"
 trap 'rm -f "${files_json_tmp}"' EXIT
 
 file_count=0
 
-# Normalize root_dir to an absolute path for consistency in metadata
 root_abs="$(cd "${root_dir}" && pwd)"
 
 if [[ -n "${file_list}" ]]; then
-  # Iterate over files line-by-line
   while IFS= read -r file_path; do
     [[ -z "${file_path}" ]] && continue
 
@@ -113,16 +107,12 @@ if [[ -n "${file_list}" ]]; then
       continue
     fi
 
-    # Compute relative path from root
-    # If the lister already outputs relative paths from root_dir (fd usage), ensure consistency
     if [[ "${file_path}" == "${root_dir}"* ]]; then
       rel_path="${file_path#"${root_dir%/}"/}"
     else
-      # For commands that already give relative paths from root_dir, use them directly
       rel_path="${file_path}"
     fi
 
-    # Build per-file JSON object; jq handles all escaping.
     jq -n \
       --arg path "${rel_path}" \
       --arg content "$(cat "${file_path}")" \
@@ -133,8 +123,6 @@ if [[ -n "${file_list}" ]]; then
   done <<< "${file_list}"
 fi
 
-# Construct final JSON document
-# Use jq -s to slurp per-file objects into an array
 json_output=$(jq -n \
   --arg root "${root_abs}" \
   --arg generated_at "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
@@ -142,5 +130,4 @@ json_output=$(jq -n \
   --slurpfile files "${files_json_tmp}" \
   '{root: $root, generated_at: $generated_at, file_count: $file_count, files: $files}')
 
-# Print only the JSON document to stdout
 echo "${json_output}"

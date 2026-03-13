@@ -48,11 +48,10 @@ readme_path="${module_dir}/README.md"
 
 if [[ ! -d "${module_dir}" ]]; then
   echo "Error: module '${module_name}' not found at '${module_dir}'" >&2
-  echo "Create the module first (for example with create-module.sh), then rerun." >&2
+  echo "Create the module first (for example with child-module.sh), then rerun." >&2
   exit 1
 fi
 
-# Overwrite README.md with a fresh template
 cat > "${readme_path}" <<EOF
 # ${module_name} Module
 

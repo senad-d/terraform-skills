@@ -2,8 +2,8 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 -m <module1,module2> [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>] [-f]" >&2
-  echo "Example: $0 -m sqs,sns -t basic,advanced -n messaging" >&2
+  echo "Usage: $0 -m <module1,module2> [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>] [-t <tf-required-version>] [-p <aws-provider-version>] [-f]" >&2
+  echo "Example: $0 -m sqs,sns -t basic,advanced -n messaging -t ${default_tf_required_version} -p ${default_aws_provider_version}" >&2
 }
 
 MODULES_RAW=""
@@ -12,6 +12,12 @@ EXAMPLE_NAME=""
 EXAMPLES_ROOT="examples"
 MODULES_ROOT="modules"
 FORCE=false
+
+default_tf_required_version=">= 1.14.3"
+default_aws_provider_version=">= 6.14.1"
+
+TF_REQUIRED_VERSION="$default_tf_required_version"
+AWS_PROVIDER_VERSION="$default_aws_provider_version"
 
 while getopts "m:t:n:e:r:fh" opt; do
   case "${opt}" in
@@ -162,6 +168,19 @@ EOF_VARIABLES
   cat <<'EOF_OUTPUTS' > "${example_dir}/outputs.tf"
 # TODO: add outputs as needed
 EOF_OUTPUTS
+
+  cat <<EOF_VERSIONS > "${example_dir}/versions.tf"
+terraform {
+  required_version = "${tf_required_version}"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "${aws_provider_version}"
+    }
+  }
+}
+EOF_VERSIONS
 
   modules_list="$(IFS=, ; echo "${modules[*]}")"
   cat <<EOF_README > "${example_dir}/README.md"

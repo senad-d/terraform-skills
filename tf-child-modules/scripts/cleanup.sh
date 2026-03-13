@@ -30,7 +30,6 @@ had_errors=0
 # Logging helpers
 # ---------------------------------------------------------------------------
 log_error() {
-    # Always printed, regardless of CURRENT_LOG_LEVEL
     {
         printf '%s' "[ERROR]"
         if [ "$#" -gt 0 ]; then
@@ -97,7 +96,6 @@ EOF
 # ---------------------------------------------------------------------------
 set_log_level_from_name() {
     level_name=$1
-    # Normalize to lowercase (POSIX-safe)
     level_name_lc=$(printf '%s' "$level_name" | tr '[:upper:]' '[:lower:]')
 
     case $level_name_lc in
@@ -165,7 +163,6 @@ delete_lock_file() {
 process_path() {
     path=$1
 
-    # Classify and delegate based on type and basename
     base_name=$(basename -- "$path" 2>/dev/null || basename "$path")
 
     if [ -d "$path" ] && [ "$base_name" = ".terraform" ]; then
@@ -175,7 +172,6 @@ process_path() {
         log_debug "Matched Terraform lock file: $path"
         delete_lock_file "$path"
     else
-        # Unexpected match; log at debug level only
         log_debug "Skipping unexpected path (not a Terraform artifact): $path"
     fi
 }
@@ -189,8 +185,6 @@ scan_root() {
     log_debug "Scanning root: $root"
     log_debug "Pruning standard directories (.git, .svn, .hg, .idea, .vscode, node_modules, venv, .venv, dist, build, target) under: $root"
 
-    # Use a temporary file to store matches so we can reliably capture find's
-    # exit status and still process all results.
     tmp_matches=$(mktemp "${TMPDIR:-/tmp}/tf_cleanup.matches.XXXXXX" 2>/dev/null || printf '%s' "")
     if [ -z "$tmp_matches" ]; then
         log_error "Failed to create temporary file for matches"
@@ -198,9 +192,6 @@ scan_root() {
         return 1
     fi
 
-    # Capture find output (null-separated) into the temporary file
-    # We intentionally do not silence stderr so that any serious find errors
-    # remain visible to the user.
     find "$root" \
         \( -type d \
            \( -name .git -o -name .svn -o -name .hg -o -name .idea -o -name .vscode \
@@ -213,15 +204,9 @@ scan_root() {
     if [ "$find_status" -ne 0 ]; then
         had_errors=1
         log_error "find reported an error while scanning: $root (exit status $find_status)"
-        # Continue to attempt processing any matches that were produced
     fi
 
-    # Read null-separated paths and process them one by one
-    # Note: read -r -d '' is supported by /bin/sh on most modern systems
-    # (typically implemented by bash or a compatible shell in POSIX mode).
-    # This ensures paths with spaces are handled safely.
     if [ -s "$tmp_matches" ]; then
-        # shellcheck disable=SC2039,SC3045
         while IFS= read -r -d "" path; do
             process_path "$path"
         done <"$tmp_matches"
@@ -265,7 +250,6 @@ perform_cleanup() {
         log_debug "No subdirectories specified; scanning entire main directory: $main_dir"
         scan_root "$main_dir" || had_errors=1
     else
-        # Iterate over provided subdirectories, building effective roots
         while [ "$#" -gt 0 ]; do
             subdir=$1
             shift
@@ -286,7 +270,6 @@ perform_cleanup() {
 # Argument parsing and entrypoint
 # ---------------------------------------------------------------------------
 main() {
-    # Reset globals for safety if main is called more than once
     DRY_RUN=0
     CURRENT_LOG_LEVEL=$LOG_LEVEL_INFO
     deleted_dirs=0
@@ -294,7 +277,6 @@ main() {
     failed_deletions=0
     had_errors=0
 
-    # Parse options
     while [ "$#" -gt 0 ]; do
         case $1 in
             --dry-run)
@@ -338,7 +320,6 @@ main() {
                 exit 1
                 ;;
             *)
-                # First non-option argument; treat as MAIN_DIR
                 break
                 ;;
         esac
@@ -354,7 +335,6 @@ main() {
     main_dir=$1
     shift
 
-    # High-level start log at info level
     if [ "$DRY_RUN" -eq 1 ]; then
         log_info "Starting Terraform cleanup (dry run) in: $main_dir"
     else

@@ -25,16 +25,16 @@ This guide is the entry point for the module documentation set. It explains how 
 2. Design and interface definition
 3. Scaffold module structure and files
 4. Implement resources and logic
-5. Document inputs, outputs, and examples
-6. Validate locally and in CI
+5. Validate locally and in CI
+6. Document inputs, outputs, and examples
 7. Release, version, and maintain
 8. Refactor or deprecate safely
 
 Lifecycle automation touchpoints:
-- Scaffolding: `scripts/create-module.sh`
-- Examples: `scripts/create-examples.sh`
-- Validation: `scripts/test-module.sh`
-- Documentation: `scripts/create-documentation.sh` and `terraform-docs`
+- Scaffolding: `scripts/child-module.sh`
+- Examples: `scripts/root-modules.sh`
+- Validation: `scripts/test.sh`
+- Documentation: `scripts/document.sh` and `terraform-docs`
 
 ## Production Readiness Checklist
 - Module purpose and abstraction are clear and not a thin wrapper (`02-module-creation-and-fundamentals.md`).
@@ -60,7 +60,7 @@ Lifecycle automation touchpoints:
 - Module scaffold exists with required files and versions pinned.
 - Inputs/outputs are documented, typed, validated, and sensitive where required.
 - README includes metadata, usage, architecture notes, security considerations, and limitations.
-- Examples exist and run successfully with `scripts/test-module.sh`.
+- Examples exist and run successfully with `scripts/test.sh`.
 - CI checks pass, including formatting and security scans.
 - Versioning and upgrade notes are recorded when changes are breaking.
 - After implementation and documentation are complete, update all relevant Plan files and memory files for the task. The task is not done until Plan and memory are fully updated.
