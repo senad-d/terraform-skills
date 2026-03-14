@@ -2,12 +2,11 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 -m <module_name> [-t <example_type> ...] [--plan <true|false>]" >&2
-  echo "Example: $0 -m iam-user -t basic -t full --plan false" >&2
+  echo "Usage: $0 -m <module_directory> [--plan <true|false>]" >&2
+  echo "Example: $0 -m networking --plan false" >&2
 }
 
-module_name=""
-example_types=()
+module_dir=""
 plan_enabled="true"
 tflint_available="false"
 tfsec_available="false"
@@ -20,16 +19,7 @@ while [[ $# -gt 0 ]]; do
         usage
         exit 1
       fi
-      module_name="$2"
-      shift 2
-      ;;
-    -t|--type)
-      if [[ $# -lt 2 ]]; then
-        echo "Error: -t|--type requires a value" >&2
-        usage
-        exit 1
-      fi
-      example_types+=("$2")
+      module_dir="$2"
       shift 2
       ;;
     -p|--plan)
@@ -62,23 +52,16 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "${module_name}" ]]; then
-  echo "Error: module name is required" >&2
+if [[ -z "${module_dir}" ]]; then
+  echo "Error: module directory is required" >&2
   usage
   exit 1
 fi
 
-if [[ ${#example_types[@]} -eq 0 ]]; then
-  example_types=("basic")
+if [[ ! -d "${module_dir}" ]]; then
+  echo "Error: module directory '${module_dir}' does not exist" >&2
+  exit 1
 fi
-
-for example_type in "${example_types[@]}"; do
-  example_dir="examples/${module_name}/${example_type}"
-  if [[ ! -d "${example_dir}" ]]; then
-    echo "Error: ${example_dir} does not exist" >&2
-    exit 1
-  fi
-done
 
 if command -v tflint >/dev/null 2>&1; then
   tflint_available="true"
@@ -92,15 +75,11 @@ else
   echo "Warning: tfsec not found. Skipping tfsec checks. Install it with: brew install tfsec" >&2
 fi
 
-echo "# Terraform test for module \`${module_name}\`"
+echo "# Terraform test for module directory \`${module_dir}\`"
 echo
 
-if [[ ${#example_types[@]} -gt 0 ]]; then
-  IFS=", " read -r -a _tmp <<< "${example_types[*]}"
-  echo "Examples: \`$(printf "%s" "${_tmp[*]}")\`"
-  unset _tmp
-  echo
-fi
+echo "Module directory: \`${module_dir}\`"
+echo
 
 echo "## Setting AWS Profile for localstack"
 
@@ -117,61 +96,55 @@ echo '```'
 
 echo
 
-for example_type in "${example_types[@]}"; do
-  example_dir="examples/${module_name}/${example_type}"
+echo "## Running: terraform -chdir=${module_dir} init -backend=false"
+echo '```text'
+terraform -chdir="${module_dir}" init -backend=false
+echo '```'
 
-  echo "## Example: ${example_type}"
-  echo
+echo
 
-  echo "### Running: terraform -chdir=${example_dir} init -backend=false"
+echo "## Running: terraform -chdir=${module_dir} validate -no-color"
+echo '```text'
+terraform -chdir="${module_dir}" validate -no-color
+echo '```'
+
+echo
+
+if [[ "${tfsec_available}" == "true" ]]; then
+  echo "## Running: tfsec (in ${module_dir})"
   echo '```text'
-  terraform -chdir="${example_dir}" init -backend=false
+  (
+    cd "${module_dir}"
+    tfsec .
+  )
   echo '```'
   echo
+else
+  echo "## Skipping: tfsec (not installed)"
+  echo
+fi
 
-  echo "### Running: terraform -chdir=${example_dir} validate -no-color"
+if [[ "${tflint_available}" == "true" ]]; then
+  echo "## Running: tflint (in ${module_dir})"
   echo '```text'
-  terraform -chdir="${example_dir}" validate -no-color
+  (
+    cd "${module_dir}"
+    tflint --recursive
+  )
   echo '```'
   echo
+else
+  echo "## Skipping: tflint (not installed)"
+  echo
+fi
 
-  if [[ "${tfsec_available}" == "true" ]]; then
-    echo "### Running: tfsec (in ${example_dir})"
-    echo '```text'
-    (
-      cd "${example_dir}"
-      tfsec .
-    )
-    echo '```'
-    echo
-  else
-    echo "### Skipping: tfsec (not installed)"
-    echo
-  fi
-
-  if [[ "${tflint_available}" == "true" ]]; then
-    echo "### Running: tflint (in ${example_dir})"
-    echo '```text'
-    (
-      cd "${example_dir}"
-      tflint --recursive
-    )
-    echo '```'
-    echo
-  else
-    echo "### Skipping: tflint (not installed)"
-    echo
-  fi
-
-  if [[ "${plan_enabled}" == "true" ]]; then
-    echo "### Running: terraform -chdir=${example_dir} plan -input=false -refresh=false -lock=false"
-    echo '```text'
-    terraform -chdir="${example_dir}" plan -input=false -refresh=false -lock=false
-    echo '```'
-    echo
-  else
-    echo "### Skipping: terraform plan (disabled via --plan=false)"
-    echo
-  fi
-
-done
+if [[ "${plan_enabled}" == "true" ]]; then
+  echo "## Running: terraform -chdir=${module_dir} plan -input=false -refresh=false -lock=false"
+  echo '```text'
+  terraform -chdir="${module_dir}" plan -input=false -refresh=false -lock=false
+  echo '```'
+  echo
+else
+  echo "## Skipping: terraform plan (disabled via --plan=false)"
+  echo
+fi

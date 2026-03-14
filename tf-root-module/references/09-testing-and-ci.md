@@ -54,27 +54,27 @@ Security baseline and tagging conventions are defined in
 `08-security-naming-and-tagging.md`.
 
 ## Script Usage: `test.sh`
-Use the test script to validate module examples consistently.
+Use the test script to validate modules and their examples consistently.
 
 Canonical invocation:
 ```bash
-./scripts/test.sh -m <module_name> [-t <example_type> ...] [-p <true|false>]
+./tf-root-module/scripts/test.sh -m <module_directory> [--plan <true|false>]
 ```
 
 Inputs:
-- `-m|--module`: Module name (required).
-- `-t|--type`: Example type(s). Defaults to `basic` if none are provided.
-- `-p|--plan`: `true` or `false` to enable or disable `terraform plan`.
+- `-m|--module`: Module directory to test (required), relative to the repo root, for example `networking` or `private-network`.
+- `-p|--plan`: `true` or `false` to enable or disable `terraform plan` (defaults to `true`).
 
 Behavior:
-- Runs `terraform fmt -recursive`.
-- Runs `terraform init -backend=false` and `terraform validate` per example.
-- Runs `tfsec` and `tflint` if installed, otherwise skips with a warning.
-- Runs `terraform plan` unless `--plan=false`.
+- Runs `terraform fmt -recursive` from the repository root.
+- Runs `terraform init -backend=false` and `terraform validate -no-color` in the specified module directory.
+- Runs `tfsec` and `tflint` once in the module directory if installed, otherwise skips each with a warning.
+- Runs `terraform plan -input=false -refresh=false -lock=false` in the module directory unless `--plan=false`.
 
 Failure modes:
-- Missing module name.
-- Missing example directories for requested example types.
+- Missing `-m|--module` argument.
+- Module directory path does not exist.
+- Invalid `--plan` value (anything other than `true` or `false`).
 
 Use this script locally and in CI wherever possible to keep validation
 consistent across modules.

@@ -51,9 +51,9 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 ```
 
 ## Testing Guidelines
-- For any change, add or update an example under `examples/<module_name>/<example_type>/` run tests for that example only using `test.sh`, e.g.:
+- For any change, add or update an example under `<module_directory>/` run tests for that example only using `test.sh`, e.g.:
 ```bash
-"$TEST" -m <module_name> [-t <example_type> ...] [-p <true|false>]
+"$TEST" -m <module_directory> [--plan <true|false>]
 ```
 
 ## Terraform state cleanup
