@@ -25,7 +25,7 @@ export CLEAN_TF="$CODEX_HOME/skills/tf-root-module/scripts/cleanup.sh"
 User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## List child modules
-- Use `find.sh` to sarch for child modules in the repository:
+- Use `find.sh` to search for child modules in the repository:
 ```bash
 "$FIND" -d <directory> [-n <name-pattern>]
 ```
@@ -47,13 +47,13 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 ## Module Organization & Structure
 - To create a new root module directories and files, use the automation script `root-module.sh`:
 ```bash
-"$CREATE" -m <module1,module2> [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>] [-f]
+"$CREATE" -m <module1,module2> -t <root-module-name[,another-name]> [-n <stack-name>] [-e <examples-root>] [-r <modules-root>] [-T <tf-required-version>] [-P <aws-provider-version>] [-f]
 ```
 
 ## Testing Guidelines
 - For any change, add or update an example under `examples/<module_name>/<example_type>/` run tests for that example only using `test.sh`, e.g.:
 ```bash
-"$TEST" -m <module_name> [-t <example_type> ...]
+"$TEST" -m <module_name> [-t <example_type> ...] [-p <true|false>]
 ```
 
 ## Terraform state cleanup
@@ -137,13 +137,13 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## References
 
-Always read all references when planing.
+Always read all references when planning.
 
 - `01-overview-and-lifecycle.md` — lifecycle, readiness checklist, and documentation map.
 - `02-module-creation-and-fundamentals.md` — root module definition and design principles.
 - `03-module-structure-and-layout.md` — required files, layout, and examples structure.
 - `04-module-interfaces-and-arguments.md` — input/output standards and validation.
-- `05-providers-state-and-backends.md` — provider rules, state layout, and backend policy.
+- `05-infrastructure-architecture-guidelines.md` — provider rules, state layout, and backend policy.
 - `06-sources-and-distribution.md` — source selection, versioning, and upgrades.
 - `07-composition-and-patterns.md` — composition patterns and root module responsibilities.
 - `08-security-naming-and-tagging.md` — security baseline and naming/tagging rules.
@@ -151,10 +151,10 @@ Always read all references when planing.
 - `10-examples.md` — example design and documentation automation.
 
 ## DO NOT DO
-- DO NOT RUN `terraform appy` at any point!
+- DO NOT RUN `terraform apply` at any point!
 - DO NOT CREATE ANY AWS resources!
 - DO NOT EXPOSE ANY SECRETS OR VARIABLES!
 - DO NOT COMMIT ANY CHANGES.
 - DO NOT RUN AWS CLI COMMANDS.
-- DO NOT USE `mkdir` command to creadte directories.
+- DO NOT create directories manually with `mkdir`; use `$CREATE`.
 - YOU DO NOT NEED to read `scripts/*.sh` scripts.

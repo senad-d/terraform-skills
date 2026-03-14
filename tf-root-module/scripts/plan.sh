@@ -87,7 +87,7 @@ Use existing child modules from the repository in root module:
 - Compensating controls: <!-- TODO: list additional controls applied -->
 
 # Plan
-1. [ ] Scaffold root module via "\$CREATE" and update reqired fealds.
+1. [ ] Scaffold root module via "\$CREATE" and update required fields.
     - <!-- TODO: describe scenarios -->
 2. [ ] Implement root module logic and interface. 
     - <!-- TODO: describe major implementation steps -->
@@ -96,10 +96,10 @@ Use existing child modules from the repository in root module:
 
 # Validation
 - [ ] terraform fmt -recursive
-- [ ] "\$TEST" -m ${module_name} [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>]
+- [ ] "\$TEST" -m ${module_name} [-t <example_type> ...] [-p <true|false>]
 
 # Cleanup
-- [ ] "\$CLEAN_TF" --quiet modules/${module_name}
+- [ ] "\$CLEAN_TF" --quiet examples/${module_name}
 
 - Notes: <!-- TODO: list any potential problems if any -->
 

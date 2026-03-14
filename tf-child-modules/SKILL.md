@@ -161,10 +161,10 @@ Always read all references when planing.
 
 
 ## DO NOT DO
-- DO NOT RUN `terraform appy` at any point!
+- DO NOT RUN `terraform apply` at any point!
 - DO NOT CREATE ANY AWS resources!
 - DO NOT EXPOSE ANY SECRETS OR VARIABLES!
 - DO NOT COMMIT ANY CHANGES.
 - DO NOT RUN AWS CLI COMMANDS.
-- DO NOT USE `mkdir` command to creadte directories.
+- DO NOT create directories manually with `mkdir`.
 - YOU DO NOT NEED to read `scripts/*.sh` scripts.
