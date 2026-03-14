@@ -27,7 +27,7 @@ automation (including READMEs and terraform-docs) fits into the workflow.
 
 Examples are consumed both by readers and by automation:
 - As documentation: they show how to use a module safely and idiomatically.
-- As test inputs: they are used by `scripts/test-module.sh` and CI to validate
+- As test inputs: they are used by `scripts/test.sh` and CI to validate
   modules. See `09-testing-and-ci.md` for the testing workflow.
 
 ## Example Creation Workflow
@@ -62,56 +62,13 @@ When creating or updating examples, the following are required:
 - Defaults must favor least privilege, encryption at rest and in transit, and
   no public exposure.
 
+## Root Module Example Requirements
+- Root module examples must wire child modules from `modules/` using relative sources.
+- Examples must demonstrate the expected tag and naming propagation.
+- Examples must show network boundaries and logging destinations when the module exposes them.
+
 For how examples are validated locally and in CI, see `09-testing-and-ci.md`.
 
-## Script Usage: `create-examples.sh`
-Use the examples scaffold script to generate example directories for one or more
-modules.
-
-Canonical invocation:
-```bash
-./scripts/create-examples.sh -m <module1,module2> [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>] [-f]
-```
-
-Outputs:
-- Creates `examples/<example-name>/<basic|advanced>/` with `main.tf`,
-  `variables.tf`, `outputs.tf`, and `README.md`.
-- Inserts placeholders for required inputs and wiring between modules.
-
-Failure modes:
-- Missing module name list.
-- Unsupported example type value (must be `basic` or `advanced`).
-- Example directory already exists unless `-f` is provided.
-
-Examples created with this script should follow the design principles and
-mandatory behaviors above.
-
-## Script Usage: `create-documentation.sh`
-Use the documentation script to generate a README template for a module.
-
-Canonical invocation:
-```bash
-./scripts/create-documentation.sh -m <module_name>
-```
-
-Outputs:
-- Overwrites `modules/<module_name>/README.md` with a documentation template.
-- Includes TODO sections for description, usage, architecture, security, and
-  limitations.
-
-Failure modes:
-- Missing module name.
-- Module directory does not exist.
-- `terraform-docs` not installed or not on PATH.
-
-## Documentation Generation Workflow
-1. Run `create-documentation.sh` to scaffold the README.
-2. Fill in the metadata block (owner, last verified date, Terraform and AWS
-   provider versions).
-3. Replace TODO sections with concise, accurate module-specific information.
-4. Run `terraform-docs` to append inputs and outputs.
-5. Ensure examples referenced in the README exist under `examples/` and are
-   covered by the testing workflow in `09-testing-and-ci.md`.
 
 ## Runtime Examples (Required Defaults)
 When an example needs runtime code and the user has not provided any, use the
@@ -186,10 +143,3 @@ guide unless explicitly requested:
 - S3: bucket policy baseline, public access blocks, and encryption defaults.
 - IAM Roles: trust policy baseline and least-privilege policy scoping
   guidance.
-
-## Related Guides
-- `09-testing-and-ci.md` for validating examples and integrating them into CI.
-- `03-module-structure-and-layout.md` for where examples and module READMEs live
-  in the repository.
-- `08-security-naming-and-tagging.md` for security, naming, and tagging
-  requirements that examples and docs must reflect.

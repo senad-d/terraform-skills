@@ -30,6 +30,11 @@ validation.
 For composition patterns and how interfaces are consumed at the root-module
 level, see `07-composition-and-patterns.md`.
 
+## Root-to-Child Contract
+- Root modules pass environment, account, region, and tagging context explicitly.
+- Child modules expose stable outputs that are safe to wire across stacks.
+- Avoid implicit dependencies; use inputs and outputs only.
+
 ## Variables and Inputs
 
 ### Required Fields for Variables
@@ -441,9 +446,12 @@ For semantic versioning policy, `moved` block patterns, and upgrade playbooks,
 see `06-sources-and-distribution.md`.
 
 ## Related Guides
-- `07-composition-and-patterns.md` for composition patterns and root module
-  design.
-- `05-providers-state-and-backends.md` for provider rules and state layout.
-- `06-sources-and-distribution.md` for refactor and upgrade guidance.
-- `08-security-naming-and-tagging.md` for security and secret-handling
-  requirements.
+
+- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
+- `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
+- `03-module-structure-and-layout.md` — required layout and structure.
+- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `06-sources-and-distribution.md` — versioning and upgrade guidance.
+- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
+- `08-security-naming-and-tagging.md` — security and tagging baseline.
+- `09-testing-and-ci.md` — validation workflow and CI gates.

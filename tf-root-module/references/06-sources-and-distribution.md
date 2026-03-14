@@ -51,6 +51,11 @@ module "consul" {
 A local path must begin with `./` or `../`. Absolute filesystem paths are
 treated as remote packages and are not recommended.
 
+## Internal Child Modules (Repository Default)
+- Root modules should source child modules in this repository using relative paths.
+- Prefer `./modules/<name>` for child modules under `modules/`.
+- Use registry or VCS sources only when the child module is intentionally external.
+
 ## Terraform Registry
 Registry sources are the preferred distribution mechanism for reusable modules.
 The standard format is `<NAMESPACE>/<NAME>/<PROVIDER>`.
@@ -73,67 +78,6 @@ module "consul" {
 
 Registry modules support version constraints and require appropriate
 credentials for private registries.
-
-## GitHub
-GitHub shorthand is supported:
-```hcl
-module "consul" {
-  source = "github.com/hashicorp/example"
-}
-```
-
-To use SSH:
-```hcl
-module "consul" {
-  source = "git@github.com:hashicorp/example.git"
-}
-```
-
-## Bitbucket
-Bitbucket shorthand is supported for public repositories:
-```hcl
-module "consul" {
-  source = "bitbucket.org/hashicorp/terraform-consul-aws"
-}
-```
-
-Terraform auto-detects Git vs Mercurial for Bitbucket repositories.
-
-## Generic Git Repository
-Use `git::` to specify any Git URL and `ref` to pin a revision:
-```hcl
-module "vpc" {
-  source = "git::https://example.com/vpc.git?ref=v1.2.0"
-}
-```
-
-`ref` may be a branch, tag, or commit SHA.
-
-## Generic Mercurial Repository
-Use `hg::` with `ref` to select revisions:
-```hcl
-module "vpc" {
-  source = "hg::http://example.com/vpc.hg?ref=v1.2.0"
-}
-```
-
-## S3 Bucket
-Use `s3::` with an S3 object URL:
-```hcl
-module "consul" {
-  source = "s3::https://s3-eu-west-1.amazonaws.com/examplecorp-terraform-modules/vpc.zip"
-}
-```
-
-Note: Buckets in `us-east-1` must use `s3.amazonaws.com` as the hostname.
-
-## GCS Bucket
-Use `gcs::` with a GCS object URL:
-```hcl
-module "consul" {
-  source = "gcs::https://www.googleapis.com/storage/v1/modules/foomodule.zip"
-}
-```
 
 ## Modules in Package Subdirectories
 If a module lives in a subdirectory of a package, use the `//` syntax:
@@ -309,7 +253,13 @@ moved {
 - Ensure validation and CI run against updated examples.
 
 ## Related Guides
-- `04-module-interfaces-and-arguments.md` for interface change implications.
-- `05-providers-state-and-backends.md` for state layout considerations.
-- `07-composition-and-patterns.md` for composition and wiring implications.
-- `08-security-naming-and-tagging.md` for security and tagging policy.
+
+- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
+- `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
+- `03-module-structure-and-layout.md` — required layout and structure.
+- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
+- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
+- `08-security-naming-and-tagging.md` — security and tagging baseline.
+- `09-testing-and-ci.md` — validation workflow and CI gates.
+- `10-examples.md` — examples and documentation expectations.

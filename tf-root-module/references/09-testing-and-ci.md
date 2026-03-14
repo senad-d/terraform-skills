@@ -28,7 +28,7 @@ Examples should:
 - Stay in sync with module interfaces and versioning.
 
 For how to design examples, organize directories, and generate READMEs, see
-`10-examples-and-docs-automation.md`.
+`10-examples.md`.
 
 ## Local Validation Workflow
 At minimum, local validation should include:
@@ -87,7 +87,7 @@ consistent across modules.
 
 ## Runtime-Specific Test Assets
 For certain resource types, examples may need minimal runtime code to validate
-wiring. Standard defaults live in `10-examples-and-docs-automation.md` and
+wiring. Standard defaults live in `10-examples.md` and
 should be reused instead of ad-hoc snippets.
 
 Examples include:
@@ -98,9 +98,13 @@ Examples include:
 Reusing these defaults keeps examples predictable and avoids security drift.
 
 ## Related Guides
-- `10-examples-and-docs-automation.md` for example design and documentation
-  automation.
-- `03-module-structure-and-layout.md` for where examples live in the
-  repository.
-- `08-security-naming-and-tagging.md` for security requirements and scan
-  expectations.
+
+- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
+- `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
+- `03-module-structure-and-layout.md` — required layout and structure.
+- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
+- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `06-sources-and-distribution.md` — versioning and upgrade guidance.
+- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
+- `08-security-naming-and-tagging.md` — security and tagging baseline.
+- `11-examples.md` — examples and documentation expectations.

@@ -27,14 +27,6 @@ rather than individual resource types.
 In Terraform, the `.tf` files in your working directory when you run 
 `terraform plan` or `terraform apply` together form the root module.
 
-In this repository, a root module:
-- Represents a concrete stack or environment 
-(for example, a production application deployment in a multiple account and regions).
-- Wires together multiple reusable child modules and any remaining glue resources.
-- Configures providers and backends for that stack 
-(see `05-providers-state-and-backends.md`).
-- Supplies environment, and account-specific values to child modules.
-- Exposes any outputs that other stacks or automation need.
 
 ### Root Modules (stack) vs Reusable Modules (child)
 Root modules:
@@ -54,15 +46,22 @@ repository, see `03-module-structure-and-layout.md`.
 ## When to create a root module
 Create a root module when you need a new, concrete stack that has its own lifecycle, ownership, or blast radius.
 
-Prefer reusing or extending an existing root module instead of creating a new one when:
-- The new requirement is a small variation on an existing stack that can be handled via additional variables, feature flags, or configuration files (for example, different instance sizes or capacity, but same topology).
-- Multiple stacks share the same structure and differ only by values; use variables and `*.tfvars` files rather than cloning the root module directory.
-- You only need to add or swap child modules within an existing stack without changing its lifecycle or ownership.
+- The stack has a distinct lifecycle, release cadence, or operational owner.
+- The blast radius or failure domain must be isolated from existing stacks.
+- The environment boundary is different (new account, region, or env tier).
+- Compliance or security posture differs (data residency, stricter controls).
+- The stack introduces a new shared platform capability with clear consumers.
+- Do not create a new root module if only inputs/outputs change; extend the
+  existing module instead.
 
-Avoid creating root modules that are thin wrappers around a single reusable child module unless:
-- The wrapper encodes important stack-level policy (for example, required tagging, logging, or monitoring) and will be the canonical entry point for consumers.
 
-Otherwise, consume the reusable module directly from the existing root modules.
+## Decision Flow (Root vs Extend)
+1. Does a root module already exist for this stack or capability?
+2. If yes, can the change be handled with new inputs/outputs or examples?
+3. Would extending it introduce breaking changes for current consumers?
+4. Is the lifecycle, ownership, or blast radius meaningfully different?
+5. Are account/region or compliance boundaries distinct from existing stacks?
+6. If most answers are yes, create a new root module; otherwise extend.
 
 ## High-Level Design Principles
 Well-designed modules share the following characteristics:
@@ -81,13 +80,12 @@ Well-designed modules share the following characteristics:
 Interface and variable standards that apply to root modules are defined in `04-module-interfaces-and-arguments.md`.
 
 ## Composition and Dependency Inversion
-Prefer a flat module tree and compose modules at the root module level. Keep
-dependencies explicit by passing required identifiers and values into modules rather
-than having modules create their own dependencies. This keeps modules flexible and
-easier to reuse in different combinations.
 
-For composition patterns, data-only modules, and root module responsibilities, see
-`07-composition-and-patterns.md`.
+- Root modules wire dependencies explicitly through inputs and outputs.
+- Prefer passing existing infrastructure in rather than recreating it.
+- Use data sources for external or AWS-managed dependencies.
+- Use `terraform_remote_state` for internal stacks in this repository.
+- Keep module graphs flat and avoid provider configuration in child modules.
 
 ## Interface Expectations
 - Use clear, typed inputs and outputs.
@@ -97,11 +95,12 @@ For composition patterns, data-only modules, and root module responsibilities, s
 Detailed interface, variable, and validation rules live in
 `04-module-interfaces-and-arguments.md`.
 
-## Development Best Practices
-- Prefer internal modules under `modules/` over re-implementing resources directly.
-- Use `locals` for repeated values to keep configurations consistent.
-- Review inputs and outputs before implementation to avoid later refactors.
-- Enable telemetry or logging features when available and appropriate.
+## Child Module Selection Workflow
+1. Search `modules/` for an existing capability before adding resources.
+2. Read each candidate module README to confirm scope and interface.
+3. Prefer internal modules; avoid raw resources unless no module exists.
+4. Validate required behavior with MCP docs when capabilities are unclear.
+5. If no module exists, document the gap and propose a new module name/scope.
 
 ## MCP Documentation Workflow (Required)
 When planning a new root module, use MCP documentation tools as the primary sources of
@@ -209,6 +208,10 @@ Failure modes:
 - Filesystem errors when creating the `Plan/` directory or writing the plan file.
 
 ## Where to go next
-- `03-module-structure-and-layout.md` for file layout and required files.
-- `04-module-interfaces-and-arguments.md` for input, output, and validation design.
-- `07-composition-and-patterns.md` for composition patterns and root module design.
+
+- `03-module-structure-and-layout.md`
+- `04-module-interfaces-and-arguments.md`
+- `07-composition-and-patterns.md`
+- `05-infrastructure-arhitecture-guidelines.md`
+- `09-testing-and-ci.md`
+- `10-examples.md`

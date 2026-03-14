@@ -29,6 +29,12 @@ served as a dedicated module. When a root module’s internal wiring becomes
 repetitive across stacks, extract a reusable module and keep the root focused on
 composition.
 
+## Infrastructure Architecture Flow
+- Start with network boundaries (VPC, subnets, routing) and attach security controls.
+- Choose compute and orchestration, then wire services through explicit inputs/outputs.
+- Place shared dependencies behind module interfaces and pass them in.
+- Add logging and monitoring wiring as first-class module outputs and inputs.
+
 ## Flat Composition
 Prefer a flat module tree with a single level of child modules. Compose modules
 in the root module by passing outputs from one module into inputs of another.
@@ -130,6 +136,12 @@ module "example" {
 
 This keeps the module declarative and makes it clear which environments create
 infrastructure and which reuse existing assets.
+
+## Child Module Wiring Checklist
+- Pass outputs from one child module directly into inputs of the next.
+- Avoid re-creating shared infrastructure in multiple child modules.
+- Keep module trees shallow and avoid nested child modules unless required.
+- Use data sources or `terraform_remote_state` for external dependencies.
 
 ## Assumptions and Guarantees
 Every module has assumptions and guarantees. Use validations or preconditions to
@@ -271,10 +283,13 @@ When a data-only module is designed to mirror the outputs of a managed module,
 you can swap between the two during refactors with minimal changes to callers.
 
 ## Related Guides
-- `04-module-interfaces-and-arguments.md` for input and output design
-  patterns.
-- `05-providers-state-and-backends.md` for provider and state layout rules.
-- `02-module-creation-and-fundamentals.md` for when composition justifies a new
-  module.
-- `08-security-naming-and-tagging.md` for security and tagging
-  considerations that apply to composed stacks.
+
+- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
+- `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
+- `03-module-structure-and-layout.md` — required layout and structure.
+- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
+- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `06-sources-and-distribution.md` — versioning and upgrade guidance.
+- `08-security-naming-and-tagging.md` — security and tagging baseline.
+- `09-testing-and-ci.md` — validation workflow and CI gates.
+- `10-examples.md` — examples and documentation expectations.

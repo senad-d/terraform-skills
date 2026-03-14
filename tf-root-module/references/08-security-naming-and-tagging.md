@@ -32,6 +32,22 @@ Provider and backend security (for example, S3 state bucket encryption and
 state access control) are covered in more detail in
 `05-providers-state-and-backends.md`.
 
+## Root Module Enforcement
+- Root modules must apply naming and tag standards to all child modules.
+- Root modules must default to private networking and encryption unless explicitly overridden.
+- Security exceptions require documentation in the plan and README.
+
+## Network Security Controls
+- Use security groups for instance and ENI traffic control; treat them as the primary control plane.
+- Use network ACLs for subnet-level guardrails and explicit deny rules where needed.
+- Prefer private subnets for workloads that do not require public ingress.
+- Enable VPC Flow Logs when network visibility is required.
+
+## Logging Baseline
+- Use CloudTrail for API activity auditing.
+- Use CloudWatch Logs for application and infrastructure log aggregation.
+- Define log retention and access controls explicitly.
+
 ## Naming and Tagging
 - Use the shared meta naming module (or equivalent shared metadata locals) to
   enforce consistent naming and tag merging.
@@ -94,3 +110,15 @@ DynamoDB lock table security), see `05-providers-state-and-backends.md`.
 
 For how security checks are integrated into CI workflows, see
 `09-testing-and-ci.md`.
+
+## Related Guides
+
+- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
+- `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
+- `03-module-structure-and-layout.md` — required layout and structure.
+- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
+- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `06-sources-and-distribution.md` — versioning and upgrade guidance.
+- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
+- `09-testing-and-ci.md` — validation workflow and CI gates.
+- `10-examples.md` — examples and documentation expectations.

@@ -12,6 +12,9 @@ Module authors, reviewers, and tooling maintainers.
 ## Purpose
 This guide is the entry point for the root module documentation set. It explains how to navigate the guides, outlines the root module lifecycle, and calls out which documents are authoritative for each topic.
 
+## Scope
+Root modules in this repository compose reusable child modules from `modules/` into concrete stacks. They own provider and backend configuration and expose stable outputs for downstream stacks.
+
 ## Core Principles
 - Use modules to create reusable, higher-level abstractions rather than thin wrappers around single resources.
 - Keep module hierarchies shallow and compose modules at the root module level.
@@ -19,6 +22,19 @@ This guide is the entry point for the root module documentation set. It explains
 - Pin Terraform and provider versions to stable constraints.
 - Prefer discoverable, repeatable patterns already used in this repository.
 - For external or AWS-managed resources, use data sources; for internal stacks, use `terraform_remote_state`.
+
+## Architecture Focus
+
+- Decide in order: account/environment boundaries, network topology, data
+  ownership/state, compute placement, observability, then DR.
+- Root modules own providers and backends and make dependencies explicit through
+  inputs/outputs.
+- Prefer a flat module graph and internal modules before adding new resources or
+  thin wrappers.
+- Use data sources for external/AWS-managed services; use `terraform_remote_state`
+  for internal stacks.
+- Treat security and cost as first-class inputs to the architecture, not
+  afterthoughts.
 
 ## Module Lifecycle
 1. Idea and justification
@@ -34,14 +50,16 @@ Lifecycle automation touchpoints:
 - Validation: `scripts/test.sh`
 
 ## Production Readiness Checklist
-- Module purpose and abstraction are clear and not a thin wrapper (`02-module-creation-and-fundamentals.md`).
-- Standard layout and required files exist (`03-module-structure-and-layout.md`).
-- Inputs, outputs, types, variables, and validation are well defined (`04-module-interfaces-and-arguments.md`).
-- Provider requirements and state/backends follow repo conventions (`05-providers-state-and-backends.md`).
-- Security baseline, naming, and tagging are enforced (`08-security-naming-and-tagging.md`).
-- Examples are complete and generated (`10-examples.md`).
-- Local validation and CI gates pass (`09-testing-and-ci.md`).
-- Distribution, versioning, and upgrade guidance is documented (`06-sources-and-distribution.md`).
+
+- [ ] Plan completed with MCP documentation references and approved scope.
+- [ ] Providers and backends configured with secure, versioned remote state.
+- [ ] Network segmentation defined with private-by-default posture.
+- [ ] IAM follows least privilege; secrets stored in Secrets Manager or SSM.
+- [ ] Observability wired: CloudTrail, CloudWatch metrics/logs, and alarms.
+- [ ] Examples created and validated with `scripts/test.sh`.
+- [ ] CI gates pass (`terraform fmt`, `terraform validate`, `tfsec`, `tflint`).
+- [ ] Naming and tagging applied via shared meta conventions.
+- [ ] Versioning and upgrade notes recorded for breaking changes.
 
 ## Module Review Checklist
 - Scope and non-goals are explicit; no hidden behavior or implicit dependencies.
@@ -63,36 +81,16 @@ Lifecycle automation touchpoints:
 
 ## Documentation Map
 
-### Decide and Design
-- `02-module-creation-and-fundamentals.md`: Module fundamentals and design principles (when and why to create a module, what belongs in a module vs a root module).
-- `07-composition-and-patterns.md`: Composition patterns and root module design (canonical guide for how modules are combined).
-
-### Implement
-- `03-module-structure-and-layout.md`: Module structure and repository layout (root module files, nested modules, and examples directory structure).
-- `04-module-interfaces-and-arguments.md`: Module interfaces, variables, and validation (canonical guide for inputs, outputs, types, and validation rules).
-- `05-providers-state-and-backends.md`: Providers, state, backends, and environments (canonical guide for provider configuration and remote state layout).
-- `08-security-naming-and-tagging.md`: Security, naming, and tagging guidelines (canonical security and tagging guide).
-- `10-examples-and-docs-automation.md`: Examples, documentation, and user-facing docs (canonical guide for examples and documentation workflow).
-
-### Publish and Evolve
-- `06-sources-and-distribution.md`: Module distribution, versioning, and upgrades (canonical guide for source selection, versioning policy, and upgrade playbooks).
-- Supporting references:
-  - `05-providers-state-and-backends.md` for backend and environment layouts.
-  - `07-composition-and-patterns.md` for composition implications.
-  - `08-security-naming-and-tagging.md` for security and tagging impact.
-
-### Test and Operate
-- `09-testing-and-ci.md`: Testing, examples, and CI automation (canonical testing and CI guide).
-- `10-examples-and-docs-automation.md`: Examples as documentation and test assets; documentation generation workflow.
-
-### Topic Canonical Guides
-- Interfaces, variables, and validation → `04-module-interfaces-and-arguments.md`.
-- Providers, state, backends, and environments → `05-providers-state-and-backends.md`.
-- Composition and root module design → `07-composition-and-patterns.md`.
-- Security, naming, and tagging → `08-security-naming-and-tagging.md`.
-- Distribution, versioning, and upgrades → `06-sources-and-distribution.md`.
-- Testing and CI → `09-testing-and-ci.md`.
-- Examples and documentation → `10-examples-and-docs-automation.md`.
+- `02-module-creation-and-fundamentals.md` — when and why to create root modules.
+- `03-module-structure-and-layout.md` — required layout and structure.
+- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
+- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline and
+  security/network/compute/observability/DR/cost expectations.
+- `06-sources-and-distribution.md` — sources, versioning, upgrades.
+- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
+- `08-security-naming-and-tagging.md` — security baseline, naming, and tags.
+- `09-testing-and-ci.md` — validation workflow and CI gates.
+- `10-examples.md` — examples and documentation expectations.
 
 ## Sources of Truth
 As each new guide is filled, it becomes the authoritative source for that topic and the corresponding legacy sections will be replaced with pointers.

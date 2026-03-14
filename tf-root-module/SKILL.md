@@ -1,11 +1,11 @@
 ---
 name: tf-root-module
-description: TODO
+description: Standards and workflow for planning, composing, validating, and documenting Terraform root modules that integrate child modules with secure defaults.
 ---
 
 # Terraform Root module Generator
 
-- TODO
+- Provides a repeatable root-module workflow with enterprise-grade guardrails for planning, composition, and validation.
 
 ## Skill path (set once)
 
@@ -113,11 +113,21 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## Best-Practice Expectations
 
-- TODO
+- Define scope, non-goals, and service ownership before scaffolding.
+- Compose from existing `modules/` and keep module hierarchies shallow.
+- Root modules configure providers/backends; child modules only declare `required_providers`.
+- Use typed variables, validation blocks, and `nullable = false` unless `null` is intentional.
+- Favor least privilege, private networking, and encryption at rest/in transit by default.
+- Provide examples under `examples/` and validate them with fmt, validate, lint, and security scans.
+- Use semantic versioning and `moved` blocks for refactors; document breaking changes.
 
 ## Security & Configuration Notes
 
-- TODO
+- Remote state must use S3 with DynamoDB locking, SSE-KMS, versioning, and restricted access.
+- Use consistent naming and tag merging via the meta module and `owner-environment-basename` convention.
+- Prefer short-lived credentials and `assume_role` for cross-account access.
+- Mark sensitive outputs with `sensitive = true` and avoid secrets in variables/outputs when possible.
+- Document security exceptions with scope, justification, and compensating controls.
 
 ## Coding Style & Naming Conventions
 - Module directories use kebab-case (e.g., `iam-role-github-oidc`).
@@ -129,7 +139,16 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 Always read all references when planing.
 
-- TODO
+- `01-overview-and-lifecycle.md` — lifecycle, readiness checklist, and documentation map.
+- `02-module-creation-and-fundamentals.md` — root module definition and design principles.
+- `03-module-structure-and-layout.md` — required files, layout, and examples structure.
+- `04-module-interfaces-and-arguments.md` — input/output standards and validation.
+- `05-providers-state-and-backends.md` — provider rules, state layout, and backend policy.
+- `06-sources-and-distribution.md` — source selection, versioning, and upgrades.
+- `07-composition-and-patterns.md` — composition patterns and root module responsibilities.
+- `08-security-naming-and-tagging.md` — security baseline and naming/tagging rules.
+- `09-testing-and-ci.md` — testing workflow and CI expectations.
+- `10-examples.md` — example design and documentation automation.
 
 ## DO NOT DO
 - DO NOT RUN `terraform appy` at any point!
