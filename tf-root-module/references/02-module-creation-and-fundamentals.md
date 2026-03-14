@@ -10,25 +10,24 @@ description: >-
 # Root Module Fundamentals and Design Principles
 
 ## Audience
-Engineers creating or evolving Terraform root modules that compose existing 
+Engineers creating or evolving Terraform root modules that compose existing
 standardized child modules into concrete stacks or environments.
 
 ## Purpose
-Explain what root modules are in this repository, when a new root module is 
-warranted versus reusing or extending an existing one, how root modules relate 
-to reusable child modules, and which other guides provide detailed layout, 
+Explain what root modules are in this repository, when a new root module is
+warranted versus reusing or extending an existing one, how root modules relate
+to reusable child modules, and which other guides provide detailed layout,
 interface, composition, and testing rules.
 
-## What is a root module
-A Terraform module is a container for multiple resources that are used together. 
-Modules allow you to describe infrastructure in terms of architecture-level concepts 
-rather than individual resource types.
+## What Is a Root Module
+A Terraform module is a container for multiple resources used together. Modules
+let you describe infrastructure in terms of architecture-level concepts rather
+than individual resource types.
 
-In Terraform, the `.tf` files in your working directory when you run 
+In Terraform, the `.tf` files in your working directory when you run
 `terraform plan` or `terraform apply` together form the root module.
 
-
-### Root Modules (stack) vs Reusable Modules (child)
+### Root Modules (Stack) vs Reusable Modules (Child)
 Root modules:
 - Represent a concrete stack or environment.
 - Wire together multiple child modules and any remaining resources.
@@ -40,11 +39,12 @@ Reusable modules:
 - Expose a stable interface via variables and outputs.
 - Avoid hard-coded environment-specific values.
 
-For file layout and where root modules, nested modules, and examples live in this
-repository, see `03-module-structure-and-layout.md`.
+For file layout and where root modules, nested modules, and examples live in
+this repository, see `03-module-structure-and-layout.md`.
 
-## When to create a root module
-Create a root module when you need a new, concrete stack that has its own lifecycle, ownership, or blast radius.
+## When to Create a Root Module
+Create a root module when you need a new, concrete stack that has its own
+lifecycle, ownership, or blast radius.
 
 - The stack has a distinct lifecycle, release cadence, or operational owner.
 - The blast radius or failure domain must be isolated from existing stacks.
@@ -53,7 +53,6 @@ Create a root module when you need a new, concrete stack that has its own lifecy
 - The stack introduces a new shared platform capability with clear consumers.
 - Do not create a new root module if only inputs/outputs change; extend the
   existing module instead.
-
 
 ## Decision Flow (Root vs Extend)
 1. Does a root module already exist for this stack or capability?
@@ -66,33 +65,18 @@ Create a root module when you need a new, concrete stack that has its own lifecy
 ## High-Level Design Principles
 Well-designed modules share the following characteristics:
 
-- **Cohesive scope** – each module owns a clear capability and does not mix unrelated
-  concerns.
-- **Stable interface** – variable names, types, and outputs change rarely and are
+- **Cohesive scope**: each module owns a clear capability and does not mix
+  unrelated concerns.
+- **Stable interface**: variable names, types, and outputs change rarely and are
   documented before implementation.
-- **Environment-agnostic** – modules avoid hard-coded account IDs, regions, or
+- **Environment-agnostic**: modules avoid hard-coded account IDs, regions, or
   environment names and instead accept them as inputs when needed.
-- **Secure by default** – defaults favor least privilege, encryption at rest and in
-  transit, and no public exposure.
-- **Composable** – modules can be combined at the root module level without hidden
-  dependencies or provider configuration inside the module.
+- **Secure by default**: defaults favor least privilege, encryption at rest and
+  in transit, and no public exposure.
+- **Composable**: modules can be combined at the root module level without
+  hidden dependencies or provider configuration inside the module.
 
-Interface and variable standards that apply to root modules are defined in `04-module-interfaces-and-arguments.md`.
-
-## Composition and Dependency Inversion
-
-- Root modules wire dependencies explicitly through inputs and outputs.
-- Prefer passing existing infrastructure in rather than recreating it.
-- Use data sources for external or AWS-managed dependencies.
-- Use `terraform_remote_state` for internal stacks in this repository.
-- Keep module graphs flat and avoid provider configuration in child modules.
-
-## Interface Expectations
-- Use clear, typed inputs and outputs.
-- Avoid hard-coded values; prefer variables with sensible defaults.
-- Expose reusable values via outputs; mark sensitive outputs appropriately.
-
-Detailed interface, variable, and validation rules live in
+Interface and variable standards are defined in
 `04-module-interfaces-and-arguments.md`.
 
 ## Child Module Selection Workflow
@@ -102,13 +86,19 @@ Detailed interface, variable, and validation rules live in
 4. Validate required behavior with MCP docs when capabilities are unclear.
 5. If no module exists, document the gap and propose a new module name/scope.
 
+## Org Guardrails Apply (Always)
+Root modules must follow the organization architecture and security guardrails:
+- Architecture baseline: `05-infrastructure-architecture-guidelines.md`
+- Security, naming, tagging: `08-security-naming-and-tagging.md`
+
 ## MCP Documentation Workflow (Required)
-When planning a new root module, use MCP documentation tools as the primary sources of
-truth. This avoids stale assumptions and keeps module behavior aligned with provider
-and service capabilities.
+When planning a new root module, use MCP documentation tools as the primary
+sources of truth. This avoids stale assumptions and keeps module behavior
+aligned with provider and service capabilities.
 
 ### AWS Documentation Tools
-Use the AWS documentation MCP server for service behavior, limits, and best practices.
+Use the AWS documentation MCP server for service behavior, limits, and best
+practices.
 
 Available tools:
 - `mcp__aws-knowledge-mcp-server__aws___search_documentation`
@@ -132,8 +122,8 @@ Example search phrases:
 ```
 
 ### Terraform Documentation Tools
-Use the Terraform MCP server to confirm provider resources, arguments, and schema
-details.
+Use the Terraform MCP server to confirm provider resources, arguments, and
+schema details.
 
 Available tools:
 - `mcp__terraform-mcp-server__SearchAwsProviderDocs`
@@ -146,8 +136,8 @@ Recommended usage:
    examples for the AWS provider.
 2. Use `SearchAwsccProviderDocs` when working with AWS Cloud Control (AWSCC)
    resources.
-3. Use `SearchUserProvidedModule` to review upstream modules before re-implementing
-   similar functionality.
+3. Use `SearchUserProvidedModule` to review upstream modules before re-
+   implementing similar functionality.
 4. Use `SearchSpecificAwsIaModules` when exploring AWS-IA reference modules for
    patterns and defaults.
 
@@ -167,7 +157,8 @@ module_url = "terraform-aws-modules/vpc/aws"
 ## Planning Requirements (Production Modules)
 Before implementing a new root module, document the following in a short plan:
 - Module goal, scope boundaries, and non-goals.
-- Primary AWS services, child modules, and Terraform resources involved (validated via MCP docs).
+- Primary AWS services, child modules, and Terraform resources involved
+  (validated via MCP docs).
 - Expected inputs and outputs, including sensitive fields.
 - Security defaults and any required exceptions.
 - Example scenario(s) and supporting modules required.
@@ -184,34 +175,29 @@ Canonical invocation:
 Inputs:
 - `-m|--module`: Module name (required). Use kebab-case. Used to derive the plan
   filename and populate placeholders.
-- `-g|--goal`: Short, human-readable goal for the module (optional but recommended).
-  Included in the Summary section of the plan.
+- `-g|--goal`: Short, human-readable goal for the module (optional but
+  recommended). Included in the Summary section of the plan.
 
 Outputs:
-- Creates a `Plan/` directory in the repository root if it does not already exist.
-- Generates `Plan/<YYYYMMDD>-<module_slug>.md`, where `module_slug` is a sanitized
-  form of `<module_name>`.
-- Populates the file with a structured template that includes:
-  - Summary section with module and goal checkboxes.
-  - Investigation Notes for AWS and Terraform documentation, and any upstream
-    modules.
-  - Interface Contract tables for inputs and outputs.
-  - Security Defaults and Exceptions checklist.
-  - Implementation Plan checklist (scaffolding, examples, docs, validation).
-  - Example usage notes.
-  - Validation, Cleanup, Documentation, Risks/Rollback, and Investigation
-    information sections.
+- Creates a `Plan/` directory in the repository root if it does not already
+  exist.
+- Generates `Plan/<YYYYMMDD>-<module_slug>.md`, where `module_slug` is a
+  sanitized form of `<module_name>`.
+- Populates the file with a structured template.
 
 Failure modes:
 - Missing `-m|--module` value.
 - Unknown or malformed flags.
-- Filesystem errors when creating the `Plan/` directory or writing the plan file.
+- Filesystem errors when creating the `Plan/` directory or writing the plan
+  file.
 
-## Where to go next
-
-- `03-module-structure-and-layout.md`
-- `04-module-interfaces-and-arguments.md`
-- `07-composition-and-patterns.md`
-- `05-infrastructure-arhitecture-guidelines.md`
-- `09-testing-and-ci.md`
-- `10-examples.md`
+## Related Guides
+- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
+- `03-module-structure-and-layout.md` — required layout and structure.
+- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
+- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
+- `06-sources-and-distribution.md` — versioning and upgrade guidance.
+- `07-composition-and-patterns.md` — composition patterns and dependency wiring.
+- `08-security-naming-and-tagging.md` — security and tagging baseline.
+- `09-testing-and-ci.md` — validation workflow and CI gates.
+- `10-examples.md` — examples and documentation expectations.

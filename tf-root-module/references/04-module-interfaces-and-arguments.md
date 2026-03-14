@@ -9,7 +9,8 @@ description: >-
 # Module Interfaces, Variables, and Validation
 
 ## Audience
-Engineers designing inputs, outputs, variables, and calling patterns for modules.
+Engineers designing inputs, outputs, variables, and calling patterns for
+modules.
 
 ## Purpose
 Define best practices for variables, validation, outputs, meta-arguments
@@ -96,8 +97,8 @@ variable "subnet_config" {
 ```
 
 ### Sensitive Inputs
-If a variable may contain secrets (for example, passwords, tokens, or
-connection strings):
+If a variable may contain secrets (for example, passwords, tokens, or connection
+strings):
 - Treat it as sensitive in documentation and examples.
 - Avoid writing values to logs or outputs.
 - Ensure any related outputs are marked `sensitive = true`.
@@ -335,9 +336,9 @@ module "app" {
 }
 ```
 
-## Dynamic Blocks and Conditional Sections (Interface-Focused)
+## Dynamic Blocks and Conditional Sections
 Dynamic blocks let you generate nested configuration blocks from variable
-structures. They are tightly coupled to variable design and defaults.
+structures.
 
 ### When to Use Dynamic Blocks
 Use `dynamic` blocks when a resource supports nested blocks that are:
@@ -446,11 +447,10 @@ For semantic versioning policy, `moved` block patterns, and upgrade playbooks,
 see `06-sources-and-distribution.md`.
 
 ## Related Guides
-
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
 - `03-module-structure-and-layout.md` — required layout and structure.
-- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
 - `06-sources-and-distribution.md` — versioning and upgrade guidance.
 - `07-composition-and-patterns.md` — composition patterns and dependency inversion.
 - `08-security-naming-and-tagging.md` — security and tagging baseline.

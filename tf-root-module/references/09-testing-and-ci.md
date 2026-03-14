@@ -2,8 +2,8 @@
 page_title: Testing, Examples, and CI Automation
 description: >-
   Canonical guide for validating modules locally, using examples as test
-  inputs, running the test-module script, and defining required tests and
-  checks in CI.
+  inputs, running the test script, and defining required tests and checks
+  in CI.
 ---
 
 # Testing, Examples, and CI Automation
@@ -17,15 +17,9 @@ validation workflow, and CI gates for modules and examples.
 
 ## Role of Examples in Testing
 Examples under `examples/` serve two purposes:
-- **Documentation** – they show realistic, secure usage of a module.
-- **Test assets** – they provide concrete configurations that can be validated
+- **Documentation** — they show realistic, secure usage of a module.
+- **Test assets** — they provide concrete configurations that can be validated
   locally and in CI.
-
-Examples should:
-- Cover common and security-sensitive scenarios.
-- Use repository-standard patterns for providers, backends, and security
-  defaults.
-- Stay in sync with module interfaces and versioning.
 
 For how to design examples, organize directories, and generate READMEs, see
 `10-examples.md`.
@@ -56,15 +50,15 @@ Typical CI steps:
 - Linting (`tflint`).
 - Optional `terraform plan` on selected examples for additional safety.
 
-Security scan coverage and tagging conventions are defined in
+Security baseline and tagging conventions are defined in
 `08-security-naming-and-tagging.md`.
 
-## Script Usage: `test-module.sh`
+## Script Usage: `test.sh`
 Use the test script to validate module examples consistently.
 
 Canonical invocation:
 ```bash
-./scripts/test-module.sh -m <module_name> [-t <example_type> ...] [--plan <true|false>]
+./scripts/test.sh -m <module_name> [-t <example_type> ...] [-p <true|false>]
 ```
 
 Inputs:
@@ -87,8 +81,8 @@ consistent across modules.
 
 ## Runtime-Specific Test Assets
 For certain resource types, examples may need minimal runtime code to validate
-wiring. Standard defaults live in `10-examples.md` and
-should be reused instead of ad-hoc snippets.
+wiring. Standard defaults live in `10-examples.md` and should be reused instead
+of ad-hoc snippets.
 
 Examples include:
 - Lambda functions (Node.js handler).
@@ -98,13 +92,12 @@ Examples include:
 Reusing these defaults keeps examples predictable and avoids security drift.
 
 ## Related Guides
-
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
 - `03-module-structure-and-layout.md` — required layout and structure.
 - `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
-- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
 - `06-sources-and-distribution.md` — versioning and upgrade guidance.
-- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
+- `07-composition-and-patterns.md` — composition patterns and dependency wiring.
 - `08-security-naming-and-tagging.md` — security and tagging baseline.
-- `11-examples.md` — examples and documentation expectations.
+- `10-examples.md` — examples and documentation expectations.

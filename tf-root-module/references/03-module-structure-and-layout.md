@@ -11,25 +11,26 @@ description: >-
 Module implementers and reviewers.
 
 ## Purpose
-Define the canonical filesystem layout for module repositories and internal module
-directories in this repo, including root modules, nested modules, examples, and
-supporting scaffolding.
+Define the canonical filesystem layout for module repositories and internal
+module directories in this repo, including root modules, nested modules,
+examples, and supporting scaffolding.
 
 ## Standard Layout
-The standard module structure is a file and directory layout recommended for reusable
-modules. Terraform tooling expects this structure for documentation and module
-indexing. The only required element is the root module; everything else is optional
-but strongly recommended.
+The standard module structure is a file and directory layout recommended for
+reusable modules. Terraform tooling expects this structure for documentation and
+module indexing. The only required element is the root module; everything else
+is optional but strongly recommended.
 
 ### Root Module (Required)
-Terraform files must exist in the root directory of the module. This root module is
-the primary entry point and should be opinionated about defaults and behavior.
+Terraform files must exist in the root directory of the module. This root module
+is the primary entry point and should be opinionated about defaults and
+behavior.
 
 A typical root module contains at least:
-- `main.tf` – primary entry point; child module calls belong here.
-- `variables.tf` – variable definitions and validation.
-- `outputs.tf` – outputs exposed to callers.
-- `versions.tf` – Terraform and provider version requirements (`terraform` and
+- `main.tf` — primary entry point; child module calls belong here.
+- `variables.tf` — variable definitions and validation.
+- `outputs.tf` — outputs exposed to callers.
+- `versions.tf` — Terraform and provider version requirements (`terraform` and
   `required_providers` blocks).
 
 For detailed interface and variable standards, see
@@ -42,7 +43,8 @@ naming, types, defaults, and validation.
 
 ## Child Modules
 - Child modules live under `modules/`.
-- Any child module with a `README.md` is considered usable by external consumers.
+- Any child module with a `README.md` is considered usable by external
+  consumers.
 - If the root module calls child modules, use relative paths like
   `./modules/<name>` so Terraform treats them as part of the same package.
 - Keep module hierarchies shallow and prefer composition over deep nesting.
@@ -86,44 +88,20 @@ Complete structure:
 ## Supporting Directories
 
 ### `Plan/`
-Planning documents for new or significantly changed modules live under `Plan/` in the
-repository root. Use `scripts/create-plan.sh` to scaffold plans. For planning
+Planning documents for new or significantly changed modules live under `Plan/`
+in the repository root. Use `scripts/plan.sh` to scaffold plans. For planning
 requirements and workflow, see `02-module-creation-and-fundamentals.md`.
 
-## Script Overview (Scaffolding and Validation)
-This repository provides helper scripts for consistent scaffolding, documentation,
-examples, and testing. Detailed usage lives in specialized guides; this section
-summarizes where they fit into the structure.
-
-### `root-module.sh`
-- Scaffolds root module files (`main.tf`, `variables.tf`, `outputs.tf`,
-  `versions.tf`, and `README.md` when present).
-- Creates standard module directories and optional example skeletons under
-  `examples/` when requested.
-- Enforces kebab-case module naming and the repository layout conventions.
-- Keeps provider and backend ownership in the root module (no provider blocks in
-  child modules).
-- Inserts TODO placeholders to guide initial implementation.
-
-For when and why to introduce a new module, see
-`02-module-creation-and-fundamentals.md`.
-
-### `test-module.sh`
-Purpose: run a consistent validation workflow against module examples.
-
-- Runs `terraform fmt -recursive` across module and example files.
-- Runs `terraform init -backend=false` and `terraform validate` per example.
-- Runs `tfsec` and `tflint` when installed; skips with warnings if missing.
-- Supports selecting example type(s) and optional `terraform plan`.
-- Intended for local validation and CI parity.
-
-For detailed testing workflow, CI gates, and failure criteria, see
-`09-testing-and-ci.md`.
+## Script Usage
+Script details are centralized in
+`01-overview-and-lifecycle.md` under **Automation Scripts**. This guide only
+references where scripts fit in the layout.
 
 ## Related Guides
-
-- `02-module-creation-and-fundamentals.md`
-- `04-module-interfaces-and-arguments.md`
-- `07-composition-and-patterns.md`
-- `09-testing-and-ci.md`
-- `10-examples.md`
+- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
+- `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
+- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
+- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
+- `07-composition-and-patterns.md` — composition patterns and dependency wiring.
+- `09-testing-and-ci.md` — validation workflow and CI gates.
+- `10-examples.md` — examples and documentation expectations.

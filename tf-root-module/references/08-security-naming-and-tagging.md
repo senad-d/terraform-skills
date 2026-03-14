@@ -17,7 +17,8 @@ metadata patterns in a single place. Other guides (for example providers/state,
 interfaces, and testing) refer here for security, naming, and tagging policy.
 
 ## Security Baseline
-- Pin Terraform and provider versions to stable constraints and update regularly.
+- Pin Terraform and provider versions to stable constraints and update
+  regularly.
 - Store secrets in AWS Secrets Manager or SSM Parameter Store.
 - Avoid passing secret values through variables or outputs where possible; when
   required, mark outputs with `sensitive = true`.
@@ -26,20 +27,22 @@ interfaces, and testing) refer here for security, naming, and tagging policy.
 - Prefer private subnets; use public subnets only for internet-facing endpoints
   (for example, ALB or NAT).
 - Encrypt data at rest and in transit (S3, EBS, RDS, TLS everywhere).
-- Run security scans (tfsec, tflint, checkov, trivy) as part of CI.
 
 Provider and backend security (for example, S3 state bucket encryption and
 state access control) are covered in more detail in
-`05-providers-state-and-backends.md`.
+`05-infrastructure-architecture-guidelines.md`.
 
 ## Root Module Enforcement
 - Root modules must apply naming and tag standards to all child modules.
-- Root modules must default to private networking and encryption unless explicitly overridden.
+- Root modules must default to private networking and encryption unless
+  explicitly overridden.
 - Security exceptions require documentation in the plan and README.
 
 ## Network Security Controls
-- Use security groups for instance and ENI traffic control; treat them as the primary control plane.
-- Use network ACLs for subnet-level guardrails and explicit deny rules where needed.
+- Use security groups for instance and ENI traffic control; treat them as the
+  primary control plane.
+- Use network ACLs for subnet-level guardrails and explicit deny rules where
+  needed.
 - Prefer private subnets for workloads that do not require public ingress.
 - Enable VPC Flow Logs when network visibility is required.
 
@@ -102,23 +105,17 @@ Use this checklist when designing or reviewing modules:
       `owner-environment-basename` convention.
 - [ ] Tags are accepted as inputs, merged with shared metadata tags, and
       consistently applied to created resources.
-- [ ] Security scans (tfsec, tflint, checkov, trivy as applicable) are included
-      in CI for the module’s examples.
-
-For provider and backend-specific requirements (for example, S3 state bucket and
-DynamoDB lock table security), see `05-providers-state-and-backends.md`.
 
 For how security checks are integrated into CI workflows, see
 `09-testing-and-ci.md`.
 
 ## Related Guides
-
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
 - `03-module-structure-and-layout.md` — required layout and structure.
 - `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
-- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
 - `06-sources-and-distribution.md` — versioning and upgrade guidance.
-- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
+- `07-composition-and-patterns.md` — composition patterns and dependency wiring.
 - `09-testing-and-ci.md` — validation workflow and CI gates.
 - `10-examples.md` — examples and documentation expectations.

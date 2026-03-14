@@ -49,12 +49,14 @@ module "consul" {
 ```
 
 A local path must begin with `./` or `../`. Absolute filesystem paths are
-treated as remote packages and are not recommended.
+ treated as remote packages and are not recommended.
 
 ## Internal Child Modules (Repository Default)
-- Root modules should source child modules in this repository using relative paths.
+- Root modules should source child modules in this repository using relative
+  paths.
 - Prefer `./modules/<name>` for child modules under `modules/`.
-- Use registry or VCS sources only when the child module is intentionally external.
+- Use registry or VCS sources only when the child module is intentionally
+  external.
 
 ## Terraform Registry
 Registry sources are the preferred distribution mechanism for reusable modules.
@@ -253,13 +255,12 @@ moved {
 - Ensure validation and CI run against updated examples.
 
 ## Related Guides
-
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
 - `03-module-structure-and-layout.md` — required layout and structure.
 - `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
-- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
-- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
+- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
+- `07-composition-and-patterns.md` — composition patterns and dependency wiring.
 - `08-security-naming-and-tagging.md` — security and tagging baseline.
 - `09-testing-and-ci.md` — validation workflow and CI gates.
 - `10-examples.md` — examples and documentation expectations.

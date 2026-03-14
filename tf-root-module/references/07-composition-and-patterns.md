@@ -19,7 +19,7 @@ root module responsibilities from a consumer perspective.
 ## Root Module Responsibilities
 Root modules represent concrete stacks or environments. They are responsible for:
 - Configuring providers and backends (see
-  `05-providers-state-and-backends.md`).
+  `05-infrastructure-architecture-guidelines.md`).
 - Composing reusable modules into a coherent topology.
 - Supplying environment- and account-specific values to child modules.
 - Wiring data-only modules and remote state to share information between stacks.
@@ -30,8 +30,10 @@ repetitive across stacks, extract a reusable module and keep the root focused on
 composition.
 
 ## Infrastructure Architecture Flow
-- Start with network boundaries (VPC, subnets, routing) and attach security controls.
-- Choose compute and orchestration, then wire services through explicit inputs/outputs.
+- Start with network boundaries (VPC, subnets, routing) and attach security
+  controls.
+- Choose compute and orchestration, then wire services through explicit
+  inputs/outputs.
 - Place shared dependencies behind module interfaces and pass them in.
 - Add logging and monitoring wiring as first-class module outputs and inputs.
 
@@ -143,112 +145,6 @@ infrastructure and which reuse existing assets.
 - Keep module trees shallow and avoid nested child modules unless required.
 - Use data sources or `terraform_remote_state` for external dependencies.
 
-## Assumptions and Guarantees
-Every module has assumptions and guarantees. Use validations or preconditions to
-document and enforce them so consumers understand expectations and failures
-earlier.
-
-Definitions:
-- Assumption: A condition that must be true for the module to operate correctly.
-- Guarantee: A behavior or characteristic the module ensures for its consumers.
-
-Example:
-```hcl
-output "api_base_url" {
-  value = "https://${aws_instance.example.private_dns}:8433/"
-
-  precondition {
-    condition     = data.aws_ebs_volume.example.encrypted
-    error_message = "The server's root volume is not encrypted."
-  }
-}
-```
-
-Interface-level validation and output design guidelines are covered in
-`04-module-interfaces-and-arguments.md`.
-
-## Multi-Cloud Abstractions
-Terraform does not abstract across providers, but you can build lightweight
-multi-cloud abstractions by defining common object types and module interfaces
-that map to different providers.
-
-Example:
-```hcl
-variable "recordsets" {
-  type = list(object({
-    name    = string
-    type    = string
-    ttl     = number
-    records = list(string)
-  }))
-}
-```
-
-You can then implement provider-specific modules that accept the same
-`recordsets` input, allowing you to swap the underlying provider implementation
-with minimal change to higher-level modules.
-
-Example pattern:
-```hcl
-module "dns_records" {
-  source = "./modules/route53-dns-records"
-  recordsets = local.recordsets
-}
-```
-
-If you later switch providers, implement a new module with the same input shape
-and update only the module source.
-
-### Example: DNS Recordsets Composition
-```hcl
-locals {
-  fixed_recordsets = [
-    {
-      name = "www"
-      type = "CNAME"
-      ttl  = 3600
-      records = [
-        "webserver01",
-        "webserver02",
-        "webserver03",
-      ]
-    },
-  ]
-  server_recordsets = [
-    for i, addr in module.webserver.public_ip_addrs : {
-      name    = format("webserver%02d", i)
-      type    = "A"
-      records = [addr]
-    }
-  ]
-  recordsets = concat(local.fixed_recordsets, local.server_recordsets)
-}
-
-module "dns_records" {
-  source       = "./modules/route53-dns-records"
-  recordsets   = local.recordsets
-  route53_zone_id = var.route53_zone_id
-}
-```
-
-This pattern keeps DNS logic stable while allowing the DNS provider
-implementation to change.
-
-### Example: Interchangeable Kubernetes Modules
-```hcl
-module "k8s_cluster" {
-  source = "./modules/azurerm-k8s-cluster"
-}
-
-module "monitoring_tools" {
-  source           = "./modules/monitoring_tools"
-  cluster_hostname = module.k8s_cluster.hostname
-}
-```
-
-If you implement a different cluster module that exposes the same `hostname`
-output, the monitoring module can remain unchanged.
-
 ## Data-Only Modules
 Data-only modules retrieve information about existing infrastructure without
 creating resources. Use them when they raise the level of abstraction by
@@ -269,8 +165,7 @@ module "k8s_cluster" {
 
 Data-only modules may use provider data sources or `terraform_remote_state` to
 retrieve shared information. Prefer `terraform_remote_state` for wiring internal
-stacks in this repo and data sources for external or AWS-managed resources. See
-`05-providers-state-and-backends.md` for remote state conventions.
+stacks in this repo and data sources for external or AWS-managed resources.
 
 Common retrieval patterns:
 - AWS data sources such as `aws_vpc` and `aws_subnet_ids`.
@@ -283,12 +178,11 @@ When a data-only module is designed to mirror the outputs of a managed module,
 you can swap between the two during refactors with minimal changes to callers.
 
 ## Related Guides
-
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
 - `03-module-structure-and-layout.md` — required layout and structure.
 - `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
-- `05-infrastructure-arhitecture-guidelines.md` — architecture baseline for stacks.
+- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
 - `06-sources-and-distribution.md` — versioning and upgrade guidance.
 - `08-security-naming-and-tagging.md` — security and tagging baseline.
 - `09-testing-and-ci.md` — validation workflow and CI gates.
