@@ -1,6 +1,7 @@
 Source:
 - Path: skills/tf-child-modules/SKILL.md
 - References: skills/tf-child-modules/references
+- Scripts: skills/tf-child-modules/scripts
 
 Licensed under the Apache License, Version 2.0.
 See LICENSE.txt in this directory.
