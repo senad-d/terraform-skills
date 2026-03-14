@@ -2,14 +2,13 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 -m <module1,module2> -t <root-module-name[,another-name]> [-n <stack-name>] [-e <work-dir>] [-r <modules-root>] [-T <tf-required-version>] [-P <aws-provider-version>] [-f]" >&2
+  echo "Usage: $0 -m <module1,module2> -t <root-module-name[,another-name]> [-n <stack-name>] [-r <modules-root>] [-T <tf-required-version>] [-P <aws-provider-version>] [-f]" >&2
   echo "Example: $0 -m sqs,sns -t messaging-root -n messaging -T ${default_tf_required_version} -P ${default_aws_provider_version}" >&2
 }
 
 MODULES_RAW=""
 ROOT_NAMES_RAW=""
 MODULE_NAME=""
-WORK_DIR="examples"
 MODULES_ROOT="modules"
 FORCE=false
 
@@ -19,7 +18,7 @@ default_aws_provider_version=">= 6.14.1"
 TF_REQUIRED_VERSION="$default_tf_required_version"
 AWS_PROVIDER_VERSION="$default_aws_provider_version"
 
-while getopts "m:t:n:e:r:T:P:fh" opt; do
+while getopts "m:t:n:r:T:P:fh" opt; do
   case "${opt}" in
     m)
       MODULES_RAW="${OPTARG}"
@@ -29,9 +28,6 @@ while getopts "m:t:n:e:r:T:P:fh" opt; do
       ;;
     n)
       MODULE_NAME="${OPTARG}"
-      ;;
-    e)
-      WORK_DIR="${OPTARG}"
       ;;
     r)
       MODULES_ROOT="${OPTARG}"
@@ -113,7 +109,7 @@ done
 mkdir -p "${WORK_DIR}"
 
 for root_name in "${root_names[@]}"; do
-  stack_dir="${WORK_DIR}/${MODULE_NAME}/${root_name}"
+  stack_dir="${WORK_DIR}/${root_name}"
 
   if [[ -d "${stack_dir}" && "${FORCE}" != true ]]; then
     echo "Error: ${stack_dir} already exists. Use -f to overwrite." >&2
@@ -122,6 +118,30 @@ for root_name in "${root_names[@]}"; do
 
   rm -rf "${stack_dir}"
   mkdir -p "${stack_dir}"
+  mkdir -p "${stack_dir}/variables"
+  mkdir -p "${stack_dir}/backends"
+
+  cat <<'EOF_VARIABLES_TFVARS' > "${stack_dir}/variables/test.tfvars"
+# TODO: update variable values after local tests are passing
+# TODO: prepare awailable keys.
+
+env           = "<env>"
+name          = "<name>"
+project       = "<project>"
+region        = "<region>"
+owner         = "<owner>"
+EOF_VARIABLES_TFVARS
+
+  cat <<EOF_BACKENDS_TFVARS > "${stack_dir}/backends/test.tfvars"
+# TODO: configure backend settings after local tests are passing
+
+bucket       = "<project>-<env>-tf-state"
+key          = "<env>/<root_name>/terraform.tfstate"
+region       = "<region>"
+encrypt      = "true"
+use_lockfile = true
+
+EOF_BACKENDS_TFVARS
 
   cat <<EOF_MAIN > "${stack_dir}/main.tf"
 module "meta" {

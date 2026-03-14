@@ -1,4 +1,4 @@
 interface:
-  display_name: "Terraform Root Generator"
-  short_description: "Generate root modules from local Terraform child or wrapper modules"
+  display_name: "TF Root Generator"
+  short_description: "Generate root module"
   default_prompt: "Create a Terraform root module that composes the wrapper and/or child modules from this repository, using the building blocks under modules/ (for example meta, vpc, efs, and others) instead of defining AWS resources directly."
