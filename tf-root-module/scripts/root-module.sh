@@ -12,6 +12,10 @@ MODULE_NAME=""
 MODULES_ROOT="modules"
 FORCE=false
 
+if [[ -z "${WORK_DIR:-}" ]]; then
+  WORK_DIR="."
+fi
+
 default_tf_required_version=">= 1.14.3"
 default_aws_provider_version=">= 6.14.1"
 
@@ -123,13 +127,15 @@ for root_name in "${root_names[@]}"; do
 
   cat <<'EOF_VARIABLES_TFVARS' > "${stack_dir}/variables/test.tfvars"
 # TODO: update variable values after local tests are passing
+meta = {
+  owner       = "<owner>"
+  environment = "<env>"
+  basename    = "<name>"
+}
+
+aws_region = "<region>"
 # TODO: prepare awailable keys.
 
-env           = "<env>"
-name          = "<name>"
-project       = "<project>"
-region        = "<region>"
-owner         = "<owner>"
 EOF_VARIABLES_TFVARS
 
   cat <<EOF_BACKENDS_TFVARS > "${stack_dir}/backends/test.tfvars"
@@ -145,9 +151,10 @@ EOF_BACKENDS_TFVARS
 
   cat <<EOF_MAIN > "${stack_dir}/main.tf"
 module "meta" {
-  source = "../../../modules/meta"
+  source = "../modules/meta"
 
-  ...
+  meta = var.meta
+  tags = var.tags
 }
 EOF_MAIN
 
@@ -170,7 +177,6 @@ locals {
 }
 EOF_LOCALS
     cat <<'EOF_ADV_NOTE' >> "${stack_dir}/main.tf"
-
 # TODO: add advanced wiring between modules and optional features
 EOF_ADV_NOTE
 
@@ -184,6 +190,25 @@ variable "aws_region" {
     condition     = can(regex("^[a-z]{2}(-[a-z]+)+-\\d$", var.aws_region))
     error_message = "aws_region must be a valid AWS region identifier like 'us-east-1' or 'eu-central-1'."
   }
+}
+
+variable "meta" {
+  description = "Metadata used for standardized naming and tagging."
+  type = object({
+    owner               = string
+    environment         = string
+    basename            = string
+    application         = optional(string)
+    service             = optional(string)
+    component           = optional(string)
+    project             = optional(string)
+    cost_center         = optional(string)
+    business_unit       = optional(string)
+    data_classification = optional(string)
+    compliance          = optional(string)
+    repository          = optional(string)
+    managed_by          = optional(string, "terraform")
+  })
 }
 EOF_VARIABLES
 
@@ -217,21 +242,29 @@ EOF_VERSIONS
   cat <<EOF_README > "${stack_dir}/README.md"
 # ${MODULE_NAME} (${root_name})
 
-## Modules
+## What It Builds
 - ${modules_list}
 
+## Key Defaults
+<-- TODO -->: include information about the default values for the module.
+
+## Usage
+\`\`\`hcl
+<-- TODO -->: variables examples
+\`\`\`
+
 ## Notes
-- This example uses local modules from modules/.
-- Configure module inputs in main.tf.
+<-- TODO -->: variables with values for examples
 
 ## Localstack Usage
 Set the profile and run Terraform locally. 
 Add provider configuration if required by your environment:
 
+\`\`\`bash
 export AWS_PROFILE=localstack
 terraform -chdir=${stack_dir} init -input=false -no-color
 terraform -chdir=${stack_dir} plan -input=false -refresh=false -lock=false -no-color
-
+\`\`\`
 EOF_README
 
   echo "Created ${stack_dir}" >&2
