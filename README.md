@@ -10,8 +10,11 @@ Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that turns a b
 - **Persistent memory bank**  
   One-time bootstrap initializes a `memory-bank/` directory with agents and project-specific context so future tasks can reuse past plans, decisions, and constraints.
 
-- **Terraform AWS module workflows**  
-  Guided flows for planning, scaffolding, testing, and documenting Terraform AWS modules, aligned with the popular `terraform-aws-modules` conventions.
+- **Terraform child module workflows**  
+  Guided flows for planning, scaffolding, testing, and documenting Terraform AWS child modules, aligned with the popular `terraform-aws-modules` conventions.
+
+- **Terraform root module workflows**  
+  Standards and scripts for planning, composing, validating, and documenting Terraform root modules that integrate child modules with secure defaults.
 
 - **Ready-to-run scripts**  
   Shell scripts for creating modules, examples, plans, tests, and documentation so you can focus on design and correctness instead of boilerplate.
@@ -31,15 +34,24 @@ This repository contains multiple skills that are meant to be used together as a
     - [`memory-bank-bootstrap/scripts/create-memory.sh`](memory-bank-bootstrap/scripts/create-memory.sh) – initializes the memory bank for this repo
     - [`memory-bank-bootstrap/scripts/add-agents.sh`](memory-bank-bootstrap/scripts/add-agents.sh) – registers AGENTS rules for this project
 
-- [`terraform-aws-modules`](terraform-aws-modules/SKILL.md)  
-  Opinionated workflows and scripts that help you plan, scaffold, test, and document Terraform AWS modules.
+- [`tf-child-modules`](tf-child-modules/SKILL.md)  
+  Opinionated workflows and scripts that help you plan, scaffold, test, and document Terraform AWS child modules.
   - Key files:
-    - [`terraform-aws-modules/SKILL.md`](terraform-aws-modules/SKILL.md) – skill overview and usage details
-    - [`terraform-aws-modules/references/`](terraform-aws-modules/references/) – reference docs on module lifecycle, structure, testing, versioning, etc.
-    - [`terraform-aws-modules/scripts/create-module.sh`](terraform-aws-modules/scripts/create-module.sh) – scaffold a new module
-    - [`terraform-aws-modules/scripts/create-examples.sh`](terraform-aws-modules/scripts/create-examples.sh) – generate examples for a module
-    - [`terraform-aws-modules/scripts/create-documentation.sh`](terraform-aws-modules/scripts/create-documentation.sh) – generate documentation
-    - [`terraform-aws-modules/scripts/test-module.sh`](terraform-aws-modules/scripts/test-module.sh) – run tests for a module
+    - [`tf-child-modules/SKILL.md`](tf-child-modules/SKILL.md) – skill overview and usage details
+    - [`tf-child-modules/references/`](tf-child-modules/references/) – reference docs on module lifecycle, structure, testing, versioning, etc.
+    - [`tf-child-modules/scripts/create-module.sh`](tf-child-modules/scripts/create-module.sh) – scaffold a new module
+    - [`tf-child-modules/scripts/create-examples.sh`](tf-child-modules/scripts/create-examples.sh) – generate examples for a module
+    - [`tf-child-modules/scripts/create-documentation.sh`](tf-child-modules/scripts/create-documentation.sh) – generate documentation
+    - [`tf-child-modules/scripts/test-module.sh`](tf-child-modules/scripts/test-module.sh) – run tests for a module
+
+- [`tf-root-module`](tf-root-module/SKILL.md)  
+  Standards and scripts for planning, composing, validating, and documenting Terraform root modules that integrate child modules with secure defaults.
+  - Key files:
+    - [`tf-root-module/SKILL.md`](tf-root-module/SKILL.md) – skill overview and usage details
+    - [`tf-root-module/references/`](tf-root-module/references/) – reference docs on root module design, structure, and testing
+    - [`tf-root-module/scripts/root-module.sh`](tf-root-module/scripts/root-module.sh) – scaffold a new root module
+    - [`tf-root-module/scripts/plan.sh`](tf-root-module/scripts/plan.sh) – create a required change plan
+    - [`tf-root-module/scripts/test.sh`](tf-root-module/scripts/test.sh) – test root module examples
 
 The top-level [`LICENSE`](LICENSE) applies to the content in this repository.
 
@@ -81,7 +93,7 @@ Clone this repository into a location where you manage your CODEX skills:
 git clone https://github.com/senad-d/terraform-skills.git && \
     cd terraform-skills && \
     [ -d "$HOME/.codex" ] && \
-    cp -R memory-bank-bootstrap terraform-aws-modules "$HOME/.codex"/ || echo 'Error: $HOME/.codex does not exist or clone failed'
+    cp -R memory-bank-bootstrap tf-child-modules tf-root-module "$HOME/.codex"/ || echo 'Error: $HOME/.codex does not exist or clone failed'
 ```
 
 ### 3. Register the skills with CODEX
@@ -89,9 +101,9 @@ git clone https://github.com/senad-d/terraform-skills.git && \
 Follow the CODEX CLI documentation for registering local skills. In most setups, you will:
 
 - Point CODEX to this repository as a skill bundle
-- Reference the skills by name (for example, `$memory-bank-bootstrap` and `$terraform-aws-modules`) in your tasks
+- Reference the skills by name (for example, `$memory-bank-bootstrap`, `$tf-child-modules`, and `$tf-root-module`) in your tasks
 
-Refer to [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md) and [`terraform-aws-modules/SKILL.md`](terraform-aws-modules/SKILL.md) for skill-specific integration details.
+Refer to [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md), [`tf-child-modules/SKILL.md`](tf-child-modules/SKILL.md), and [`tf-root-module/SKILL.md`](tf-root-module/SKILL.md) for skill-specific integration details.
 
 
 ## Configuration
@@ -146,27 +158,41 @@ Use skill: `$memory-bank-bootstrap`
 
 This sets up the `memory-bank/` directory and AGENTS rules that CODEX can reuse across subsequent tasks.
 
-After the memory bank is created, a `Rules/` directory is added at the root of this repository. The `$terraform-aws-modules` skill automatically reads any files in this directory as additional, project-specific rules, in addition to the default rules it ships with.
+After the memory bank is created, a `Rules/` directory is added at the root of this repository. The `$tf-child-modules` and `$tf-root-module` skills automatically read any files in this directory as additional, project-specific rules, in addition to the default rules they ship with.
 
-### 2. Create and evolve Terraform AWS modules
+### 2. Create and evolve Terraform AWS child modules
 
-Use the `terraform-aws-modules` skill to plan, scaffold, and refine modules. For example, in CODEX you might start a task like:
+Use the `tf-child-modules` skill to plan, scaffold, and refine child modules. For example, in CODEX you might start a task like:
 
 ```text
-new task -> create aws module for cloud-map using $terraform-aws-modules
+new task -> create aws module for cloud-map using $tf-child-modules
 ```
 
 Behind the scenes, CODEX can leverage scripts such as:
 
-- [`terraform-aws-modules/scripts/create-module.sh`](terraform-aws-modules/scripts/create-module.sh)
-- [`terraform-aws-modules/scripts/create-examples.sh`](terraform-aws-modules/scripts/create-examples.sh)
-- [`terraform-aws-modules/scripts/create-plan.sh`](terraform-aws-modules/scripts/create-plan.sh)
-- [`terraform-aws-modules/scripts/test-module.sh`](terraform-aws-modules/scripts/test-module.sh)
-- [`terraform-aws-modules/scripts/create-documentation.sh`](terraform-aws-modules/scripts/create-documentation.sh)
+- [`tf-child-modules/scripts/create-module.sh`](tf-child-modules/scripts/create-module.sh)
+- [`tf-child-modules/scripts/create-examples.sh`](tf-child-modules/scripts/create-examples.sh)
+- [`tf-child-modules/scripts/create-plan.sh`](tf-child-modules/scripts/create-plan.sh)
+- [`tf-child-modules/scripts/test-module.sh`](tf-child-modules/scripts/test-module.sh)
+- [`tf-child-modules/scripts/create-documentation.sh`](tf-child-modules/scripts/create-documentation.sh)
 
 These workflows encourage consistent module structure, testing, and documentation aligned with `terraform-aws-modules` best practices.
 
-### 3. Iterate with memory-backed context
+### 3. Compose Terraform root modules
+
+Use the `tf-root-module` skill to plan and assemble root modules that compose multiple child modules. For example:
+
+```text
+new task -> create root module for shared networking using $tf-root-module
+```
+
+Typical scripts include:
+
+- [`tf-root-module/scripts/root-module.sh`](tf-root-module/scripts/root-module.sh)
+- [`tf-root-module/scripts/plan.sh`](tf-root-module/scripts/plan.sh)
+- [`tf-root-module/scripts/test.sh`](tf-root-module/scripts/test.sh)
+
+### 4. Iterate with memory-backed context
 
 As you create modules, the memory bank accumulates:
 
@@ -183,7 +209,7 @@ Subsequent CODEX tasks (for example, refactoring an existing module or adding a 
 If you want to extend or customize these skills:
 
 1. Clone this repository and create a new branch.
-2. Modify the relevant skill definitions and scripts under `memory-bank-bootstrap/` or `terraform-aws-modules/`.
+2. Modify the relevant skill definitions and scripts under `memory-bank-bootstrap/`, `tf-child-modules/`, or `tf-root-module/`.
 3. Test locally by pointing your CODEX workspace at your modified checkout.
 
 Refer to the individual [`SKILL.md`](memory-bank-bootstrap/SKILL.md) files for implementation details and conventions.
