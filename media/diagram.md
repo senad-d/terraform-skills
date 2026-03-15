@@ -1,12 +1,12 @@
 ```mermaid
 flowchart LR
-    %% Terraform skills memory bank workflow
+    %% TF skills memory bank workflow
 
     A([Repo]) --> B[Bootstrap shared memory]
     B --> C[Create reusable modules]
     C --> D[Create root modules]
 
-    subgraph Modules
+    subgraph TF Module Skills
         C
         D
     end
