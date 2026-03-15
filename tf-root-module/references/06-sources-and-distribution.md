@@ -56,7 +56,7 @@ module "consul" {
 ```
 
 A local path must begin with `./` or `../`. Absolute filesystem paths are
- treated as remote packages and are not recommended.
+treated as remote packages and are not recommended.
 
 ## Internal Child Modules (Repository Default)
 

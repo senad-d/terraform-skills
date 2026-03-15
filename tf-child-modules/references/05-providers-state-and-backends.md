@@ -69,7 +69,7 @@ terraform {
 
 - Default provider configurations are inherited by child modules.
 - Aliased provider configurations are never inherited and must be passed via
-the `providers` map in the `module` block.
+  the `providers` map in the `module` block.
 
 Example:
 

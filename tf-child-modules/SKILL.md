@@ -107,21 +107,21 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
      ```markdown
      1. Name:
-          A) ...
-          B) ...
-          C) ...
-          D) Custom name.
+        A) ...
+        B) ...
+        C) ...
+        D) Custom name.
      2. Scope:
-          A) Module built entirely from Terraform resources, without relying on a community module.
-          B) Wrapper module around terraform-aws-modules if available, extended with additional resources where required.
-          C) Module from terraform-aws-modules if available, without modification.
-          D) Describe custom requirements.
+        A) Module built entirely from Terraform resources, without relying on a community module.
+        B) Wrapper module around terraform-aws-modules if available, extended with additional resources where required.
+        C) Module from terraform-aws-modules if available, without modification.
+        D) Describe custom requirements.
      3. Examples:
-          A) basic only
-          B) basic + advanced
-          C) basic + advanced + iclude any edge cases or complex setups
-          D) Describe custom requirements.
-      Reply with your picks (e.g., “1A, 2B, 3A”) and any extra constraints.
+        A) basic only
+        B) basic + advanced
+        C) basic + advanced + iclude any edge cases or complex setups
+        D) Describe custom requirements.
+        Reply with your picks (e.g., “1A, 2B, 3A”) and any extra constraints.
      ```
 
    - Create a plan file in the `Plan/` directory using the provided information along with the `$PLAN` automation script.
