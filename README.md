@@ -3,7 +3,26 @@
 Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that turns a blank Terraform/AWS repository into a guided, MCP-aware workspace. It provides a reusable memory bank, opinionated workflows, and ready-to-run scripts for designing, testing, and documenting high-quality Terraform AWS modules with minimal boilerplate.
 
 
-![diagram](media/skills.png)
+```mermaid
+flowchart LR
+    %% TF skills memory bank workflow
+
+    A([Repo]) --> B[Bootstrap shared memory]
+    B --> C[Create reusable modules]
+    C --> D[Create root modules]
+
+    subgraph TF Module Skills
+        C
+        D
+    end
+
+    MB((Shared memory bank and rules))
+
+    C --> MB
+    D --> MB
+    B --> MB
+
+```
 
 ## Features
 
