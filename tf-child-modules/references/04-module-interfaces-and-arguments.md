@@ -9,15 +9,18 @@ description: >-
 # Module Interfaces, Variables, and Validation
 
 ## Audience
+
 Engineers designing inputs, outputs, variables, and calling patterns for modules.
 
 ## Purpose
+
 Define best practices for variables, validation, outputs, meta-arguments
 (`for_each`, `count`, `depends_on`), dynamic nested blocks, and interface
 stability. This is the canonical guide for module interfaces, variables, and
 validation.
 
 ## Interface Design Principles
+
 - Provide variable descriptions and validations for all public inputs.
 - Prefer explicit types over implicit typing.
 - Use `nullable = false` where appropriate to avoid ambiguous defaults.
@@ -33,7 +36,9 @@ level, see `07-composition-and-patterns.md`.
 ## Variables and Inputs
 
 ### Required Fields for Variables
+
 Every input variable must include:
+
 - `description` with a clear, concise purpose.
 - `type` with explicit typing.
 - `validation` with both `condition` and `error_message` where constraints exist.
@@ -41,6 +46,7 @@ Every input variable must include:
 - `nullable = false` unless `null` has a deliberate meaning.
 
 Example (required variable):
+
 ```hcl
 variable "vpc_id" {
   description = "VPC ID where resources will be created."
@@ -55,6 +61,7 @@ variable "vpc_id" {
 ```
 
 Example (optional variable with default):
+
 ```hcl
 variable "enable_logging" {
   description = "Whether to enable logging for this module."
@@ -65,6 +72,7 @@ variable "enable_logging" {
 ```
 
 ### Naming and Structure
+
 - Use `snake_case` for variable names.
 - Prefer objects and maps for grouped configuration over many loosely related
   variables.
@@ -74,6 +82,7 @@ variable "enable_logging" {
   than an internal flag name).
 
 Example (object variable with validation):
+
 ```hcl
 variable "subnet_config" {
   description = "Subnet configuration for the module."
@@ -91,8 +100,10 @@ variable "subnet_config" {
 ```
 
 ### Sensitive Inputs
+
 If a variable may contain secrets (for example, passwords, tokens, or
 connection strings):
+
 - Treat it as sensitive in documentation and examples.
 - Avoid writing values to logs or outputs.
 - Ensure any related outputs are marked `sensitive = true`.
@@ -100,7 +111,9 @@ connection strings):
   `08-security-naming-and-tagging.md`.
 
 ## Validation Guidance
+
 Use validation blocks to enforce:
+
 - Non-empty strings.
 - Valid CIDR blocks.
 - Allowed enumerations (use `contains([...], var.value)`).
@@ -111,6 +124,7 @@ Keep error messages actionable and specific so users understand how to fix
 invalid input.
 
 Example:
+
 ```hcl
 variable "ingress_rules" {
   type     = map(object({ from_port = number, to_port = number, protocol = string, cidr = string }))
@@ -125,9 +139,11 @@ variable "ingress_rules" {
 ```
 
 ## Outputs and Consumer Expectations
+
 Outputs define the contract between a module and its consumers.
 
 Guidelines:
+
 - Every output must include a `description` explaining its purpose.
 - Outputs should be stable over time; prefer adding new outputs over renaming
   existing ones.
@@ -138,6 +154,7 @@ Guidelines:
   safe conditions.
 
 Example with a precondition:
+
 ```hcl
 output "api_base_url" {
   value = "https://${aws_instance.example.private_dns}:8433/"
@@ -153,6 +170,7 @@ For versioning and refactor implications when changing outputs, see
 `06-sources-and-distribution.md`.
 
 ## Meta-Arguments in Modules
+
 Terraform meta-arguments let you scale configurations without duplicating code.
 Use them on `resource`, `data`, and `module` blocks as appropriate.
 
@@ -162,16 +180,19 @@ provider requirements only in `required_providers` (typically in
 `for_each`, `count`, or `depends_on` on module calls.
 
 ### `for_each`
+
 `for_each` creates one instance per element in a map or set of strings. Use it
 when each instance has a stable identity.
 
 Typical uses:
+
 - Multiple named subnets.
 - Security group rules from a map of rule objects.
 - One IAM role per component or environment.
 - Multiple module instances keyed by environment, region, or account.
 
 Example: multiple subnets
+
 ```hcl
 variable "subnets" {
   type = map(object({
@@ -194,6 +215,7 @@ resource "aws_subnet" "this" {
 ```
 
 Example: security group rules from a map
+
 ```hcl
 variable "ingress_rules" {
   type = map(object({
@@ -217,6 +239,7 @@ resource "aws_security_group_rule" "ingress" {
 ```
 
 Example: IAM roles per component
+
 ```hcl
 variable "components" {
   type = set(string)
@@ -243,9 +266,11 @@ resource "aws_iam_role" "this" {
 ```
 
 ### `count`
+
 `count` creates a fixed number of instances, addressed by index.
 
 Typical uses:
+
 - Simple replication where identity is not important.
 - Optional resources controlled by booleans (0 or 1 instance).
 
@@ -253,6 +278,7 @@ Caveat: identity is tied to indices; changing `count` or ordering can cause
 replacement.
 
 Example: optional resource
+
 ```hcl
 resource "aws_cloudwatch_log_group" "this" {
   count = var.enable_logging ? 1 : 0
@@ -263,6 +289,7 @@ resource "aws_cloudwatch_log_group" "this" {
 ```
 
 Example: fixed number of instances
+
 ```hcl
 resource "aws_instance" "worker" {
   count = var.instance_count
@@ -277,11 +304,13 @@ resource "aws_instance" "worker" {
 ```
 
 ### `depends_on`
+
 Prefer implicit dependencies expressed via attribute references. Use
 `depends_on` only when there is no attribute reference or when API constraints
 require explicit ordering.
 
 Example:
+
 ```hcl
 resource "aws_cloudwatch_log_subscription_filter" "this" {
   name            = "lambda-subscriber"
@@ -294,10 +323,12 @@ resource "aws_cloudwatch_log_subscription_filter" "this" {
 ```
 
 ## Meta-Arguments on Module Calls
+
 `for_each`, `count`, and `depends_on` can be used on module blocks. Called
 modules must not define provider blocks.
 
 Example: `for_each` on a module
+
 ```hcl
 module "network" {
   for_each = var.environments
@@ -309,6 +340,7 @@ module "network" {
 ```
 
 Example: `count` on a module
+
 ```hcl
 module "worker" {
   count  = var.worker_stack_count
@@ -319,6 +351,7 @@ module "worker" {
 ```
 
 Example: `depends_on` on a module
+
 ```hcl
 module "app" {
   source = "./modules/app"
@@ -331,11 +364,14 @@ module "app" {
 ```
 
 ## Dynamic Blocks and Conditional Sections (Interface-Focused)
+
 Dynamic blocks let you generate nested configuration blocks from variable
 structures. They are tightly coupled to variable design and defaults.
 
 ### When to Use Dynamic Blocks
+
 Use `dynamic` blocks when a resource supports nested blocks that are:
+
 - Optional and should appear only when input is provided.
 - Repeated and should be generated from a list or map.
 
@@ -344,6 +380,7 @@ single optional attribute can be handled with `null` or `try()` without
 conditional generation.
 
 ### Single Optional Nested Block
+
 Use a list with zero or one element and iterate over it:
 
 ```hcl
@@ -371,6 +408,7 @@ resource "aws_lb" "this" {
 ```
 
 ### Repeated Nested Blocks
+
 Use a map or list of objects to create multiple blocks:
 
 ```hcl
@@ -401,6 +439,7 @@ resource "aws_security_group" "this" {
 ```
 
 ### How Dynamic Blocks Affect Variables
+
 - Inputs should be structured as lists or maps of objects that match the nested
   block schema.
 - Defaults should be empty (`[]` or `{}`) to avoid creating blocks
@@ -409,30 +448,38 @@ resource "aws_security_group" "this" {
 - Add validation to enforce required fields and acceptable ranges.
 
 ### Dynamic Block Anti-Patterns
+
 Avoid:
+
 - Using `dynamic` blocks to hide required configuration.
 - Passing raw `any` or loosely typed variables to dynamic blocks.
 - Omitting validation for nested object inputs.
 
 ## Decision Guidelines for Meta-Arguments and Dynamic Blocks
+
 Use `for_each` when:
+
 - Instances have meaningful identities.
 - You want stable addressing by key.
 
 Use `count` when:
+
 - You need a simple toggle or fixed number of instances.
 - Index-based identity is acceptable.
 
 Use `depends_on` when:
+
 - There is no attribute reference to express the dependency.
 - Ordering is required by provider behavior or side effects.
 
 Use `dynamic` blocks when:
+
 - The nested block is optional or repeated.
 - A structured variable (object, list, or map) can represent the desired
   configuration cleanly.
 
 ## Refactoring Interfaces Safely
+
 Adding `for_each` or `count`, or restructuring variables and outputs, changes
 addresses and can trigger destructive plans. Use `moved` blocks to preserve
 state when refactoring.
@@ -441,6 +488,7 @@ For semantic versioning policy, `moved` block patterns, and upgrade playbooks,
 see `06-sources-and-distribution.md`.
 
 ## Related Guides
+
 - `07-composition-and-patterns.md` for composition patterns and root module
   design.
 - `05-providers-state-and-backends.md` for provider rules and state layout.

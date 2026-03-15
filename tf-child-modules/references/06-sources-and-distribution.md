@@ -9,15 +9,18 @@ description: >-
 # Module Distribution, Versioning, and Upgrades
 
 ## Audience
+
 Engineers composing stacks from modules and deciding how to distribute modules,
 manage versions, and plan safe upgrades.
 
 ## Purpose
+
 Normalize guidance on the `source` argument, registry usage, internal module
 distribution, version pinning, semantic versioning policy, and safe refactor and
 upgrade patterns.
 
 ## Source Selection Guidance
+
 - Use local relative paths (`./` or `../`) for closely related modules within the
   same repository.
 - Use a Terraform module registry for modules intended to be shared across
@@ -26,7 +29,9 @@ upgrade patterns.
   and couple configs to a specific machine layout.
 
 ## Supported Source Types
+
 Terraform supports the following source types:
+
 - Local paths
 - Terraform Registry (public and private)
 - GitHub
@@ -39,9 +44,11 @@ Terraform supports the following source types:
 - Modules in package subdirectories (`//` syntax)
 
 ## Local Paths
+
 Local paths allow factoring within the same repository.
 
 Example:
+
 ```hcl
 module "consul" {
   source = "./consul"
@@ -52,10 +59,12 @@ A local path must begin with `./` or `../`. Absolute filesystem paths are
 treated as remote packages and are not recommended.
 
 ## Terraform Registry
+
 Registry sources are the preferred distribution mechanism for reusable modules.
 The standard format is `<NAMESPACE>/<NAME>/<PROVIDER>`.
 
 Example:
+
 ```hcl
 module "consul" {
   source  = "hashicorp/consul/aws"
@@ -64,6 +73,7 @@ module "consul" {
 ```
 
 Private registries use a hostname prefix:
+
 ```hcl
 module "consul" {
   source  = "app.terraform.io/example-corp/k8s-cluster/azurerm"
@@ -75,7 +85,9 @@ Registry modules support version constraints and require appropriate
 credentials for private registries.
 
 ## GitHub
+
 GitHub shorthand is supported:
+
 ```hcl
 module "consul" {
   source = "github.com/hashicorp/example"
@@ -83,6 +95,7 @@ module "consul" {
 ```
 
 To use SSH:
+
 ```hcl
 module "consul" {
   source = "git@github.com:hashicorp/example.git"
@@ -90,7 +103,9 @@ module "consul" {
 ```
 
 ## Bitbucket
+
 Bitbucket shorthand is supported for public repositories:
+
 ```hcl
 module "consul" {
   source = "bitbucket.org/hashicorp/terraform-consul-aws"
@@ -100,7 +115,9 @@ module "consul" {
 Terraform auto-detects Git vs Mercurial for Bitbucket repositories.
 
 ## Generic Git Repository
+
 Use `git::` to specify any Git URL and `ref` to pin a revision:
+
 ```hcl
 module "vpc" {
   source = "git::https://example.com/vpc.git?ref=v1.2.0"
@@ -110,7 +127,9 @@ module "vpc" {
 `ref` may be a branch, tag, or commit SHA.
 
 ## Generic Mercurial Repository
+
 Use `hg::` with `ref` to select revisions:
+
 ```hcl
 module "vpc" {
   source = "hg::http://example.com/vpc.hg?ref=v1.2.0"
@@ -118,7 +137,9 @@ module "vpc" {
 ```
 
 ## S3 Bucket
+
 Use `s3::` with an S3 object URL:
+
 ```hcl
 module "consul" {
   source = "s3::https://s3-eu-west-1.amazonaws.com/examplecorp-terraform-modules/vpc.zip"
@@ -128,7 +149,9 @@ module "consul" {
 Note: Buckets in `us-east-1` must use `s3.amazonaws.com` as the hostname.
 
 ## GCS Bucket
+
 Use `gcs::` with a GCS object URL:
+
 ```hcl
 module "consul" {
   source = "gcs::https://www.googleapis.com/storage/v1/modules/foomodule.zip"
@@ -136,7 +159,9 @@ module "consul" {
 ```
 
 ## Modules in Package Subdirectories
+
 If a module lives in a subdirectory of a package, use the `//` syntax:
+
 ```hcl
 module "vpc" {
   source = "git::https://example.com/network.git//modules/vpc?ref=v1.2.0"
@@ -150,17 +175,20 @@ package.
 ## Version Pinning and Constraints
 
 ### Semantic Versioning Policy
+
 - Use semantic versioning for modules.
 - Document breaking changes and include migration notes.
 - Keep backward compatibility where possible using `moved` blocks.
 
 When using registry or VCS sources:
+
 - Pin to a minimum compatible version using `>=` constraints when you control
   both producer and consumer.
 - Pin to exact versions or narrow ranges when modules are shared broadly or
   across teams to avoid unplanned breaking changes.
 
 Example (registry source with constraint):
+
 ```hcl
 module "consul" {
   source  = "hashicorp/consul/aws"
@@ -169,6 +197,7 @@ module "consul" {
 ```
 
 Example (git source with tag):
+
 ```hcl
 module "vpc" {
   source = "git::https://example.com/vpc.git?ref=v1.2.0"
@@ -179,10 +208,12 @@ Document version policies in module READMEs so consumers understand upgrade
 expectations.
 
 ## `moved` Blocks and Safe Refactors
+
 Terraform interprets address changes as destroy and recreate unless you add
 `moved` blocks. Use `moved` to preserve state across refactors.
 
 Example:
+
 ```hcl
 moved {
   from = aws_instance.a
@@ -191,11 +222,14 @@ moved {
 ```
 
 ### Requirements
+
 - Terraform v1.1+ is required for `moved` blocks. Use `terraform state mv` only
   when you cannot use `moved`.
 
 ### Refactor Scenarios
+
 #### Move or Rename a Resource
+
 ```hcl
 moved {
   from = aws_instance.a
@@ -204,10 +238,12 @@ moved {
 ```
 
 #### Enable `for_each` or `count` for a Resource
+
 Switching from single-instance to multiple instances requires mapping the old
 address to a specific key or index.
 
 Example:
+
 ```hcl
 resource "aws_instance" "a" {
   for_each = local.instances
@@ -221,6 +257,7 @@ moved {
 ```
 
 Other valid mappings:
+
 ```hcl
 moved {
   from = aws_instance.c[0]
@@ -234,6 +271,7 @@ moved {
 ```
 
 #### Enable `count` or `for_each` for a Module Call
+
 ```hcl
 module "a" {
   source = "../modules/example"
@@ -247,6 +285,7 @@ moved {
 ```
 
 #### Rename a Module Call
+
 ```hcl
 module "b" {
   source = "../modules/example"
@@ -259,11 +298,13 @@ moved {
 ```
 
 #### Split a Module
+
 When splitting a module into multiple modules, use a shim module that calls the
 new modules and includes `moved` blocks to map old resource addresses to their
 new locations.
 
 Example:
+
 ```hcl
 module "x" {
   source = "../modules/x"
@@ -280,6 +321,7 @@ moved {
 ```
 
 ## Removing `moved` Blocks
+
 Removing a `moved` block is a breaking change. Retain historical `moved` blocks
 whenever possible to preserve upgrade paths for existing users.
 
@@ -288,6 +330,7 @@ applied the newer module version. If you rename the same object multiple times,
 chain `moved` blocks to preserve the full history.
 
 Example:
+
 ```hcl
 moved {
   from = aws_instance.a
@@ -301,6 +344,7 @@ moved {
 ```
 
 ## Breaking Change Playbook
+
 - Identify the exact breaking change and affected versions.
 - Add `moved` blocks where possible to preserve state.
 - Bump the major version and document upgrade notes.
@@ -309,6 +353,7 @@ moved {
 - Ensure validation and CI run against updated examples.
 
 ## Related Guides
+
 - `04-module-interfaces-and-arguments.md` for interface change implications.
 - `05-providers-state-and-backends.md` for state layout considerations.
 - `07-composition-and-patterns.md` for composition and wiring implications.

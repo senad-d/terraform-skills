@@ -9,14 +9,17 @@ description: >-
 # Examples, Docs, and User-Facing Documentation
 
 ## Audience
+
 Module authors writing examples and maintaining READMEs.
 
 ## Purpose
+
 Normalize example structure and design, explain how examples act as both
 user-facing documentation and test assets, and define how documentation
 automation (including READMEs and terraform-docs) fits into the workflow.
 
 ## Example Design Principles
+
 - Examples should be composed from existing internal modules where possible.
 - Avoid redefining raw resources when a suitable internal module exists.
 - Use examples to demonstrate realistic, secure scenarios with minimal inputs.
@@ -26,11 +29,13 @@ automation (including READMEs and terraform-docs) fits into the workflow.
   environment names).
 
 Examples are consumed both by readers and by automation:
+
 - As documentation: they show how to use a module safely and idiomatically.
 - As test inputs: they are used by `scripts/test.sh` and CI to validate
   modules. See `09-testing-and-ci.md` for the testing workflow.
 
 ## Example Creation Workflow
+
 1. Understand the primary module and scenario to demonstrate.
 2. Identify required supporting building blocks (networking, security, IAM,
    storage, etc.).
@@ -44,7 +49,9 @@ Examples are consumed both by readers and by automation:
    a temporary fallback and propose a new module to fill the gap.
 
 ## Mandatory Behaviors
+
 When creating or updating examples, the following are required:
+
 - Always search for and prefer existing modules in this repository for
   supporting capabilities.
 - Always read the module README for any module used in an example to confirm
@@ -65,20 +72,24 @@ When creating or updating examples, the following are required:
 For how examples are validated locally and in CI, see `09-testing-and-ci.md`.
 
 ## Script Usage: `root-modules.sh`
+
 Use the examples scaffold script to generate example directories for one or more
 modules.
 
 Canonical invocation:
+
 ```bash
 ./scripts/root-modules.sh -m <module1,module2> [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>] [-f]
 ```
 
 Outputs:
+
 - Creates `examples/<example-name>/<basic|advanced>/` with `main.tf`,
   `variables.tf`, `outputs.tf`, and `README.md`.
 - Inserts placeholders for required inputs and wiring between modules.
 
 Failure modes:
+
 - Missing module name list.
 - Unsupported example type value (must be `basic` or `advanced`).
 - Example directory already exists unless `-f` is provided.
@@ -87,24 +98,29 @@ Examples created with this script should follow the design principles and
 mandatory behaviors above.
 
 ## Script Usage: `document.sh`
+
 Use the documentation script to generate a README template for a module.
 
 Canonical invocation:
+
 ```bash
 ./scripts/document.sh -m <module_name>
 ```
 
 Outputs:
+
 - Overwrites `modules/<module_name>/README.md` with a documentation template.
 - Includes TODO sections for description, usage, architecture, security, and
   limitations.
 
 Failure modes:
+
 - Missing module name.
 - Module directory does not exist.
 - `terraform-docs` not installed or not on PATH.
 
 ## Documentation Generation Workflow
+
 1. Run `document.sh` to scaffold the README.
 2. Fill in the metadata block (owner, last verified date, Terraform and AWS
    provider versions).
@@ -114,10 +130,12 @@ Failure modes:
    covered by the testing workflow in `09-testing-and-ci.md`.
 
 ## Runtime Examples (Required Defaults)
+
 When an example needs runtime code and the user has not provided any, use the
 following defaults.
 
 ### Lambda (Node.js)
+
 Use this handler for smoke tests and validation only. Configure the runtime to a
 current Node.js version (for example, Node.js 20) and set the handler to
 `index.handler` when the file is named `index.js`.
@@ -133,6 +151,7 @@ exports.handler = async (event) => {
 ```
 
 ### EC2 (User Data with Nginx)
+
 Use this user data to install Nginx and display the instance’s current local IP
 on the default page. This is intended for basic validation examples only.
 
@@ -166,8 +185,10 @@ systemctl restart nginx
 ```
 
 ## Additional Runtime Templates (Document Only)
+
 Maintain guidance for these standard templates, but do not embed code in this
 guide unless explicitly requested:
+
 - ECS/Fargate: minimal container healthcheck and logging configuration
   expectations.
 - EKS/Kubernetes: minimal deployment and service manifest expectations with
@@ -188,6 +209,7 @@ guide unless explicitly requested:
   guidance.
 
 ## Related Guides
+
 - `09-testing-and-ci.md` for validating examples and integrating them into CI.
 - `03-module-structure-and-layout.md` for where examples and module READMEs live
   in the repository.

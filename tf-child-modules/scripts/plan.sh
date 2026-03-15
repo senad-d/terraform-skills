@@ -94,7 +94,7 @@ cat > "${plan_path}" <<EOF
 4. [ ] Create examples via "\$EXAMPLE" and update reqired fealds. 
     - <!-- TODO: describe example scenarios -->
 5. [ ] Generate README via "\$DOCUMENT" and fill template sections. 
-    - Only generate documentation when all validations pass successfully.
+    - Create documentation once all validations are successfully completed and development is finished.
     - <!-- TODO: list sections to complete -->
 
 # Example usage

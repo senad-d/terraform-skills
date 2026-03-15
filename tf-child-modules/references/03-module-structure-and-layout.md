@@ -8,24 +8,29 @@ description: >-
 # Module Structure and Repository Layout
 
 ## Audience
+
 Module implementers and reviewers.
 
 ## Purpose
+
 Define the canonical filesystem layout for module repositories and internal module
 directories in this repo, including root modules, nested modules, examples, and
 supporting scaffolding.
 
 ## Standard Layout
+
 The standard module structure is a file and directory layout recommended for reusable
 modules. Terraform tooling expects this structure for documentation and module
 indexing. The only required element is the root module; everything else is optional
 but strongly recommended.
 
 ### Root Module (Required)
+
 Terraform files must exist in the root directory of the module. This root module is
 the primary entry point and should be opinionated about defaults and behavior.
 
 A typical root module contains at least:
+
 - `main.tf` – primary entry point; nested module calls belong here.
 - `variables.tf` – variable definitions and validation.
 - `outputs.tf` – outputs exposed to callers.
@@ -36,6 +41,7 @@ For detailed interface and variable standards, see
 `04-module-interfaces-and-arguments.md`.
 
 ### README (Required for Root and Usable Nested Modules)
+
 - The root module and any nested modules intended for reuse should include a
   `README.md`.
 - The README should describe what the module does and when to use it.
@@ -47,11 +53,13 @@ For detailed interface and variable standards, see
   creates and their relationships.
 
 ### Variables and Outputs
+
 All variables and outputs must include descriptions. See
 `04-module-interfaces-and-arguments.md` for full interface rules, including
 naming, types, defaults, and validation.
 
 ## Nested Modules
+
 - Nested modules live under `modules/`.
 - Any nested module with a `README.md` is considered usable by external consumers.
 - If the root module calls nested modules, use relative paths like
@@ -61,6 +69,7 @@ naming, types, defaults, and validation.
   design guidance.
 
 ## Examples
+
 - Examples live under `examples/` at the repository root.
 - Examples for submodules also live under the root `examples/` directory.
 - Each example may include a `README.md` describing intent and usage.
@@ -74,7 +83,9 @@ Examples serve both as documentation and as test assets. For how examples are us
 in local validation and CI, see `09-testing-and-ci.md`.
 
 ## Structure Examples
+
 Minimal structure:
+
 ```text
 minimal-module/
 |-- README.md
@@ -85,6 +96,7 @@ minimal-module/
 ```
 
 Complete structure:
+
 ```text
 complete-module/
 |-- README.md
@@ -112,16 +124,19 @@ complete-module/
 ## Supporting Directories
 
 ### `Plan/`
+
 Planning documents for new or significantly changed modules live under `Plan/` in the
 repository root. Use `scripts/plan.sh` to scaffold plans. For planning
 requirements and workflow, see `02-module-creation-and-fundamentals.md`.
 
 ## Script Overview (Scaffolding and Validation)
+
 This repository provides helper scripts for consistent scaffolding, documentation,
 examples, and testing. Detailed usage lives in specialized guides; this section
 summarizes where they fit into the structure.
 
 ### `child-module.sh`
+
 Purpose: scaffold a new module under `modules/` with the standard file layout.
 
 - Creates `modules/<module_name>/` with `main.tf`, `variables.tf`, `outputs.tf`, and
@@ -132,6 +147,7 @@ For when and why to introduce a new module, see
 `02-module-creation-and-fundamentals.md`.
 
 ### `root-modules.sh`
+
 Purpose: scaffold example directories under `examples/` for one or more modules.
 
 - Creates `examples/<example-name>/<basic|advanced>/` with `main.tf`,
@@ -143,6 +159,7 @@ For example design principles and required behaviors, see
 `10-examples-and-docs-automation.md`.
 
 ### `document.sh`
+
 Purpose: scaffold and regenerate module `README.md` files.
 
 - Overwrites `modules/<module_name>/README.md` with a documentation template.
@@ -152,6 +169,7 @@ For the documentation generation workflow and README expectations, see
 `10-examples-and-docs-automation.md`.
 
 ### `test.sh`
+
 Purpose: run a consistent validation workflow against module examples.
 
 - Runs formatting, `terraform init -backend=false`, `terraform validate`, and

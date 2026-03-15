@@ -9,10 +9,10 @@ description: Workflow and standards for updating the Terraform AWS Modules repos
 
 Follow the repository workflow for planning, implementing, validating, and documenting Terraform module changes with secure, reliable, and cost-aware defaults.
 
-
 ## Skill path (set once)
 
 Automation scripts:
+
 ```bash
 export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 export READ="$CODEX_HOME/skills/terraform-aws-modules/scripts/read.sh"
@@ -27,53 +27,71 @@ export CLEAN_TF="$CODEX_HOME/skills/terraform-aws-modules/scripts/cleanup.sh"
 User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## Reading files
+
 - Use `read.sh` to read files by selecting a directory and optionally specifying the file name:
+
 ```bash
 "$READ" -d <directory> [-n <name-pattern>]
 ```
 
 ## Planning Template
+
 - Use `plan.sh` to create the plan for new module:
+
 ```bash
 "$PLAN" -m <module_name> [-g <short_goal>]
 ```
+
 - `Plan/` holds required change plans before any Terraform edits.
 - `memory-bank/` stores project context and task history; read for background when needed.
 
 ## Module Organization & Structure
+
 - To create a new module template directories and files, use the automation script:
+
 ```bash
 "$CREATE" -m <module_name> [-rv <tf_required_version>] [-av <aws_provider_version>]
 ```
+
 - To create a new module for testing in example directories, use the automation script:
+
 ```bash
 "$EXAMPLE" -m <module1,module2> [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>] [-f]
 ```
 
 ## Testing Guidelines
+
 - For any change, add or update an example under `modules/<module_name>/` and `examples/<module_name>/<example_type>/` run tests for that example only using `test.sh`, e.g.:
+
 ```bash
 "$TEST" -m <module_name> [-t <example_type> ...]
 ```
 
 ## Terraform Module Documentation Rule
+
 - Create the <module_name> documentation by running this command:
+
 ```bash
 "$DOCUMENT" -m <module_name>
 ```
+
 After the file is cretaed, update the file folowing rules:
+
 - Read the module tf files to understand module purpes and features.
 - Read the new README.md file.
 - Update sections containing `<!-- TODO: ... -->` commnets with clear and concise documentation based on the requirements from that comment.
 - Title must use capital letters when appropriate. (e.g. Athena Module, API-Gateway Module...)
 - DO NOT use any fluff to increase the word count.
 - After the editing is done, run the `terraform-docs` command to compleate the file:
+
 ```bash
 terraform-docs markdown table modules/<module_name> >> modules/<module_name>/README.md
 ```
 
 ## Terraform state cleanup
+
 - Use `cleanup.sh` to clean up terraform state after testing.
+
 ```bash
 "$CLEAN_TF" --quiet examples/<module_name>
 ```
@@ -86,6 +104,7 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
 2. Plan before code (hard gate)
    - Ask the user to clarify the module name, the scope for the module, and the types of examples to create. Provide clear choices for all questions based on investigation, e.g.:
+
      ```markdown
      1. Name:
           A) ...
@@ -104,6 +123,7 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
           D) Describe custom requirements.
       Reply with your picks (e.g., “1A, 2B, 3A”) and any extra constraints.
      ```
+
    - Create a plan file in the `Plan/` directory using the provided information along with the `$PLAN` automation script.
    - Do not edit Terraform until the plan exists.
 
@@ -120,7 +140,7 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
    - Note assumptions or workarounds in the plan and docs.
 
 6. Document
-   - Create module documentation using the `$DOCUMENT`.
+   - Create module documentation using the `$DOCUMENT`, after development is done and tests pass.
    - Update completed tasks in Plan and memory.
 
 7. Cleanup
@@ -135,10 +155,12 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 - Surface cost-impacting knobs clearly and keep defaults conservative.
 
 ## Security & Configuration Notes
+
 - Default to least privilege, encryption at rest/in transit, and no public exposure.
 - Avoid hard-coded account IDs, regions, or environment names in module defaults.
 
 ## Coding Style & Naming Conventions
+
 - Module directories use kebab-case (e.g., `iam-role-github-oidc`).
 - Variables/outputs use `snake_case`; resource names follow provider conventions.
 - Child modules declare `required_providers` but do not include provider blocks.
@@ -159,8 +181,8 @@ Always read all references when planing.
 - `references/09-testing-and-ci.md`: Local testing workflow and CI gates.
 - `references/10-examples-and-docs-automation.md`: Example design and documentation automation scripts.
 
-
 ## DO NOT DO
+
 - DO NOT RUN `terraform apply` at any point!
 - DO NOT CREATE ANY AWS resources!
 - DO NOT EXPOSE ANY SECRETS OR VARIABLES!

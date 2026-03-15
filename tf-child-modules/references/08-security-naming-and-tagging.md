@@ -9,14 +9,17 @@ description: >-
 # Security, Naming, and Tagging Guidelines
 
 ## Audience
+
 Module authors, reviewers, and security stakeholders.
 
 ## Purpose
+
 Capture the security baseline, naming conventions, tagging standards, and shared
 metadata patterns in a single place. Other guides (for example providers/state,
 interfaces, and testing) refer here for security, naming, and tagging policy.
 
 ## Security Baseline
+
 - Pin Terraform and provider versions to stable constraints and update regularly.
 - Store secrets in AWS Secrets Manager or SSM Parameter Store.
 - Avoid passing secret values through variables or outputs where possible; when
@@ -33,12 +36,14 @@ state access control) are covered in more detail in
 `05-providers-state-and-backends.md`.
 
 ## Naming and Tagging
+
 - Use the shared meta naming module (or equivalent shared metadata locals) to
   enforce consistent naming and tag merging.
 - Define `locals.meta` once in the calling module and pass `meta` (or derived
   values) to internal modules.
 
 Required pattern:
+
 ```hcl
 module "meta" {
   source = "../meta"
@@ -53,6 +58,7 @@ module "meta" {
   cost allocation, and security tooling.
 
 ## KMS and Encryption Defaults
+
 - Prefer SSE-KMS where supported.
 - Ensure state and sensitive data are encrypted and access-controlled.
 - Use KMS keys for encryption of storage and secrets where available.
@@ -60,14 +66,17 @@ module "meta" {
   approved exception cases.
 
 ## Security Exceptions
+
 If a module must deviate from secure defaults, document the exception explicitly
 in the README and in planning notes. Include:
+
 - The exact exception and why it is required.
 - The scope of impact and affected resources.
 - Compensating controls applied.
 - A review date or condition for removing the exception.
 
 ## Secure Module Checklist
+
 Use this checklist when designing or reviewing modules:
 
 - [ ] Terraform and provider versions are pinned to supported, non-end-of-life

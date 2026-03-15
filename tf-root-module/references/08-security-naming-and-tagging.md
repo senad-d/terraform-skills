@@ -9,14 +9,17 @@ description: >-
 # Security, Naming, and Tagging Guidelines
 
 ## Audience
+
 Module authors, reviewers, and security stakeholders.
 
 ## Purpose
+
 Capture the security baseline, naming conventions, tagging standards, and shared
 metadata patterns in a single place. Other guides (for example providers/state,
 interfaces, and testing) refer here for security, naming, and tagging policy.
 
 ## Security Baseline
+
 - Pin Terraform and provider versions to stable constraints and update
   regularly.
 - Store secrets in AWS Secrets Manager or SSM Parameter Store.
@@ -33,12 +36,14 @@ state access control) are covered in more detail in
 `05-infrastructure-architecture-guidelines.md`.
 
 ## Root Module Enforcement
+
 - Root modules must apply naming and tag standards to all child modules.
 - Root modules must default to private networking and encryption unless
   explicitly overridden.
 - Security exceptions require documentation in the plan and README.
 
 ## Network Security Controls
+
 - Use security groups for instance and ENI traffic control; treat them as the
   primary control plane.
 - Use network ACLs for subnet-level guardrails and explicit deny rules where
@@ -47,17 +52,20 @@ state access control) are covered in more detail in
 - Enable VPC Flow Logs when network visibility is required.
 
 ## Logging Baseline
+
 - Use CloudTrail for API activity auditing.
 - Use CloudWatch Logs for application and infrastructure log aggregation.
 - Define log retention and access controls explicitly.
 
 ## Naming and Tagging
+
 - Use the shared meta naming module (or equivalent shared metadata locals) to
   enforce consistent naming and tag merging.
 - Define `locals.meta` once in the calling module and pass `meta` (or derived
   values) to internal modules.
 
 Required pattern:
+
 ```hcl
 module "meta" {
   source = "../meta"
@@ -72,6 +80,7 @@ module "meta" {
   cost allocation, and security tooling.
 
 ## KMS and Encryption Defaults
+
 - Prefer SSE-KMS where supported.
 - Ensure state and sensitive data are encrypted and access-controlled.
 - Use KMS keys for encryption of storage and secrets where available.
@@ -79,14 +88,17 @@ module "meta" {
   approved exception cases.
 
 ## Security Exceptions
+
 If a module must deviate from secure defaults, document the exception explicitly
 in the README and in planning notes. Include:
+
 - The exact exception and why it is required.
 - The scope of impact and affected resources.
 - Compensating controls applied.
 - A review date or condition for removing the exception.
 
 ## Secure Module Checklist
+
 Use this checklist when designing or reviewing modules:
 
 - [ ] Terraform and provider versions are pinned to supported, non-end-of-life
@@ -110,6 +122,7 @@ For how security checks are integrated into CI workflows, see
 `09-testing-and-ci.md`.
 
 ## Related Guides
+
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
 - `03-module-structure-and-layout.md` — required layout and structure.

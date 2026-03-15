@@ -5,10 +5,10 @@ description: Initialize a repository memory-bank directory and fill TODO section
 
 # Memory Bank Bootstrap
 
-
 ## Skill path (set once)
 
 Automation scripts:
+
 ```bash
 export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 export RULE="$CODEX_HOME/skills/memory-bank-bootstrap/scripts/add-agents.sh"
@@ -18,20 +18,24 @@ export MEMORY="$CODEX_HOME/skills/memory-bank-bootstrap/scripts/create-memory.sh
 User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## Agent gide
+
 - Use `add-agents.sh` to add the AGENTS.md rules for memory-bank:
+
 ```bash
 "$RULE" [TARGET_PATH]
 ```
 
 ## Memory Template
+
 - Use `create-memory.sh` to create the memory-bank files:
+
 ```bash
 "$MEMORYN" [TARGET_DIR]
 ```
 
 ## Workflow
 
-1. Confirm `memory-bank/` does not exist. 
+1. Confirm `memory-bank/` does not exist.
    - If it exists, STOP and report that no changes were made. Do not edit anything.
 2. Read project instructions.
 3. Create the scaffold with the `$MEMORY` script.
@@ -80,6 +84,7 @@ Run the script from this skill against the target repository root.
 Ask the user:
 
 > Where should AGENTS.md live?
+>
 > 1. Repository root for this project (AGENTS.md in the current repo root)
 > 2. User-wide CODEX_HOME (AGENTS.md under `$CODEX_HOME`)
 > 3. Custom path (you specify the path)
@@ -116,6 +121,7 @@ Then run the script:
 - `$RULE` add or update the desired AGENTS.md file according to the specified rules.
 
 ## DO NOT DO
+
 - DO NOT USE `mkdir` command to creadte directories.
 - DO NOT USE any commands other than those specified in this guide.
 - YOU DO NOT NEED to read `scripts/*.sh` scripts.

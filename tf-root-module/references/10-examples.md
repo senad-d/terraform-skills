@@ -9,14 +9,17 @@ description: >-
 # Examples, Docs, and User-Facing Documentation
 
 ## Audience
+
 Module authors writing examples and maintaining READMEs.
 
 ## Purpose
+
 Normalize example structure and design, explain how examples act as both
 user-facing documentation and test assets, and define how documentation
 automation (including READMEs and terraform-docs) fits into the workflow.
 
 ## Example Design Principles
+
 - Examples should be composed from existing internal modules where possible.
 - Avoid redefining raw resources when a suitable internal module exists.
 - Use examples to demonstrate realistic, secure scenarios with minimal inputs.
@@ -26,11 +29,13 @@ automation (including READMEs and terraform-docs) fits into the workflow.
   environment names).
 
 Examples are consumed both by readers and by automation:
+
 - As documentation: they show how to use a module safely and idiomatically.
 - As test inputs: they are used by `scripts/test.sh` and CI to validate modules.
   See `09-testing-and-ci.md` for the testing workflow.
 
 ## Example Creation Workflow
+
 1. Understand the primary module and scenario to demonstrate.
 2. Identify required supporting building blocks (networking, security, IAM,
    storage, etc.).
@@ -44,7 +49,9 @@ Examples are consumed both by readers and by automation:
    a temporary fallback and propose a new module to fill the gap.
 
 ## Mandatory Behaviors
+
 When creating or updating examples, the following are required:
+
 - Always search for and prefer existing modules in this repository for
   supporting capabilities.
 - Always read the module README for any module used in an example to confirm
@@ -63,6 +70,7 @@ When creating or updating examples, the following are required:
   no public exposure.
 
 ## Root Module Example Requirements
+
 - Root module examples must wire child modules from `modules/` using relative
   sources.
 - Examples must demonstrate the expected tag and naming propagation.
@@ -73,10 +81,12 @@ Security baseline and naming/tagging rules are defined in
 `08-security-naming-and-tagging.md`.
 
 ## Runtime Examples (Required Defaults)
+
 When an example needs runtime code and the user has not provided any, use the
 following defaults.
 
 ### Lambda (Node.js)
+
 Use this handler for smoke tests and validation only. Configure the runtime to a
 current Node.js version (for example, Node.js 20) and set the handler to
 `index.handler` when the file is named `index.js`.
@@ -92,6 +102,7 @@ exports.handler = async (event) => {
 ```
 
 ### EC2 (User Data with Nginx)
+
 Use this user data to install Nginx and display the instance's current local IP
 on the default page. This is intended for basic validation examples only.
 
@@ -125,8 +136,10 @@ systemctl restart nginx
 ```
 
 ## Additional Runtime Templates (Document Only)
+
 Maintain guidance for these standard templates, but do not embed code in this
 guide unless explicitly requested:
+
 - ECS/Fargate: minimal container healthcheck and logging configuration
   expectations.
 - EKS/Kubernetes: minimal deployment and service manifest expectations with
@@ -147,6 +160,7 @@ guide unless explicitly requested:
   guidance.
 
 ## Related Guides
+
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
 - `03-module-structure-and-layout.md` — required layout and structure.

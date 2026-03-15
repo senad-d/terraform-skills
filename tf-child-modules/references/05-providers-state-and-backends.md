@@ -8,15 +8,18 @@ description: >-
 # Providers, State, Backends, and Environments
 
 ## Audience
+
 Engineers responsible for provider configuration, state topology, and
 multi-account or multi-environment patterns.
 
 ## Purpose
+
 Centralize provider usage rules, backend conventions, and state layout patterns
 for modules in this repository, including how they are applied across accounts
 and environments.
 
 ## Provider Rules
+
 - Provider configurations are global to a Terraform configuration and must be
   defined only in the root module.
 - Reusable modules must not contain `provider` blocks. They should only declare
@@ -26,10 +29,12 @@ and environments.
   will cause planning errors because state still references that configuration.
 
 ### Required Providers in Modules
+
 Declare provider requirements in a `terraform` block inside `versions.tf` at the
 root of each module (including nested modules under `modules/`).
 
 Example:
+
 ```hcl
 terraform {
   required_providers {
@@ -42,10 +47,12 @@ terraform {
 ```
 
 ### Provider Aliases
+
 If a module needs multiple provider configurations, declare
 `configuration_aliases` and use explicit provider mapping in the calling module.
 
 Example:
+
 ```hcl
 terraform {
   required_providers {
@@ -59,11 +66,13 @@ terraform {
 ```
 
 ### Implicit Inheritance vs Explicit Passing
+
 - Default provider configurations are inherited by child modules.
 - Aliased provider configurations are never inherited and must be passed via
 the `providers` map in the `module` block.
 
 Example:
+
 ```hcl
 provider "aws" {
   region = "us-west-1"
@@ -83,6 +92,7 @@ module "example" {
 ```
 
 ## Remote State and Backends
+
 Remote state and backend configuration must follow shared conventions so
 multi-environment and multi-account usage remains predictable.
 
@@ -95,6 +105,7 @@ multi-environment and multi-account usage remains predictable.
 Backend config fields: `bucket`, `key`, `region`, `encrypt`, `dynamodb_table`.
 
 Example backend variables:
+
 ```hcl
 bucket  = "myproject-dev-tf-state"
 key     = "dev/vpc/terraform.tfstate"
@@ -105,12 +116,14 @@ use_lockfile = true
 ```
 
 Example key patterns:
+
 - VPC: `${var.env}/vpc/terraform.tfstate`
 - Cloud Map: `${var.env}/cloud-map/terraform.tfstate`
 - S3: `${var.env}/s3-hdn-files/terraform.tfstate`
 - SQS: `${var.env}/sqs-hdn-inbound/terraform.tfstate`
 
 ### Backend Configuration Example
+
 ```hcl
 terraform {
   backend "s3" {}
@@ -123,6 +136,7 @@ terraform {
 ```
 
 ### Remote State Wiring
+
 Reference other stacks in this repo via `terraform_remote_state`; avoid
 hardcoded ARNs. For external or AWS-managed resources, prefer data sources.
 
@@ -130,10 +144,12 @@ Remote state wiring patterns affect how modules are composed. See
 `07-composition-patterns-and-root-module-design.md` for composition guidance.
 
 ## Multi-Account and Multi-Environment Providers
+
 Use aliased providers with `assume_role` to operate in member accounts or
 multiple environments.
 
 Example:
+
 ```hcl
 provider "aws" {
   alias = "target_account"
@@ -146,6 +162,7 @@ provider "aws" {
 ```
 
 Typical patterns:
+
 - One default provider for the management account plus one or more aliased
   providers for member accounts.
 - Environment-specific workspaces or state keys that include the environment
@@ -155,7 +172,9 @@ Security expectations for provider credentials and cross-account roles follow
 the baseline in `08-security-naming-and-tagging-guidelines.md`.
 
 ## Security Considerations for Providers and State
+
 Provider and backend configuration is security-sensitive:
+
 - Ensure provider credentials are short-lived where possible and not embedded in
   configuration files.
 - Restrict access to state buckets and lock tables to the minimal set of
@@ -167,6 +186,7 @@ For the full security baseline, naming conventions, and tagging requirements,
 see `08-security-naming-and-tagging-guidelines.md`.
 
 ## Related Guides
+
 - `07-composition-patterns-and-root-module-design.md` for how state layout
   impacts composition.
 - `06-module-distribution-versioning-and-upgrades.md` for refactor and

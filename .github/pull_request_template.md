@@ -20,10 +20,11 @@
 
 <!-- Be as specific as possible: commands run, scripts executed, manual flows exercised, etc. -->
 
-- Commands / scripts run:
-  - 
-- Notes:
-  - 
+- Commands / scripts run
+  -
+
+- Notes
+  -
 
 ## Checklist
 

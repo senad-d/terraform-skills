@@ -22,7 +22,6 @@ Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that turns a b
 - **Opinionated, repeatable process**  
   Encourages consistent patterns across modules (structure, interfaces, testing, docs) that are easy to scale across teams.
 
-
 ## Repository Structure
 
 This repository contains multiple skills that are meant to be used together as a bundle:
@@ -55,7 +54,6 @@ This repository contains multiple skills that are meant to be used together as a
 
 The top-level [`LICENSE`](LICENSE) applies to the content in this repository.
 
-
 ## Prerequisites
 
 Before using these skills, ensure you have:
@@ -71,7 +69,6 @@ You should be comfortable with:
 - Basic Terraform usage (init/plan/apply)
 - AWS IAM and resource management
 - Running shell scripts on your platform (macOS, Linux, or WSL)
-
 
 ## Installation
 
@@ -104,7 +101,6 @@ Follow the CODEX CLI documentation for registering local skills. In most setups,
 - Reference the skills by name (for example, `$memory-bank-bootstrap`, `$tf-child-modules`, and `$tf-root-module`) in your tasks
 
 Refer to [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md), [`tf-child-modules/SKILL.md`](tf-child-modules/SKILL.md), and [`tf-root-module/SKILL.md`](tf-root-module/SKILL.md) for skill-specific integration details.
-
 
 ## Configuration
 
@@ -142,7 +138,6 @@ Notes:
 - Ensure `npx` and `uvx` (from [uv](https://github.com/astral-sh/uv)) are available on your `PATH`.
 - Restart CODEX CLI or reload its configuration after updating the file.
 
-
 ## Usage
 
 Typical workflow for a new Terraform/AWS module project:
@@ -154,6 +149,7 @@ Run the memory bank bootstrap skill once per repository/workspace to seed projec
 ```bash
 codex
 ```
+
 Use skill: `$memory-bank-bootstrap`
 
 This sets up the `memory-bank/` directory and AGENTS rules that CODEX can reuse across subsequent tasks.
@@ -203,7 +199,6 @@ As you create modules, the memory bank accumulates:
 
 Subsequent CODEX tasks (for example, refactoring an existing module or adding a new one) can reuse this context automatically, reducing duplication and helping maintain consistency across your Terraform codebase.
 
-
 ## Development
 
 If you want to extend or customize these skills:
@@ -214,7 +209,6 @@ If you want to extend or customize these skills:
 
 Refer to the individual [`SKILL.md`](memory-bank-bootstrap/SKILL.md) files for implementation details and conventions.
 
-
 ## Contributing
 
 Contributions are welcome. Common contribution paths include:
@@ -224,7 +218,6 @@ Contributions are welcome. Common contribution paths include:
 - Enhancing support for additional MCP servers or context sources
 
 Please open an issue or pull request in this repository with a clear description of the change and rationale.
-
 
 ## License
 

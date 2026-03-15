@@ -10,16 +10,19 @@ description: >-
 # Root Module Fundamentals and Design Principles
 
 ## Audience
+
 Engineers creating or evolving Terraform root modules that compose existing
 standardized child modules into concrete stacks or environments.
 
 ## Purpose
+
 Explain what root modules are in this repository, when a new root module is
 warranted versus reusing or extending an existing one, how root modules relate
 to reusable child modules, and which other guides provide detailed layout,
 interface, composition, and testing rules.
 
 ## What Is a Root Module
+
 A Terraform module is a container for multiple resources used together. Modules
 let you describe infrastructure in terms of architecture-level concepts rather
 than individual resource types.
@@ -28,12 +31,15 @@ In Terraform, the `.tf` files in your working directory when you run
 `terraform plan` or `terraform apply` together form the root module.
 
 ### Root Modules (Stack) vs Reusable Modules (Child)
+
 Root modules:
+
 - Represent a concrete stack or environment.
 - Wire together multiple child modules and any remaining resources.
 - Configure providers and backends.
 
 Reusable modules:
+
 - Encapsulate a coherent capability (for example, "VPC with subnets" or
   "ECS service with ALB").
 - Expose a stable interface via variables and outputs.
@@ -43,6 +49,7 @@ For file layout and where root modules, nested modules, and examples live in
 this repository, see `03-module-structure-and-layout.md`.
 
 ## When to Create a Root Module
+
 Create a root module when you need a new, concrete stack that has its own
 lifecycle, ownership, or blast radius.
 
@@ -55,6 +62,7 @@ lifecycle, ownership, or blast radius.
   existing module instead.
 
 ## Decision Flow (Root vs Extend)
+
 1. Does a root module already exist for this stack or capability?
 2. If yes, can the change be handled with new inputs/outputs or examples?
 3. Would extending it introduce breaking changes for current consumers?
@@ -63,6 +71,7 @@ lifecycle, ownership, or blast radius.
 6. If most answers are yes, create a new root module; otherwise extend.
 
 ## High-Level Design Principles
+
 Well-designed modules share the following characteristics:
 
 - **Cohesive scope**: each module owns a clear capability and does not mix
@@ -80,6 +89,7 @@ Interface and variable standards are defined in
 `04-module-interfaces-and-arguments.md`.
 
 ## Child Module Selection Workflow
+
 1. Search `modules/` for an existing capability before adding resources.
 2. Read each candidate module README to confirm scope and interface.
 3. Prefer internal modules; avoid raw resources unless no module exists.
@@ -87,20 +97,25 @@ Interface and variable standards are defined in
 5. If no module exists, document the gap and propose a new module name/scope.
 
 ## Org Guardrails Apply (Always)
+
 Root modules must follow the organization architecture and security guardrails:
+
 - Architecture baseline: `05-infrastructure-architecture-guidelines.md`
 - Security, naming, tagging: `08-security-naming-and-tagging.md`
 
 ## MCP Documentation Workflow (Required)
+
 When planning a new root module, use MCP documentation tools as the primary
 sources of truth. This avoids stale assumptions and keeps module behavior
 aligned with provider and service capabilities.
 
 ### AWS Documentation Tools
+
 Use the AWS documentation MCP server for service behavior, limits, and best
 practices.
 
 Available tools:
+
 - `mcp__aws-knowledge-mcp-server__aws___search_documentation`
 - `mcp__aws-knowledge-mcp-server__aws___read_documentation`
 - `mcp__aws-knowledge-mcp-server__aws___recommend`
@@ -108,6 +123,7 @@ Available tools:
 - `mcp__aws-knowledge-mcp-server__aws___get_regional_availability`
 
 Recommended usage:
+
 1. Search for the service or feature with `search_documentation`.
 2. Read the authoritative page with `read_documentation`.
 3. If unsure about feature availability, check regions with `list_regions` and
@@ -115,6 +131,7 @@ Recommended usage:
 4. Use `recommend` to discover related or newly added documentation pages.
 
 Example search phrases:
+
 ```text
 "S3 bucket encryption configuration"
 "Lambda environment variables limits"
@@ -122,16 +139,19 @@ Example search phrases:
 ```
 
 ### Terraform Documentation Tools
+
 Use the Terraform MCP server to confirm provider resources, arguments, and
 schema details.
 
 Available tools:
+
 - `mcp__terraform-mcp-server__SearchAwsProviderDocs`
 - `mcp__terraform-mcp-server__SearchAwsccProviderDocs`
 - `mcp__terraform-mcp-server__SearchUserProvidedModule`
 - `mcp__terraform-mcp-server__SearchSpecificAwsIaModules`
 
 Recommended usage:
+
 1. Use `SearchAwsProviderDocs` to confirm resource arguments, attributes, and
    examples for the AWS provider.
 2. Use `SearchAwsccProviderDocs` when working with AWS Cloud Control (AWSCC)
@@ -142,6 +162,7 @@ Recommended usage:
    patterns and defaults.
 
 Example search inputs:
+
 ```text
 asset_name = "aws_s3_bucket"
 asset_name = "aws_lambda_function"
@@ -149,13 +170,16 @@ module_url = "terraform-aws-modules/vpc/aws"
 ```
 
 ### Planning Expectations
+
 - Capture findings from AWS and Terraform docs in your planning notes.
 - If documentation is ambiguous, prefer the most conservative, secure defaults.
 - Do not proceed with implementation until documentation sources confirm the
   required behavior.
 
 ## Planning Requirements (Production Modules)
+
 Before implementing a new root module, document the following in a short plan:
+
 - Module goal, scope boundaries, and non-goals.
 - Primary AWS services, child modules, and Terraform resources involved
   (validated via MCP docs).
@@ -164,21 +188,25 @@ Before implementing a new root module, document the following in a short plan:
 - Example scenario(s) and supporting modules required.
 
 ## Script Usage: `plan.sh`
+
 Use the plan scaffolding script to create a standardized planning document before
 implementing a new module.
 
 Canonical invocation:
+
 ```bash
 ./scripts/plan.sh -m <module_name> [-g <short_goal>]
 ```
 
 Inputs:
+
 - `-m|--module`: Module name (required). Use kebab-case. Used to derive the plan
   filename and populate placeholders.
 - `-g|--goal`: Short, human-readable goal for the module (optional but
   recommended). Included in the Summary section of the plan.
 
 Outputs:
+
 - Creates a `Plan/` directory in the repository root if it does not already
   exist.
 - Generates `Plan/<YYYYMMDD>-<module_slug>.md`, where `module_slug` is a
@@ -186,12 +214,14 @@ Outputs:
 - Populates the file with a structured template.
 
 Failure modes:
+
 - Missing `-m|--module` value.
 - Unknown or malformed flags.
 - Filesystem errors when creating the `Plan/` directory or writing the plan
   file.
 
 ## Related Guides
+
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `03-module-structure-and-layout.md` — required layout and structure.
 - `04-module-interfaces-and-arguments.md` — variables, validation, outputs.

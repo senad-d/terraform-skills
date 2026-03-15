@@ -8,25 +8,30 @@ description: >-
 # Module Structure and Repository Layout
 
 ## Audience
+
 Module implementers and reviewers.
 
 ## Purpose
+
 Define the canonical filesystem layout for module repositories and internal
 module directories in this repo, including root modules, nested modules,
 examples, and supporting scaffolding.
 
 ## Standard Layout
+
 The standard module structure is a file and directory layout recommended for
 reusable modules. Terraform tooling expects this structure for documentation and
 module indexing. The only required element is the root module; everything else
 is optional but strongly recommended.
 
 ### Root Module (Required)
+
 Terraform files must exist in the root directory of the module. This root module
 is the primary entry point and should be opinionated about defaults and
 behavior.
 
 A typical root module contains at least:
+
 - `main.tf` — primary entry point; child module calls belong here.
 - `variables.tf` — variable definitions and validation.
 - `outputs.tf` — outputs exposed to callers.
@@ -37,11 +42,13 @@ For detailed interface and variable standards, see
 `04-module-interfaces-and-arguments.md`.
 
 ### Variables and Outputs
+
 All variables and outputs must include descriptions. See
 `04-module-interfaces-and-arguments.md` for full interface rules, including
 naming, types, defaults, and validation.
 
 ## Child Modules
+
 - Child modules live under `modules/`.
 - Any child module with a `README.md` is considered usable by external
   consumers.
@@ -52,7 +59,9 @@ naming, types, defaults, and validation.
   design guidance.
 
 ## Structure Examples
+
 Minimal structure:
+
 ```text
 minimal-module/
 |-- README.md
@@ -63,6 +72,7 @@ minimal-module/
 ```
 
 Complete structure:
+
 ```text
 |-- modules/
 |   |-- child-a/
@@ -88,16 +98,19 @@ Complete structure:
 ## Supporting Directories
 
 ### `Plan/`
+
 Planning documents for new or significantly changed modules live under `Plan/`
 in the repository root. Use `scripts/plan.sh` to scaffold plans. For planning
 requirements and workflow, see `02-module-creation-and-fundamentals.md`.
 
 ## Script Usage
+
 Script details are centralized in
 `01-overview-and-lifecycle.md` under **Automation Scripts**. This guide only
 references where scripts fit in the layout.
 
 ## Related Guides
+
 - `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
 - `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
 - `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
