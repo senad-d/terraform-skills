@@ -106,7 +106,7 @@ cp -R memory-bank-bootstrap tf-child-modules tf-root-module "$HOME/.codex"/ || e
 
 ## Configuration
 
-To get the most out of this bundle, configure your CODEX MCP servers so tasks can leverage rich context from AWS, Terraform, and external documentation.
+To get the most out of this bundle, configure your tooling and CODEX MCP servers so tasks can leverage rich context.
 
 ### Recommended tools
 
