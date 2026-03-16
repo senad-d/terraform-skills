@@ -93,17 +93,7 @@ You should be comfortable with:
 
 ## Installation
 
-### 1. Install CODEX CLI
-
-Follow the official CODEX CLI installation documentation for your platform and verify it is available:
-
-```bash
-codex --help
-```
-
-If the command prints help output, CODEX is correctly installed and on your `PATH`.
-
-### 2. Obtain this skill bundle
+### Obtain this skill bundle
 
 Clone this repository into a location where you manage your CODEX skills:
 
@@ -117,6 +107,28 @@ cp -R memory-bank-bootstrap tf-child-modules tf-root-module "$HOME/.codex"/ || e
 ## Configuration
 
 To get the most out of this bundle, configure your CODEX MCP servers so tasks can leverage rich context from AWS, Terraform, and external documentation.
+
+### Recommended tools
+
+- Localstack for testing:
+```bash
+docker run \
+  --rm -it \
+  -p 127.0.0.1:4566:4566 \
+  -p 127.0.0.1:4510-4559:4510-4559 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  localstack/localstack
+```
+
+- AWS credentials:
+```bash
+[localstack]
+region = us-east-1
+output = json
+aws_access_key_id = AKIATESTKEY1234567890
+aws_secret_access_key = ABCDEFGHIJKLMNOPQRSTUVWX
+endpoint_url = http://localhost:4566
+```
 
 ### Recommended MCP servers
 
