@@ -108,10 +108,10 @@ If the command prints help output, CODEX is correctly installed and on your `PAT
 Clone this repository into a location where you manage your CODEX skills:
 
 ```bash
-git clone https://github.com/senad-d/terraform-skills.git && \
-    cd terraform-skills && \
-    [ -d "$HOME/.codex" ] && \
-    cp -R memory-bank-bootstrap tf-child-modules tf-root-module "$HOME/.codex"/ || echo 'Error: $HOME/.codex does not exist or clone failed'
+git clone https://github.com/senad-d/terraform-skills.git 
+
+cd terraform-skills && [ -d "$HOME/.codex" ] && \
+cp -R memory-bank-bootstrap tf-child-modules tf-root-module "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
 ```
 
 ### 3. Register the skills with CODEX
@@ -129,7 +129,6 @@ To get the most out of this bundle, configure your CODEX MCP servers so tasks ca
 
 ### Recommended MCP servers
 
-- **context7** – general-purpose context and code search: <https://context7.com/>
 - **terraform-mcp-server** – Terraform-specific knowledge and helpers: <https://github.com/hashicorp/terraform-mcp-server>
 - **aws-knowledge-mcp-server** – AWS documentation and service knowledge: <https://awslabs.github.io/mcp/servers/aws-knowledge-mcp-server/>
 
@@ -138,11 +137,6 @@ To get the most out of this bundle, configure your CODEX MCP servers so tasks ca
 Add the following MCP configuration to your CODEX CLI configuration file (commonly `config.toml`):
 
 ```toml
-[mcp_servers.context7]
-command = "npx"
-args = ["-y", "@upstash/context7-mcp", "--api-key", "API_KEY_HERE"]
-startup_timeout_sec = 20.0
-
 [mcp_servers.terraform-mcp-server]
 command = "uvx"
 args = ["awslabs.terraform-mcp-server@latest"]
@@ -155,7 +149,6 @@ args = ["fastmcp", "run", "https://knowledge-mcp.global.api.aws"]
 
 Notes:
 
-- Replace `API_KEY_HERE` with your actual Context7 API key.
 - Ensure `npx` and `uvx` (from [uv](https://github.com/astral-sh/uv)) are available on your `PATH`.
 - Restart CODEX CLI or reload its configuration after updating the file.
 

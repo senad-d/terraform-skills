@@ -120,10 +120,21 @@ for example_type in "${types[@]}"; do
   mkdir -p "${example_dir}"
 
   cat <<EOF_MAIN > "${example_dir}/main.tf"
+provider "aws" {
+  region = var.aws_region
+}
+
+locals {
+  meta = {
+    owner       = "example"
+    environment = "dev"
+    basename    = "glue"
+  }
+}
+
 module "meta" {
   source = "../../../modules/meta"
-
-  ...
+  meta   = local.meta
 }
 EOF_MAIN
 
