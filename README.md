@@ -114,15 +114,6 @@ cd terraform-skills && [ -d "$HOME/.codex" ] && \
 cp -R memory-bank-bootstrap tf-child-modules tf-root-module "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
 ```
 
-### 3. Register the skills with CODEX
-
-Follow the CODEX CLI documentation for registering local skills. In most setups, you will:
-
-- Point CODEX to this repository as a skill bundle
-- Reference the skills by name (for example, `$memory-bank-bootstrap`, `$tf-child-modules`, and `$tf-root-module`) in your tasks
-
-Refer to [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md), [`tf-child-modules/SKILL.md`](tf-child-modules/SKILL.md), and [`tf-root-module/SKILL.md`](tf-root-module/SKILL.md) for skill-specific integration details.
-
 ## Configuration
 
 To get the most out of this bundle, configure your CODEX MCP servers so tasks can leverage rich context from AWS, Terraform, and external documentation.
@@ -161,21 +152,19 @@ Typical workflow for a new Terraform/AWS module project:
 Run the memory bank bootstrap skill once per repository/workspace to seed project-specific context.
 
 ```bash
-codex
+$memory-bank-bootstrap
 ```
-
-Use skill: `$memory-bank-bootstrap`
 
 This sets up the `memory-bank/` directory and AGENTS rules that CODEX can reuse across subsequent tasks.
 
 After the memory bank is created, a `Rules/` directory is added at the root of this repository. The `$tf-child-modules` and `$tf-root-module` skills automatically read any files in this directory as additional, project-specific rules, in addition to the default rules they ship with.
 
-### 2. Create and evolve Terraform AWS child modules
+### 2. Create Terraform AWS child modules
 
 Use the `tf-child-modules` skill to plan, scaffold, and refine child modules. For example, in CODEX you might start a task like:
 
 ```text
-new task -> create aws module for cloud-map using $tf-child-modules
+new task -> create aws module for vpc using $tf-child-modules
 ```
 
 Behind the scenes, CODEX can leverage scripts such as:
@@ -193,7 +182,7 @@ These workflows encourage consistent module structure, testing, and documentatio
 Use the `tf-root-module` skill to plan and assemble root modules that compose multiple child modules. For example:
 
 ```text
-new task -> create root module for shared networking using $tf-root-module
+new task -> create module for shared networking using $tf-root-module
 ```
 
 Typical scripts include:
@@ -212,16 +201,6 @@ As you create modules, the memory bank accumulates:
 - Testing and rollout strategies
 
 Subsequent CODEX tasks (for example, refactoring an existing module or adding a new one) can reuse this context automatically, reducing duplication and helping maintain consistency across your Terraform codebase.
-
-## Development
-
-If you want to extend or customize these skills:
-
-1. Clone this repository and create a new branch.
-2. Modify the relevant skill definitions and scripts under `memory-bank-bootstrap/`, `tf-child-modules/`, or `tf-root-module/`.
-3. Test locally by pointing your CODEX workspace at your modified checkout.
-
-Refer to the individual [`SKILL.md`](memory-bank-bootstrap/SKILL.md) files for implementation details and conventions.
 
 ## Contributing
 
