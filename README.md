@@ -181,11 +181,11 @@ new task -> create aws module for vpc using $tf-child-modules
 
 Behind the scenes, CODEX can leverage scripts such as:
 
-- [`tf-child-modules/scripts/create-module.sh`](tf-child-modules/scripts/create-module.sh)
-- [`tf-child-modules/scripts/create-examples.sh`](tf-child-modules/scripts/create-examples.sh)
-- [`tf-child-modules/scripts/create-plan.sh`](tf-child-modules/scripts/create-plan.sh)
-- [`tf-child-modules/scripts/test-module.sh`](tf-child-modules/scripts/test-module.sh)
-- [`tf-child-modules/scripts/create-documentation.sh`](tf-child-modules/scripts/create-documentation.sh)
+- [`tf-child-modules/scripts/child-module.sh`](tf-child-modules/scripts/child-module.sh)
+- [`tf-child-modules/scripts/root-module.sh`](tf-child-modules/scripts/root-module.sh)
+- [`tf-child-modules/scripts/plan.sh`](tf-child-modules/scripts/plan.sh)
+- [`tf-child-modules/scripts/test.sh`](tf-child-modules/scripts/test.sh)
+- [`tf-child-modules/scripts/document.sh`](tf-child-modules/scripts/document.sh)
 
 These workflows encourage consistent module structure, testing, and documentation aligned with `terraform-aws-modules` best practices.
 
@@ -199,8 +199,8 @@ new task -> create module for shared networking using $tf-root-module
 
 Typical scripts include:
 
-- [`tf-root-module/scripts/root-module.sh`](tf-root-module/scripts/root-module.sh)
 - [`tf-root-module/scripts/plan.sh`](tf-root-module/scripts/plan.sh)
+- [`tf-root-module/scripts/root-module.sh`](tf-root-module/scripts/root-module.sh)
 - [`tf-root-module/scripts/test.sh`](tf-root-module/scripts/test.sh)
 
 ### 4. Iterate with memory-backed context
