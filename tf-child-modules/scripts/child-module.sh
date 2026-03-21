@@ -76,11 +76,30 @@ todo_comment="# TODO: configure required inputs for ${module_name}"
 # main.tf
 printf '%s\n\n' "${todo_comment}" > "${module_dir}/main.tf"
 
-# variables.tf
-printf '%s\n\n' "${todo_comment}" > "${module_dir}/variables.tf"
-
 # outputs.tf
 printf '%s\n\n' "${todo_comment}" > "${module_dir}/outputs.tf"
+
+cat > "${module_dir}/variables.tf" <<EOF
+variable "aws_region" {
+  description = "Region where ${module_name} will be managed"
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.region == null || length(trim(var.region, " ")) > 0
+    error_message = "region must be a non-empty string when set."
+  }
+}
+
+variable "create" {
+  description = "Whether to create ${module_name} resources"
+  type        = bool
+  default     = true
+  nullable    = false
+}
+
+${todo_comment}
+EOF
 
 cat > "${module_dir}/versions.tf" <<EOF
 terraform {
@@ -93,6 +112,7 @@ terraform {
     }
   }
 }
+
 EOF
 
 echo "Created ${module_dir}"
