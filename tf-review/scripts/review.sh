@@ -114,9 +114,9 @@ cat > "${review_path}" <<EOF
 # Findings Overview
 Severity scale: Critical, High, Medium, Low, Informational
 
-| ID | Severity | Area | File | Description | Recommendation | Status |
-| --- | --- | --- | --- | --- | --- | --- |
-| <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+| ID | Severity | Pillar | Area | File | Description | Recommendation | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
 
 # Detailed Findings
 ## [F-001] <!-- TODO: title -->
@@ -150,6 +150,11 @@ Severity scale: Critical, High, Medium, Low, Informational
 - Evidence item: <!-- file:line, plan output, or tool output -->
 - MCP reference: <!-- TODO -->
 
+# Verification Plan
+| Finding ID | Verification Step | Expected Outcome |
+| --- | --- | --- |
+| <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+
 # Improvement Path
 **Top 3 fixes (priority order):**
 1. <!-- TODO: finding ID + reason -->
@@ -159,6 +164,20 @@ Severity scale: Critical, High, Medium, Low, Informational
 **Per finding:**
 - Fastest safe fix: <!-- TODO -->
 - Preferred fix: <!-- TODO -->
+
+# Handoff
+## Action Queue
+| Finding ID | Priority | Pillar | File:Line | Exact change | Rationale | Verification |
+| --- | --- | --- | --- | --- | --- | --- |
+| <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+
+## Next Steps
+1. <!-- TODO: next action -->
+2. <!-- TODO: next action -->
+3. <!-- TODO: next action -->
+
+## Dependencies / Blocks (optional)
+- <!-- TODO: cross-module impacts, prerequisites, or approvals -->
 
 # Assumptions & Decisions
 - <!-- TODO: document review assumptions and accepted tradeoffs -->

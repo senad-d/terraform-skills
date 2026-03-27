@@ -12,7 +12,14 @@
   improvement path template, and evidence log expectations.
 - Updated `tf-review/scripts/review.sh` template with inventory, evidence log,
   verification plan, and improvement path sections.
-- Generated a sample review template at `Review/20260327-example-module.md`.
+- No sample review output currently exists under `Review/`.
+- Added usage boundaries, scope stop-gate, and directory layout guidance to
+  `tf-review/SKILL.md`.
+- Updated `tf-review/scripts/review.sh` with pillar mapping, verification plan,
+  and handoff sections.
+- Added Well-Architected pillar mapping guidance in
+  `tf-review/references/05-pillar-mapping.md` and updated review methodology
+  to enforce boundaries and pillar mapping.
 
 ## Next Steps
 

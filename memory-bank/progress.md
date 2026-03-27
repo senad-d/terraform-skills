@@ -6,6 +6,8 @@
   constructive review format, and a clear improvement path.
 - Review template updated to capture resource inventory, evidence log,
   verification plan, and improvement path details.
+- tf-review now enforces scope stop-gates, no-Terraform-command boundaries,
+  and Well-Architected pillar mapping, with a handoff-ready review template.
 
 ## Remaining Work
 
@@ -20,4 +22,4 @@
 
 - `lint-markdown.sh` reports repo-wide markdownlint errors, including long-line
   violations in existing files.
-- Sample review output exists at `Review/20260327-example-module.md`.
+- No sample review output exists under `Review/` yet.

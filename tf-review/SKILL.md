@@ -8,6 +8,30 @@ description: Performs structured Terraform code reviews to identify security ris
 - Provides a repeatable Terraform review workflow focused on security,
   reliability, cost, and IaC best practices with actionable findings.
 
+## When to use
+
+- Reviewing Terraform child modules, root modules, or shared module patterns.
+- Validating security, reliability, cost, and correctness for existing modules.
+- Producing a structured, evidence-based review for downstream remediation.
+
+## When not to use
+
+- Implementing Terraform changes or refactors (use module skills instead).
+- Running Terraform tests or applying infrastructure.
+- Designing new architecture without existing Terraform code to review.
+
+## Boundaries
+
+- Do not modify Terraform code or documentation in this skill.
+- Do not run Terraform commands or tests (plan, validate, apply, fmt, etc.).
+- Do not infer intent without evidence; halt if scope is ambiguous.
+
+## Directory layout
+
+- `SKILL.md` is the entrypoint and source of truth for this skill.
+- `scripts/` contains helper utilities (`find.sh`, `read.sh`, `plan.sh`, `review.sh`).
+- `references/` contains canonical review methodology and remediation guidance.
+
 ## Inputs and Outputs
 
 Inputs (required unless marked optional):
@@ -78,29 +102,30 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## Required Workflow
 
-1. Intake and scope confirmation
+1. Intake and scope confirmation.
    - Validate inputs first (module name, scope, goal, plan path).
    - Read `Rules/` and `$CODEX_HOME/skills/tf-review/references` standards.
-   - Fail fast if scope is unclear or inputs are missing.
-2. Inventory (modules/resources/providers)
-   - Use `$FIND` and `$READ` to locate module paths and read core files.
-   - Build a resource, provider, and module inventory before reviewing details.
-3. Evidence collection (files + tool output)
+   - Stop-gate: if module path or scope is ambiguous, halt and ask to clarify.
+2. Find related files.
+   - Use `$FIND` to locate candidate module paths.
+3. Read files.
+   - Use `$READ` to collect module files needed for inventory and evidence.
+4. Investigate documentation.
+   - Gather Terraform and AWS references for each resource type.
+5. Create the plan (hard gate).
+   - Generate the plan file with `$PLAN`.
+   - Fill the plan before proceeding.
+   - Stop-gate: do not create or update the review until the plan is complete.
+6. Reason about evidence and verify findings.
    - Capture file paths + line references, plan output, or tool output.
-   - Confirm behavior against Terraform and AWS documentation and note references.
-4. Findings and severity assignment
    - Use the severity rubric and evidence rules from the references.
-   - Prioritize security, reliability, and correctness before style.
-5. Remediation options and recommendation
-   - Offer a concrete HCL change or policy edit per finding.
-   - Include tradeoffs when the least-disruptive fix differs from best practice.
-6. Verification and challenge pass
-   - Add a verification step for each finding with expected outcome.
    - Try to falsify each finding and remove non-issues.
-7. Publish review and references
-   - Provide the review output with evidence log, improvement path, and sources.
+7. Create and update the review document.
+   - Use `$REVIEW` after the plan is complete.
+   - Read the plan file and folow it.
+   - Provide findings, evidence log, improvement path, and sources.
    - Keep the workflow deterministic and minimal-input per
-     `Rules/Commandments.md`.
+     `Rules/`.
 
 ## Constructive Review Format
 
@@ -127,6 +152,8 @@ effective patterns already present.
 
 ## Best-Practice Expectations
 
+- Validate module intent: modules should be small, opinionated, and reusable
+  building blocks that match README claims and intended usage.
 - Verify module intent and scope match the README and variables: resources, outputs, and behavior should align with declared purpose.
 - Check provider and Terraform version constraints for clarity, compatibility, and minimum required versions.
 - Confirm required inputs are validated (types, defaults, `validation` blocks) and optional inputs have safe defaults.
@@ -159,7 +186,8 @@ effective patterns already present.
 - Scope: Child modules, root modules, and shared patterns in this repository.
 - Inputs: Module name, review goal, optional plan path, optional output directory.
 - Outputs: Review template with findings, plan link, and source references.
-- Required tools: `bash`, `rg`, `jq`, Terraform CLI.
+- Required tools: `bash`, `rg`, `jq`.
+- Optional tools: Terraform CLI (only to consume existing plan output; do not run it in this skill).
 - Artifacts: `Plan/` entry, review file (from `$REVIEW` output), cited standards links.
 - Success criteria: Findings include file references, severity, impact, and concrete remediation steps.
 
@@ -171,6 +199,7 @@ Always read all references when planning.
 - `references/02-review-methodology.md` — Review phases, evidence rules, severity rubric, and checklists.
 - `references/03-remediation-and-evidence.md` — Investigation workflow, remediation patterns, and verification steps.
 - `references/04-investigation-procedure.md` — File discovery, automation scripts, and MCP reference gathering.
+- `references/05-pillar-mapping.md` — Mapping findings to AWS Well-Architected pillars.
 
 ## DO NOT DO
 
@@ -181,4 +210,5 @@ Always read all references when planning.
 - DO NOT suggest breaking changes without calling out the blast radius and required updates across references.
 - DO NOT hand-wave fixes like "run terraform fmt" without identifying the drifted file and the specific block.
 - DO NOT propose changes outside the requested scope or rewrite modules wholesale.
+- DO NOT modify Terraform code or run Terraform commands/tests in this skill.
 - YOU DO NOT NEED to read `scripts/*.sh` scripts.

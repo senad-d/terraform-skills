@@ -84,6 +84,7 @@ Lifecycle automation touchpoints:
 ### Recommendation
 
 - `03-remediation-and-evidence.md`: Remediation patterns and evidence standards.
+- `05-pillar-mapping.md`: Well-Architected pillar mapping guidance.
 
 ### Publish and Evolve
 
@@ -95,6 +96,7 @@ Lifecycle automation touchpoints:
 - Review process and checklists → `02-review-methodology.md`.
 - Remediation and verification → `03-remediation-and-evidence.md`.
 - Investigation and evidence collection → `04-investigation-procedure.md`.
+- Well-Architected pillar mapping → `05-pillar-mapping.md`.
 
 ## Sources of Truth
 

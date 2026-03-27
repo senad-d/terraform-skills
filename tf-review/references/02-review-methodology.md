@@ -22,6 +22,12 @@ challenge assumptions and uncover hidden risk.
 Applies to Terraform child modules and root modules in this repository,
 including shared patterns used across modules.
 
+## Review Boundaries
+
+- Do not modify Terraform code or documentation as part of the review.
+- Do not run Terraform commands or tests (plan, validate, apply, fmt, etc.).
+- If module path or scope is ambiguous, stop and request clarification.
+
 ## Required Inputs
 
 - Module name(s) and repository path(s) under review.
@@ -38,6 +44,12 @@ including shared patterns used across modules.
 5. Remediation options and recommendations
 6. Verification and challenge pass
 7. Publish review with sources and next steps
+
+## Plan Completion Gate
+
+- A review plan must be created and filled before producing or updating a
+  review document.
+- If the plan is empty or incomplete, stop and finish it before continuing.
 
 ## Evidence Rules
 
@@ -115,6 +127,12 @@ The review document must include the following sections:
 - Assumptions and Decisions.
 - References.
 
+## Well-Architected Pillar Mapping
+
+- Map each finding to at least one AWS Well-Architected pillar.
+- Use the pillar mapping guide in `references/05-pillar-mapping.md` to keep
+  labeling consistent.
+
 ## Constructive Feedback Rules
 
 - Be specific: tie every statement to evidence.
@@ -163,6 +181,8 @@ The review document must include the following sections:
 
 ### Style and Maintainability Checklist
 
+- Module intent is clear: modules are small, opinionated, and reusable building
+  blocks aligned with README claims and expected usage.
 - Variables, locals, and outputs use `snake_case`.
 - Repeated logic is factored into locals or modules.
 - File layout follows repo conventions.
