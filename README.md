@@ -111,6 +111,7 @@ To get the most out of this bundle, configure your tooling and CODEX MCP servers
 ### Recommended tools
 
 - Localstack for testing:
+
 ```bash
 docker run \
   --rm -it \
@@ -121,6 +122,7 @@ docker run \
 ```
 
 - AWS credentials:
+
 ```bash
 [localstack]
 region = us-east-1
