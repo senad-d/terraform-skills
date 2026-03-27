@@ -124,8 +124,11 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
    - Use `$REVIEW` after the plan is complete.
    - Read the plan file and folow it.
    - Provide findings, evidence log, improvement path, and sources.
-   - Keep the workflow deterministic and minimal-input per
-     `Rules/`.
+   - Update Prepared Prompt (`Review/<module_name>-prompt.md`).
+8. Close out.
+   - Update completed tasks in Plan and memory.
+   - Summarize deliverables and next steps with file paths in the response.
+   - Offer to start a new session by using `/new` and pasting in the generated prompt.
 
 ## Constructive Review Format
 

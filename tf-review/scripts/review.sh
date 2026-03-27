@@ -189,6 +189,46 @@ Severity scale: Critical, High, Medium, Low, Informational
 
 # References
 - <!-- TODO: link AWS/Terraform docs and internal standards -->
+
 EOF
+
+cat << EOF_PROMPT > "${output_dir}/${slug}-prompt.md"
+**Context**
+- Module: ${module_name}
+- Review file: ${review_path}
+
+**Task**
+- Use the review findings to update Terraform code safely and precisely.
+- Implement the "Exact change" steps from the Action Queue.
+- Follow verification steps for each finding.
+
+**Scope Guardrails**
+- Stay within the module scope listed in Review Scope.
+- Do not expand scope without explicit approval.
+- Prefer the fastest safe fix unless the preferred fix is approved.
+
+**Inputs to Fill**
+- Module path: <!-- TODO: exact path -->
+- In-scope files: <!-- TODO -->
+- Out-of-scope files: <!-- TODO -->
+- Findings to address (IDs): <!-- TODO -->
+- References to consult: <!-- TODO -->
+
+**Execution Guide**
+1. Read the ${review_path}.
+2. Confirm scope and files listed above.
+3. Investigate solutions and reason about implementation.
+4. For each finding ID:
+   - Apply the exact change described in the Action Queue.
+   - Update related variables, outputs, or docs only if required by the change.
+5. Run the verification steps.
+6. Summarize changes and link back to each finding ID.
+
+**Output Expectations**
+- A short change summary mapped to finding IDs.
+- A verification result per finding.
+- A list of any blockers or follow-up items.
+
+EOF_PROMPT
 
 echo "Created review template at ${review_path}" >&2
