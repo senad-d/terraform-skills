@@ -6,7 +6,8 @@
 
 ## Recent Changes
 
-- None.
+- Completed tf-review reference set and investigation procedure guide.
+- Updated `README.md` with tf-review usage, installation, and structure.
 
 ## Next Steps
 
@@ -14,4 +15,6 @@
 
 ## Active Decisions and Considerations
 
-- None.
+- Reference file naming follows `02-review-methodology.md` and
+  `03-remediation-and-evidence.md`.
+- Investigation guidance is documented in `04-investigation-procedure.md`.

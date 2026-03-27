@@ -37,6 +37,9 @@ flowchart LR
 - **Terraform root module workflows**  
   Standards and scripts for planning, composing, validating, and documenting Terraform root modules that integrate child modules with secure defaults.
 
+- **Terraform review workflows**  
+  Structured Terraform code review guidance focused on security, reliability, cost, and correctness with strict evidence requirements.
+
 - **Ready-to-run scripts**  
   Shell scripts for creating modules, examples, plans, tests, and documentation so you can focus on design and correctness instead of boilerplate.
 
@@ -73,6 +76,15 @@ This repository contains multiple skills that are meant to be used together as a
     - [`tf-root-module/scripts/plan.sh`](tf-root-module/scripts/plan.sh) – create a required change plan
     - [`tf-root-module/scripts/test.sh`](tf-root-module/scripts/test.sh) – test root module examples
 
+- [`tf-review`](tf-review/SKILL.md)  
+  Structured workflows and references for Terraform module reviews with strict evidence and remediation guidance.
+  - Key files:
+    - [`tf-review/SKILL.md`](tf-review/SKILL.md) – skill overview and usage details
+    - [`tf-review/references/`](tf-review/references/) – review lifecycle, methodology, remediation, and investigation guides
+    - [`tf-review/scripts/review.sh`](tf-review/scripts/review.sh) – generate a review template
+    - [`tf-review/scripts/plan.sh`](tf-review/scripts/plan.sh) – create a required review plan
+    - [`tf-review/scripts/find.sh`](tf-review/scripts/find.sh) – locate module directories for review
+
 The top-level [`LICENSE`](LICENSE) applies to the content in this repository.
 
 ## Prerequisites
@@ -102,6 +114,12 @@ git clone https://github.com/senad-d/terraform-skills.git
 
 cd terraform-skills && [ -d "$HOME/.codex" ] && \
 cp -R memory-bank-bootstrap tf-child-modules tf-root-module "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
+```
+
+To include the review skill as well:
+
+```bash
+cp -R memory-bank-bootstrap tf-child-modules tf-root-module tf-review "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
 ```
 
 ## Configuration
@@ -215,6 +233,21 @@ As you create modules, the memory bank accumulates:
 - Testing and rollout strategies
 
 Subsequent CODEX tasks (for example, refactoring an existing module or adding a new one) can reuse this context automatically, reducing duplication and helping maintain consistency across your Terraform codebase.
+
+### 5. Perform Terraform reviews
+
+Use the `tf-review` skill to run structured reviews that require evidence and remediation steps. For example:
+
+```text
+new task -> review module for iam policies using $tf-review
+```
+
+Typical scripts include:
+
+- [`tf-review/scripts/find.sh`](tf-review/scripts/find.sh)
+- [`tf-review/scripts/read.sh`](tf-review/scripts/read.sh)
+- [`tf-review/scripts/plan.sh`](tf-review/scripts/plan.sh)
+- [`tf-review/scripts/review.sh`](tf-review/scripts/review.sh)
 
 ## Contributing
 

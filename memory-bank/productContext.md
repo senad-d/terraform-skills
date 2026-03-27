@@ -15,6 +15,7 @@ This project exists to give automation agents a reliable set of skills for produ
 A Codex skill is a reusable set of instructions, scripts, and resources designed to perform a specific task automatically. It is triggered manually or automatically, then follows predefined steps to complete the workflow. This standardizes execution for consistency and repeatability. Typical examples include deploying infrastructure, running CI/CD pipelines, or enforcing coding standards.
 
 In this repository, skills should execute Terraform work in a predictable flow:
+
 1. The skill is invoked for a specific Terraform task.
 2. The skill clarifies intent and reads relevant documentation or context.
 3. The skill proposes clear follow-up options or choices to the user.

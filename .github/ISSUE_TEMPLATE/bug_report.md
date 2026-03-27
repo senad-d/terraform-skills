@@ -34,5 +34,5 @@ If applicable, add screenshots or relevant log output to help explain your probl
 
 ## Additional context
 
-Add any other context about the problem here, including links to modules, docs, 
+Add any other context about the problem here, including links to modules, docs,
 or example code if helpful.
