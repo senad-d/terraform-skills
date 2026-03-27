@@ -104,6 +104,30 @@ To:
 - actions = ["s3:GetObject", "s3:PutObject"]
 ```
 
+## Improvement Path Template
+
+Use this structure to turn findings into a prioritized improvement plan:
+
+```markdown
+### Improvement Path
+
+**Top 3 fixes (priority order):**
+1. [Finding ID] - short reason for priority
+2. [Finding ID] - short reason for priority
+3. [Finding ID] - short reason for priority
+
+**Per finding:**
+- Fastest safe fix: [short, concrete change]
+- Preferred fix: [best-practice change, if different]
+- Verification: [terraform plan/validate/test + expected result]
+```
+
+## Evidence and Reference Requirements
+
+- Every recommendation must include line-level evidence or tool output.
+- Include MCP reference citations when recommending Terraform arguments or AWS
+  service behavior changes.
+
 ## Critical Review Prompts
 
 Use these prompts to challenge the remediation:

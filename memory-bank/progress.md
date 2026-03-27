@@ -2,10 +2,10 @@
 
 ## What Works
 
-- tf-review reference documentation set updated, expanded, and hardened with
-  stricter review guidance.
-- Investigation procedure guide added for file discovery and MCP references.
-- README updated with tf-review skill usage and installation guidance.
+- tf-review documentation now includes inputs/outputs, a 7-phase workflow, a
+  constructive review format, and a clear improvement path.
+- Review template updated to capture resource inventory, evidence log,
+  verification plan, and improvement path details.
 
 ## Remaining Work
 
@@ -13,10 +13,11 @@
 
 ## Current Status
 
-- Documentation updates completed for tf-review references with stricter
-  critical review guidance and investigation procedures.
-- Repository README aligned with the expanded tf-review documentation.
+- tf-review docs and template aligned with repository review standards and
+  constructive remediation workflow.
 
 ## Known Issues
 
-- None recorded.
+- `lint-markdown.sh` reports repo-wide markdownlint errors, including long-line
+  violations in existing files.
+- Sample review output exists at `Review/20260327-example-module.md`.

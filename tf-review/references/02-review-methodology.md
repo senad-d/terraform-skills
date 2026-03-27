@@ -96,6 +96,32 @@ Escalation rules:
 - Verification steps and expected outcome.
 - Assumptions or constraints (if any).
 
+## Review Output Structure
+
+The review document must include the following sections:
+
+- Review Summary (module, goal, plan reference).
+- Review Scope (in-scope and out-of-scope paths, versions, target
+  accounts/regions).
+- Resource Inventory (resources, providers, modules, external
+  dependencies).
+- Findings Overview (table of findings).
+- Detailed Findings (including verification and assumptions).
+- Positive Observations (what is working).
+- Evidence Log (file paths/lines, plan output, tool output, MCP
+  references).
+- Verification Plan (per finding).
+- Improvement Path (Top 3 fixes and sequencing).
+- Assumptions and Decisions.
+- References.
+
+## Constructive Feedback Rules
+
+- Be specific: tie every statement to evidence.
+- Be actionable: recommend exact HCL or policy changes.
+- Avoid vague guidance; every item must include a clear next step.
+- Highlight safe defaults and good patterns to reinforce what to keep.
+
 ## Review Checklists
 
 ### Security Checklist

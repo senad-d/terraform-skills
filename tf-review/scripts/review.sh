@@ -104,6 +104,13 @@ cat > "${review_path}" <<EOF
 - Terraform version / provider constraints: <!-- TODO -->
 - Target AWS accounts/regions: <!-- TODO -->
 
+# Resource Inventory
+- Resources: <!-- TODO -->
+- Data sources: <!-- TODO -->
+- Modules: <!-- TODO -->
+- Providers: <!-- TODO -->
+- External dependencies: <!-- TODO -->
+
 # Findings Overview
 Severity scale: Critical, High, Medium, Low, Informational
 
@@ -119,7 +126,13 @@ Severity scale: Critical, High, Medium, Low, Informational
 - Evidence: <!-- TODO -->
 - Impact: <!-- TODO -->
 - Recommendation: <!-- TODO -->
+- Verification: <!-- TODO -->
+- Assumptions: <!-- TODO -->
+- Reference links: <!-- TODO -->
 - Status: <!-- TODO -->
+
+# Positive Observations
+- <!-- TODO: note good patterns or safeguards -->
 
 # Security Review
 - <!-- TODO: encryption, IAM, network exposure, logging -->
@@ -133,8 +146,19 @@ Severity scale: Critical, High, Medium, Low, Informational
 # Documentation Gaps
 - <!-- TODO: missing or outdated docs/examples -->
 
-# Positive Observations
-- <!-- TODO: note good patterns or safeguards -->
+# Evidence Log
+- Evidence item: <!-- file:line, plan output, or tool output -->
+- MCP reference: <!-- TODO -->
+
+# Improvement Path
+**Top 3 fixes (priority order):**
+1. <!-- TODO: finding ID + reason -->
+2. <!-- TODO: finding ID + reason -->
+3. <!-- TODO: finding ID + reason -->
+
+**Per finding:**
+- Fastest safe fix: <!-- TODO -->
+- Preferred fix: <!-- TODO -->
 
 # Assumptions & Decisions
 - <!-- TODO: document review assumptions and accepted tradeoffs -->

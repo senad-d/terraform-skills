@@ -5,7 +5,25 @@ description: Performs structured Terraform code reviews to identify security ris
 
 # Terraform Review
 
-- Provides a repeatable Terraform review workflow focused on security, reliability, cost, and IaC best practices with actionable findings.
+- Provides a repeatable Terraform review workflow focused on security,
+  reliability, cost, and IaC best practices with actionable findings.
+
+## Inputs and Outputs
+
+Inputs (required unless marked optional):
+
+- Module name.
+- Review scope (child module, root module, or custom).
+- Review goal.
+- Plan path (optional).
+- Output directory (optional).
+
+Outputs:
+
+- Review plan file in `Plan/`.
+- Review document in the output directory.
+- Evidence log entries embedded in the review.
+- Reference list for Terraform, AWS, and repository standards.
 
 ## Skill path (set once)
 
@@ -60,45 +78,50 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## Required Workflow
 
-1. Investigate first via `$READ`
-   - Read `Rules/` and `$CODEX_HOME/skills/tf-review/references` standards and review existing patterns before starting the review.
-   - Examine the `modules/` directory to locate appropriate child and root modules before constructing the review via `$FIND`.
-   - Confirm behavior against official Terraform and AWS documentation; capture links and findings in the plan.
+1. Intake and scope confirmation
+   - Validate inputs first (module name, scope, goal, plan path).
+   - Read `Rules/` and `$CODEX_HOME/skills/tf-review/references` standards.
+   - Fail fast if scope is unclear or inputs are missing.
+2. Inventory (modules/resources/providers)
+   - Use `$FIND` and `$READ` to locate module paths and read core files.
+   - Build a resource, provider, and module inventory before reviewing details.
+3. Evidence collection (files + tool output)
+   - Capture file paths + line references, plan output, or tool output.
+   - Confirm behavior against Terraform and AWS documentation and note references.
+4. Findings and severity assignment
+   - Use the severity rubric and evidence rules from the references.
+   - Prioritize security, reliability, and correctness before style.
+5. Remediation options and recommendation
+   - Offer a concrete HCL change or policy edit per finding.
+   - Include tradeoffs when the least-disruptive fix differs from best practice.
+6. Verification and challenge pass
+   - Add a verification step for each finding with expected outcome.
+   - Try to falsify each finding and remove non-issues.
+7. Publish review and references
+   - Provide the review output with evidence log, improvement path, and sources.
+   - Keep the workflow deterministic and minimal-input per
+     `Rules/Commandments.md`.
 
-2. Plan before code (hard gate)
-   - Request the user to specify the module name to review. Provide clear choices for all questions based on investigation, e.g.:
+## Constructive Review Format
 
-     ```markdown
-     1. Review scope (choose one): 
-        A) `child module` 
-        B) `root module`
-        C) `full repository`
-        D) Describe custom scope.
-     2. Review focus (pick up to 3): 
-        A) `security` 
-        B) `reliability`
-        C) `cost`
-        D) `compliance`
-        E) `style`
-        F) Describe custom focus.
-      Reply with your picks (e.g., “1A, 2B”) and any extra constraints.
-     ```
+Each finding must include:
 
-   - Create a plan file in the `Plan/` directory using the provided information along with the `$PLAN` automation script.
+- Summary
+- Impact
+- Evidence
+- Recommendation
+- Verification
+- Assumptions
 
-3. Prepare files
-   - Utilize the automation script `$REVIEW` to generate files and directories for a new review template, and make updates to that file.
+Also include a "What's working" section that highlights safe defaults or
+effective patterns already present.
 
-4. Review in small, focused steps
-   - Folow the plan.
-   - Start with the highest-risk files for the chosen focus (IAM, networking, encryption, logging). 
+## Clear Improvement Path
 
-5. Validate
-   - For each finding, record concrete evidence (file path + line, plan output, or tool output). If evidence is missing, mark it as a hypothesis and request confirmation.
-   - Cross-check every recommendation against authoritative sources (Terraform docs, AWS docs, or `Rules/`), and cite those sources in the review.
-   - Run a challenge pass: try to falsify each finding by searching for counter-evidence in the code; remove or revise anything already satisfied or not materially changing security, reliability, or cost.
-   - Note assumptions or workarounds in the plan.
-   - If you encounter problems that you cannot resolve independently, seek guidance from the user.
+- Provide a "Top 3 fixes" list ordered by severity and risk reduction.
+- For each finding, identify the "fastest safe fix" and the "preferred fix"
+  when they differ.
+- Require an explicit verification step to close each item.
 
 ---
 

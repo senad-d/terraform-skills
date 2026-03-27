@@ -75,6 +75,18 @@ Rules:
 - Note external dependencies and cross-module references.
 - Track any hard-coded identifiers (regions, ARNs, account IDs).
 
+### Resource Inventory Format
+
+Capture the inventory in this format (or equivalent):
+
+```markdown
+**Resources:** aws_*, random_*, null_*, etc.
+**Data sources:** data.aws_*, etc.
+**Modules:** module.<name> (source and path)
+**Providers:** aws, random, etc. (version constraints)
+**External dependencies:** remote modules, shared state, data lookups
+```
+
 ## Step 5: Gather MCP References
 
 Use MCP servers to confirm expected configuration, limits, and security
@@ -103,6 +115,15 @@ Rules:
 - For every finding, capture file path + line references or tool output.
 - Attach MCP reference summaries for any recommended change.
 - Mark unverified items as hypotheses and seek confirmation.
+
+### Evidence Log Expectations
+
+The evidence log must include:
+
+- File path and line references for each finding.
+- Plan output or tool output when available.
+- MCP reference summary used to justify the change.
+- Any assumptions or gaps requiring confirmation.
 
 ## Output Expectations
 
