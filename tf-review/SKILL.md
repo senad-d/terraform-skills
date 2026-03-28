@@ -127,8 +127,24 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
    - Update Prepared Prompt (`Review/<module_name>-prompt.md`).
 8. Close out.
    - Update completed tasks in Plan and memory.
-   - Summarize deliverables and next steps with file paths in the response.
    - Offer to start a new session by using `/new` and pasting in the generated prompt.
+   - Summarize the deliverables in the response, formatted in the following way:
+      ```markdown
+      **Deliverables**
+
+        - Plan: <plan_file_path>
+        - Review: <review_file_path>
+        - Prepared prompt: <prompt_file_path>
+      
+      **Findings Summary**
+      
+        - F-00X (<Severity>): <description>
+      
+      **Next Steps**
+        
+        1. Start new sesion and use prepared prompt.
+        2. Review compleated.
+      ```
 
 ## Constructive Review Format
 
@@ -150,8 +166,6 @@ effective patterns already present.
 - For each finding, identify the "fastest safe fix" and the "preferred fix"
   when they differ.
 - Require an explicit verification step to close each item.
-
----
 
 ## Best-Practice Expectations
 
@@ -182,17 +196,6 @@ effective patterns already present.
 - File organization should be predictable: group variables in `variables.tf`, outputs in `outputs.tf`, locals in `locals.tf`, and resources in purpose-specific files. When a block is misplaced, suggest the target file and block move.
 - Comments should be minimal and purposeful: add short comments only where logic is non-obvious, and remove redundant comments. Point to the exact lines to edit.
 - Avoid vague style advice. Every suggestion must be a concrete, actionable fix tied to a file path and line reference, with the exact change required.
-
-## Quick Reference
-
-- Purpose: Structured Terraform code reviews with actionable findings and remediation guidance.
-- Scope: Child modules, root modules, and shared patterns in this repository.
-- Inputs: Module name, review goal, optional plan path, optional output directory.
-- Outputs: Review template with findings, plan link, and source references.
-- Required tools: `bash`, `rg`, `jq`.
-- Optional tools: Terraform CLI (only to consume existing plan output; do not run it in this skill).
-- Artifacts: `Plan/` entry, review file (from `$REVIEW` output), cited standards links.
-- Success criteria: Findings include file references, severity, impact, and concrete remediation steps.
 
 ## References
 

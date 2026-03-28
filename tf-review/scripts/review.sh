@@ -93,12 +93,12 @@ goal_display="${goal:-<!-- TODO: add review goal -->}"
 plan_display="${plan_path:-<!-- TODO: add plan path -->}"
 
 cat > "${review_path}" <<EOF
-# Review Summary
+# Summary
 - Module: ${module_name}
 - Review goal: ${goal_display}
 - Plan reference: ${plan_display}
 
-# Review Scope
+# Scope
 - In-scope paths: <!-- TODO -->
 - Out-of-scope paths: <!-- TODO -->
 - Terraform version / provider constraints: <!-- TODO -->
@@ -150,11 +150,6 @@ Severity scale: Critical, High, Medium, Low, Informational
 - Evidence item: <!-- file:line, plan output, or tool output -->
 - MCP reference: <!-- TODO -->
 
-# Verification Plan
-| Finding ID | Verification Step | Expected Outcome |
-| --- | --- | --- |
-| <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-
 # Improvement Path
 **Top 3 fixes (priority order):**
 1. <!-- TODO: finding ID + reason -->
@@ -165,27 +160,13 @@ Severity scale: Critical, High, Medium, Low, Informational
 - Fastest safe fix: <!-- TODO -->
 - Preferred fix: <!-- TODO -->
 
-# Handoff
-## Action Queue
-| Finding ID | Priority | Pillar | File:Line | Exact change | Rationale | Verification |
-| --- | --- | --- | --- | --- | --- | --- |
-| <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-
 ## Next Steps
 1. <!-- TODO: next action -->
 2. <!-- TODO: next action -->
 3. <!-- TODO: next action -->
 
-## Dependencies / Blocks (optional)
-- <!-- TODO: cross-module impacts, prerequisites, or approvals -->
-
 # Assumptions & Decisions
 - <!-- TODO: document review assumptions and accepted tradeoffs -->
-
-# Follow-up Actions
-| ID | Action | Owner |
-| --- | --- | --- |
-| <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
 
 # References
 - <!-- TODO: link AWS/Terraform docs and internal standards -->
@@ -193,28 +174,57 @@ Severity scale: Critical, High, Medium, Low, Informational
 EOF
 
 cat << EOF_PROMPT > "${output_dir}/${slug}-prompt.md"
-**Context**
+You are a senior DevOps engineer specializing in Terraform and AWS infrastructure.
+
+## Your responsibilities:
+
+- Prioritize safety, idempotency, and minimal blast radius in all changes.
+- Follow AWS Well-Architected Framework principles (security, reliability, cost, performance, operational excellence).
+- Ensure all Terraform code:
+   - Is valid, formatted, and consistent (terraform fmt, validate compliant).
+   - Preserves backward compatibility unless explicitly instructed otherwise.
+   - Avoids destructive changes unless explicitly required and justified.
+- Prefer incremental, least-risk fixes over large refactors.
+- Maintain module boundaries and reusability.
+- Use existing variables, locals, and patterns before introducing new ones.
+- Ensure changes are compatible with:
+   - Remote state usage
+   - CI/CD pipelines (e.g., plan/apply workflows)
+- When uncertain:
+   - Make the safest assumption
+   - Clearly document the assumption in the output
+
+## Audience
+
+- Module authors, and tooling maintainers.
+
+## Context
+
 - Module: ${module_name}
 - Review file: ${review_path}
 
-**Task**
+## Task
+
 - Use the review findings to update Terraform code safely and precisely.
 - Implement the "Exact change" steps from the Action Queue.
 - Follow verification steps for each finding.
 
-**Scope Guardrails**
+## Scope Guardrails
+
 - Stay within the module scope listed in Review Scope.
 - Do not expand scope without explicit approval.
 - Prefer the fastest safe fix unless the preferred fix is approved.
 
-**Inputs to Fill**
+## Inputs to Fill
+
 - Module path: <!-- TODO: exact path -->
 - In-scope files: <!-- TODO -->
 - Out-of-scope files: <!-- TODO -->
 - Findings to address (IDs): <!-- TODO -->
 - References to consult: <!-- TODO -->
 
-**Execution Guide**
+## Execution Guide
+
 1. Read the ${review_path}.
 2. Confirm scope and files listed above.
 3. Investigate solutions and reason about implementation.
@@ -224,7 +234,8 @@ cat << EOF_PROMPT > "${output_dir}/${slug}-prompt.md"
 5. Run the verification steps.
 6. Summarize changes and link back to each finding ID.
 
-**Output Expectations**
+## Output Expectations
+
 - A short change summary mapped to finding IDs.
 - A verification result per finding.
 - A list of any blockers or follow-up items.
