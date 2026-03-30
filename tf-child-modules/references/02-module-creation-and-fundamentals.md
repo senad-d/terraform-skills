@@ -120,11 +120,11 @@ Use the AWS documentation MCP server for service behavior, limits, and best prac
 
 Available tools:
 
-- `mcp__aws-knowledge-mcp-server__aws___search_documentation`
-- `mcp__aws-knowledge-mcp-server__aws___read_documentation`
-- `mcp__aws-knowledge-mcp-server__aws___recommend`
-- `mcp__aws-knowledge-mcp-server__aws___list_regions`
-- `mcp__aws-knowledge-mcp-server__aws___get_regional_availability`
+- `aws-knowledge-mcp-server.aws___search_documentation`
+- `aws-knowledge-mcp-server.aws___read_documentation`
+- `aws-knowledge-mcp-server.aws___recommend`
+- `aws-knowledge-mcp-server.aws___list_regions`
+- `aws-knowledge-mcp-server.aws___get_regional_availability`
 
 Recommended usage:
 
@@ -149,10 +149,11 @@ details.
 
 Available tools:
 
-- `mcp__terraform-mcp-server__SearchAwsProviderDocs`
-- `mcp__terraform-mcp-server__SearchAwsccProviderDocs`
-- `mcp__terraform-mcp-server__SearchUserProvidedModule`
-- `mcp__terraform-mcp-server__SearchSpecificAwsIaModules`
+- `terraform-mcp-server.SearchAwsProviderDocs`
+- `terraform-mcp-server.SearchAwsccProviderDocs`
+- `terraform-mcp-server.SearchUserProvidedModule`
+- `terraform-mcp-server.SearchUserProvidedModule`
+- `terraform-mcp-server.SearchSpecificAwsIaModules`
 
 Recommended usage:
 

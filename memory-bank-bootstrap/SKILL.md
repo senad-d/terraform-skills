@@ -51,6 +51,7 @@ Find and read all project guidance before writing content.
 - Locate `AGENT.md` or `AGENTS.md` with `rg --files -g 'AGENT*.md' -g 'AGENTS*.md'`.
 - Locate rules files with `rg --files -g 'Rules/**'`.
 - Review all the available files to determine the project's objectives.
+- If there is no documentation, you can review the current file structure and content to determine the basic project information.
 - Summarize constraints or wording requirements that must be reflected in memory-bank content.
 
 ### 3. Create the scaffold with the bundled script
