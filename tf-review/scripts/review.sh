@@ -94,17 +94,20 @@ plan_display="${plan_path:-<!-- TODO: add plan path -->}"
 
 cat > "${review_path}" <<EOF
 # Summary
+
 - Module: ${module_name}
 - Review goal: ${goal_display}
 - Plan reference: ${plan_display}
 
 # Scope
+
 - In-scope paths: <!-- TODO -->
 - Out-of-scope paths: <!-- TODO -->
 - Terraform version / provider constraints: <!-- TODO -->
 - Target AWS accounts/regions: <!-- TODO -->
 
 # Resource Inventory
+
 - Resources: <!-- TODO -->
 - Data sources: <!-- TODO -->
 - Modules: <!-- TODO -->
@@ -112,14 +115,15 @@ cat > "${review_path}" <<EOF
 - External dependencies: <!-- TODO -->
 
 # Findings Overview
-Severity scale: Critical, High, Medium, Low, Informational
 
 | ID | Severity | Pillar | Area | File | Description | Recommendation | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
 
 # Detailed Findings
+
 ## [F-001] <!-- TODO: title -->
+
 - Severity: <!-- TODO -->
 - Area: <!-- TODO -->
 - Files: <!-- TODO -->
@@ -132,25 +136,32 @@ Severity scale: Critical, High, Medium, Low, Informational
 - Status: <!-- TODO -->
 
 # Positive Observations
+
 - <!-- TODO: note good patterns or safeguards -->
 
 # Security Review
+
 - <!-- TODO: encryption, IAM, network exposure, logging -->
 
 # Reliability & Operations
+
 - <!-- TODO: timeouts, retries, dependencies, lifecycle rules -->
 
 # Cost & Efficiency
+
 - <!-- TODO: sizing, scaling, data transfer, unused resources -->
 
 # Documentation Gaps
+
 - <!-- TODO: missing or outdated docs/examples -->
 
 # Evidence Log
+
 - Evidence item: <!-- file:line, plan output, or tool output -->
 - MCP reference: <!-- TODO -->
 
 # Improvement Path
+
 **Top 3 fixes (priority order):**
 1. <!-- TODO: finding ID + reason -->
 2. <!-- TODO: finding ID + reason -->
@@ -161,85 +172,19 @@ Severity scale: Critical, High, Medium, Low, Informational
 - Preferred fix: <!-- TODO -->
 
 ## Next Steps
+
 1. <!-- TODO: next action -->
 2. <!-- TODO: next action -->
 3. <!-- TODO: next action -->
 
 # Assumptions & Decisions
+
 - <!-- TODO: document review assumptions and accepted tradeoffs -->
 
 # References
+
 - <!-- TODO: link AWS/Terraform docs and internal standards -->
 
 EOF
-
-cat << EOF_PROMPT > "${output_dir}/${slug}-prompt.md"
-You are a senior DevOps engineer specializing in Terraform and AWS infrastructure.
-
-## Your responsibilities:
-
-- Prioritize safety, idempotency, and minimal blast radius in all changes.
-- Follow AWS Well-Architected Framework principles (security, reliability, cost, performance, operational excellence).
-- Ensure all Terraform code:
-   - Is valid, formatted, and consistent (terraform fmt, validate compliant).
-   - Preserves backward compatibility unless explicitly instructed otherwise.
-   - Avoids destructive changes unless explicitly required and justified.
-- Prefer incremental, least-risk fixes over large refactors.
-- Maintain module boundaries and reusability.
-- Use existing variables, locals, and patterns before introducing new ones.
-- Ensure changes are compatible with:
-   - Remote state usage
-   - CI/CD pipelines (e.g., plan/apply workflows)
-- When uncertain:
-   - Make the safest assumption
-   - Clearly document the assumption in the output
-
-## Audience
-
-- Module authors, and tooling maintainers.
-
-## Context
-
-- Module: ${module_name}
-- Review file: ${review_path}
-
-## Task
-
-- Use the review findings to update Terraform code safely and precisely.
-- Implement the "Exact change" steps from the Action Queue.
-- Follow verification steps for each finding.
-
-## Scope Guardrails
-
-- Stay within the module scope listed in Review Scope.
-- Do not expand scope without explicit approval.
-- Prefer the fastest safe fix unless the preferred fix is approved.
-
-## Inputs to Fill
-
-- Module path: <!-- TODO: exact path -->
-- In-scope files: <!-- TODO -->
-- Out-of-scope files: <!-- TODO -->
-- Findings to address (IDs): <!-- TODO -->
-- References to consult: <!-- TODO -->
-
-## Execution Guide
-
-1. Read the ${review_path}.
-2. Confirm scope and files listed above.
-3. Investigate solutions and reason about implementation.
-4. For each finding ID:
-   - Apply the exact change described in the Action Queue.
-   - Update related variables, outputs, or docs only if required by the change.
-5. Run the verification steps.
-6. Summarize changes and link back to each finding ID.
-
-## Output Expectations
-
-- A short change summary mapped to finding IDs.
-- A verification result per finding.
-- A list of any blockers or follow-up items.
-
-EOF_PROMPT
 
 echo "Created review template at ${review_path}" >&2

@@ -1,17 +1,9 @@
 ---
 page_title: Terraform Review Methodology
-description: >-
-  Canonical guide for how to execute Terraform module reviews, capture
-  evidence, assign severity, and produce consistent findings.
+description: How to execute Terraform module reviews, capture evidence, assign severity, and produce consistent findings.
 ---
 
 # Terraform Review Methodology
-
-## Audience
-
-Module authors, reviewers, security stakeholders, and tooling maintainers.
-
-## Purpose
 
 Define the end-to-end review workflow, evidence standards, severity rubric, and
 required outputs so reviews are repeatable, defensible, and strict enough to
@@ -21,19 +13,6 @@ challenge assumptions and uncover hidden risk.
 
 Applies to Terraform child modules and root modules in this repository,
 including shared patterns used across modules.
-
-## Review Boundaries
-
-- Do not modify Terraform code or documentation as part of the review.
-- Do not run Terraform commands or tests (plan, validate, apply, fmt, etc.).
-- If module path or scope is ambiguous, stop and request clarification.
-
-## Required Inputs
-
-- Module name(s) and repository path(s) under review.
-- Review goal or change context (new module, update, incident response).
-- Available plans, tests, or scan outputs (if any).
-- Known constraints or exceptions from the requester.
 
 ## Review Phases
 
@@ -45,19 +24,11 @@ including shared patterns used across modules.
 6. Verification and challenge pass
 7. Publish review with sources and next steps
 
-## Plan Completion Gate
-
-- A review plan must be created and filled before producing or updating a
-  review document.
-- If the plan is empty or incomplete, stop and finish it before continuing.
-
 ## Evidence Rules
 
 Evidence types allowed:
 
 - File path + line reference.
-- Terraform plan output.
-- Tool output (tfsec, tflint, checkov, terraform validate).
 
 Rules:
 
@@ -105,32 +76,13 @@ Escalation rules:
 - Severity and impact statement.
 - Evidence references.
 - Recommended remediation with concrete HCL changes.
-- Verification steps and expected outcome.
+- Expected outcome.
 - Assumptions or constraints (if any).
-
-## Review Output Structure
-
-The review document must include the following sections:
-
-- Review Summary (module, goal, plan reference).
-- Review Scope (in-scope and out-of-scope paths, versions, target
-  accounts/regions).
-- Resource Inventory (resources, providers, modules, external
-  dependencies).
-- Findings Overview (table of findings).
-- Detailed Findings (including verification and assumptions).
-- Positive Observations (what is working).
-- Evidence Log (file paths/lines, plan output, tool output, MCP
-  references).
-- Verification Plan (per finding).
-- Improvement Path (Top 3 fixes and sequencing).
-- Assumptions and Decisions.
-- References.
 
 ## Well-Architected Pillar Mapping
 
 - Map each finding to at least one AWS Well-Architected pillar.
-- Use the pillar mapping guide in `references/05-pillar-mapping.md` to keep
+- Use the pillar mapping [guide](./05-pillar-mapping.md) to keep
   labeling consistent.
 
 ## Constructive Feedback Rules
@@ -198,3 +150,9 @@ The review document must include the following sections:
 - `ignore_changes` or lifecycle rules used to hide drift.
 - Defaulting to larger instance sizes or high-cost resources without need.
 - Outputs that leak secrets or sensitive identifiers.
+
+## Review Boundaries
+
+- Do not modify Terraform code or documentation as part of the review.
+- Do not run Terraform commands or tests (plan, validate, apply, fmt, etc.).
+- If module path or scope is ambiguous, stop and request clarification.

@@ -1,13 +1,9 @@
 ---
 page_title: Well-Architected Pillar Mapping
-description: >-
-  Guidance for mapping Terraform review findings to AWS Well-Architected
-  pillars in a consistent, repeatable way.
+description: Guidance for mapping Terraform review findings to AWS Well-Architected pillars in a consistent, repeatable way.
 ---
 
 # Well-Architected Pillar Mapping
-
-## Purpose
 
 Standardize how review findings are labeled to AWS Well-Architected pillars so
 findings are comparable across modules and reviews.

@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# add-agents.sh - Create or append embedded AGENTS.md content to a target file.
-
 print_usage() {
   cat << EOF
 Usage: $(basename "$0") [TARGET_PATH]
@@ -26,17 +24,7 @@ if [ "${1-}" = "-h" ] || [ "${1-}" = "--help" ]; then
   exit 0
 fi
 
-# Embedded contents of AGENTS.md. This script does NOT read AGENTS.md from disk;
-# instead, it uses this literal text as the source of truth.
 FULL_TEXT=$(cat << 'EOF'
-# Codex Agent Guide for Terraform AWS Modules
-
-This document defines how the codex agent must operate in this repository.
-
----
-
-Coding standards, domain knowledge, and preferences that AI should follow.
-
 # Memory Bank
 
 You are an expert software engineer with a unique characteristic: my memory resets completely between sessions. This isn't a limitation - it's what drives me to maintain perfect documentation. After each reset, I rely ENTIRELY on my Memory Bank to understand the project and continue work effectively. I MUST read ALL memory bank files at the start of EVERY task - this is not optional.
@@ -352,6 +340,7 @@ NEVER use grep for project-wide searches (slow, ignores .gitignore). ALWAYS use 
 
 - Replace commands: grep→rg, find→rg --files/fd, ls -R→rg --files, cat|grep→rg pattern file
 - Use `jq` for JSON instead of regex
+
 EOF
 )
 
@@ -362,14 +351,12 @@ fi
 
 TARGET_PATH="$1"
 
-# Ensure the target directory exists if a directory component is present.
 TARGET_DIR="$(dirname "${TARGET_PATH}")"
 if [ "${TARGET_DIR}" != "." ]; then
   mkdir -p "${TARGET_DIR}"
 fi
 
 if [ -f "${TARGET_PATH}" ]; then
-  # If the file already contains both key sections, skip modification.
   if grep -q -- "## Memory Bank Structure" "${TARGET_PATH}" \
     && grep -q -- "## Project Intelligence (instructions)" "${TARGET_PATH}"; then
     echo "Target file '${TARGET_PATH}' already contains Memory Bank and Project Intelligence sections; skipping append." >&2
@@ -377,12 +364,10 @@ if [ -f "${TARGET_PATH}" ]; then
   fi
 
   echo "Target file '${TARGET_PATH}' exists; appending embedded AGENTS.md from line 6 onward." >&2
-  # Append embedded AGENTS.md content starting from line 6 (skip first five lines).
   printf '%s
 ' "${FULL_TEXT}" | sed '1,5d' >> "${TARGET_PATH}"
 else
   echo "Target file '${TARGET_PATH}' does not exist; creating it with full embedded AGENTS.md content." >&2
-  # Create the target file with the full embedded contents of AGENTS.md.
   printf '%s
 ' "${FULL_TEXT}" > "${TARGET_PATH}"
 fi

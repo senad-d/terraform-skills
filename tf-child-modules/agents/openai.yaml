@@ -1,4 +1,21 @@
 interface:
   display_name: "TF Child Module"
   short_description: "Genereate reusable module"
+  icon_small: "./assets/small-logo.svg"
+  icon_large: "./assets/large-logo.png"
+  brand_color: "#3B82F6"
   default_prompt: "Use skill to plan and create new child module and test example in this repository."
+
+policy:
+  allow_implicit_invocation: false
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "terraform-mcp-server"
+      description: "Seamless integration with Terraform Registry APIs"
+      url: "https://github.com/hashicorp/terraform-mcp-server"
+    - type: "mcp"
+      value: "aws-knowledge-mcp-server"
+      description: "Up-to-date AWS APIs and CloudFormation resources, and other official AWS content"
+      url: "https://awslabs.github.io/mcp/servers/aws-knowledge-mcp-server"

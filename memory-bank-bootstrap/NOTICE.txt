@@ -1,9 +1,7 @@
 Source:
 - Path: skills/memory-bank-bootstrap/SKILL.md
+- Templates: skills/memory-bank-bootstrap/templates
+- Scripts: skills/memory-bank-bootstrap/scripts
 
 Licensed under the Apache License, Version 2.0.
 See LICENSE.txt in this directory.
-
-Modifications:
-- Adapted for the Codex skill collection.
-- Added a wrapper script and local reference guides.

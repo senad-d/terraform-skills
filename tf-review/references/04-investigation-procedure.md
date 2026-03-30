@@ -1,49 +1,26 @@
 ---
 page_title: Investigation Procedure
-description: >-
-  How to investigate Terraform modules using the automation scripts and MCP
-  servers to gather authoritative information about Terraform and AWS resources.
+description: Investigate Terraform modules using the scripts and MCP servers to gather authoritative information about Terraform and AWS resources.
 ---
 
 # Investigation Procedure
 
-## Audience
-
-Module reviewers, authors, and tooling maintainers.
-
-## Purpose
-
 Provide a strict, repeatable process for locating relevant files, reading them
-via automation scripts, and collecting authoritative reference data about
+via scripts, and collecting authoritative reference data about
 Terraform and AWS resources using MCP servers.
 
-## Required Inputs
-
-- Root directory of the Terraform repository.
-- Module or stack name under review.
-- Review goal or change context (new module, update, incident response).
-
-## Investigation Workflow
-
-1. Confirm scope and module name.
-2. Locate candidate module directories.
-3. Read module files with the automation scripts.
-4. Build a resource inventory from the code.
-5. Gather authoritative references with MCP servers.
-6. Record evidence and cite sources.
-
-## Step 1: Confirm Scope
+## Confirm Scope
 
 - Record the exact module path and the expected module type (child or root).
 - Capture any stated non-goals or exclusions before scanning.
 - DO NOT proceed if the module target is ambiguous.
 
-## Step 2: Locate Modules with `find.sh`
+## Locate the code for review
 
-Use the automation script to find module directories.
+Use the automation [find_script](./scripts/find.sh) to find module directories.
 
 ```bash
-"$FIND" -d <repository_root> [-n <name-pattern>]
+./scripts/find.sh -d <directory> [-n <name-pattern>]
 ```
 
 Rules:
@@ -52,23 +29,21 @@ Rules:
 - If multiple candidates match, list each path and ask for confirmation.
 - DO NOT assume the correct module based on filename alone.
 
-## Step 3: Read Files with `read.sh`
+## Read Files
 
-Read the module files to build the evidence set.
+Read files to build the evidence set using [read_script](./scripts/read.sh).
 
 ```bash
-"$READ" -d <module_path> [-n <name-pattern>]
+./scripts/read.sh -d <directory> [-n <name-pattern>]
 ```
 
 Rules:
 
-- Start with `main.tf`, `variables.tf`, `outputs.tf`, `locals.tf`,
-  `versions.tf`, and `README.md`.
-- Include example directories if they exist.
+- Include connected directories if they exist.
 - Use `-n` to focus on specific file types when necessary.
-- Treat output from `read.sh` as the source of truth for the review.
+- Treat output from `./scripts/read.sh` as the source of truth for the review.
 
-## Step 4: Build a Resource Inventory
+## Build a Resource Inventory
 
 - Identify all resources, data sources, modules, and providers used.
 - Record each resource type and where it is defined.
@@ -87,7 +62,7 @@ Capture the inventory in this format (or equivalent):
 **External dependencies:** remote modules, shared state, data lookups
 ```
 
-## Step 5: Gather MCP References
+## Gather MCP References
 
 Use MCP servers to confirm expected configuration, limits, and security
 defaults for each resource type.
@@ -97,6 +72,24 @@ defaults for each resource type.
 - Use for AWS service behavior, security baselines, and feature constraints.
 - Confirm encryption support, logging, network exposure, and IAM defaults.
 - Prefer authoritative AWS documentation over secondary sources.
+
+Use the AWS documentation MCP server for service behavior, limits, and best practices.
+
+Available tools:
+
+- `mcp__aws-knowledge-mcp-server__aws___search_documentation`
+- `mcp__aws-knowledge-mcp-server__aws___read_documentation`
+- `mcp__aws-knowledge-mcp-server__aws___recommend`
+- `mcp__aws-knowledge-mcp-server__aws___list_regions`
+- `mcp__aws-knowledge-mcp-server__aws___get_regional_availability`
+
+Recommended usage:
+
+1. Search for the service or feature with `search_documentation`.
+2. Read the authoritative page with `read_documentation`.
+3. If unsure about feature availability, check regions with `list_regions` and
+   `get_regional_availability`.
+4. Use `recommend` to discover related or newly added documentation pages.
 
 ### Terraform MCP
 
@@ -110,7 +103,28 @@ Rules:
 - Record the reference source and the exact behavior it supports.
 - If references conflict, document the discrepancy and request confirmation.
 
-## Step 6: Evidence Log Requirements
+Use the Terraform MCP server to confirm provider resources, arguments, and schema
+details.
+
+Available tools:
+
+- `mcp__terraform-mcp-server__SearchAwsProviderDocs`
+- `mcp__terraform-mcp-server__SearchAwsccProviderDocs`
+- `mcp__terraform-mcp-server__SearchUserProvidedModule`
+- `mcp__terraform-mcp-server__SearchSpecificAwsIaModules`
+
+Recommended usage:
+
+1. Use `SearchAwsProviderDocs` to confirm resource arguments, attributes, and
+   examples for the AWS provider.
+2. Use `SearchAwsccProviderDocs` when working with AWS Cloud Control (AWSCC)
+   resources.
+3. Use `SearchUserProvidedModule` to review upstream modules before re-implementing
+   similar functionality.
+4. Use `SearchSpecificAwsIaModules` when exploring AWS-IA reference modules for
+   patterns and defaults.
+
+## Evidence Log Requirements
 
 - For every finding, capture file path + line references or tool output.
 - Attach MCP reference summaries for any recommended change.
@@ -134,7 +148,7 @@ The evidence log must include:
 
 ## DO NOT DO
 
-- DO NOT skip `find.sh` and `read.sh` in favor of manual browsing.
-- DO NOT guess resource behavior without MCP confirmation.
+- DO NOT skip `find_script` and `read_script` in favor of manual browsing.
+- DO NOT guess resource behavior.
 - DO NOT rely on README claims if code contradicts them.
 - DO NOT proceed if the module scope is unclear.
