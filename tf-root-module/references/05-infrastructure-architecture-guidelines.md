@@ -1,61 +1,45 @@
 ---
 page_title: Infrastructure Architecture Guidelines
-description: >-
-  Actionable baseline for AWS root module architecture: decision order, security,
-  networking, compute, observability, DR, and cost expectations.
+description: Actionable baseline for AWS root module architecture: decision order, security, networking, compute, observability, DR, and cost expectations.
 ---
 
 # Infrastructure Architecture Guidelines
 
-## Audience
-
-Module authors, reviewers, platform engineers, SREs, and security stakeholders.
-
-## Purpose
-
-Define the architecture baseline and decision order for AWS root modules in this
-repository. This is the authoritative guide for org-level architecture guardrails.
+Define the architecture baseline and decision order for AWS root modules in this repository. This is the authoritative guide for org-level architecture guardrails.
 
 ## Org Guardrails (Non-Negotiable)
 
 - AWS-only scope for root modules in this repo.
 - Root modules own providers/backends; child modules must not define providers.
-- Default to least privilege, private networking, and encryption at rest and in
-  transit.
+- Default to least privilege, private networking, and encryption at rest and in transit.
 - Tagging is mandatory and consistent across stacks.
 - Exceptions require explicit documentation and approval.
 
-Security, naming, and tagging rules are defined in
-`08-security-naming-and-tagging.md`.
+Security, naming, and tagging rules are defined in [08-security-naming-and-tagging.md](./references/08-security-naming-and-tagging.md).
 
 ## Org Foundation Guardrails
 
 Identity and Access:
 
-- MUST use centralized identity (SSO or external IdP) with short-lived
-  credentials for human access.
+- MUST use centralized identity (SSO or external IdP) with short-lived credentials for human access.
 - MUST define standard role naming and session duration limits for all accounts.
 - SHOULD require MFA for privileged roles and break-glass access.
 
 Account and OU Strategy:
 
-- MUST define account vending and ownership for each environment and product
-  boundary.
+- MUST define account vending and ownership for each environment and product boundary.
 - MUST use OU-level SCPs to enforce baseline restrictions and region policy.
 - SHOULD maintain a documented account lifecycle (create, migrate, retire).
 
 Central Security and Logging:
 
-- MUST centralize CloudTrail, Config, and security findings in a dedicated
-  security account.
-- MUST centralize log aggregation in a dedicated logging account with defined
-  retention and access controls.
+- MUST centralize CloudTrail, Config, and security findings in a dedicated security account.
+- MUST centralize log aggregation in a dedicated logging account with defined retention and access controls.
 - SHOULD enable GuardDuty and Security Hub org-wide where supported.
 
 Shared Services Baseline:
 
-- MUST define a shared networking baseline (hub VPC or transit architecture)
-  and cross-account connectivity pattern.
+- MUST define a shared networking baseline (hub VPC or transit architecture) and cross-account connectivity pattern.
 - MUST standardize internal DNS and service discovery ownership.
 - SHOULD document shared service ownership and cost allocation.
 
@@ -71,8 +55,7 @@ Make decisions in order, document rationale, and keep stack boundaries explicit:
 
 ## Providers and Backends
 
-Remote state and backend configuration must follow shared conventions so
-multi-environment and multi-account usage remains predictable.
+Remote state and backend configuration must follow shared conventions so multi-environment and multi-account usage remains predictable.
 
 - Remote state must be stored in S3 with state locking enabled.
 - State keys must match folder structure and be environment-prefixed.
@@ -114,8 +97,7 @@ terraform {
 
 ### Remote State Wiring
 
-Reference other stacks in this repo via `terraform_remote_state`; avoid
-hardcoded ARNs. For external or AWS-managed resources, prefer data sources.
+Reference other stacks in this repo via `terraform_remote_state`; avoid hardcoded ARNs. For external or AWS-managed resources, prefer data sources.
 
 ## Security Defaults
 
@@ -128,8 +110,7 @@ hardcoded ARNs. For external or AWS-managed resources, prefer data sources.
 ## Networking
 
 - Define VPC segmentation early (public, private, isolated tiers as needed).
-- Default workloads to private subnets; expose public endpoints only when
-  required.
+- Default workloads to private subnets; expose public endpoints only when required.
 - Prefer VPC endpoints for AWS services to reduce public egress.
 - Control ingress and egress with security groups and NACLs as guardrails.
 - Standardize DNS and service discovery via Route 53 and internal naming.
@@ -188,14 +169,3 @@ Runbooks:
 - Set budgets and alerts for key services and environments.
 - Right-size compute and storage defaults; avoid over-provisioning.
 - Use schedules or automation to scale down non-prod environments when possible.
-
-## Related Guides
-
-- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
-- `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
-- `03-module-structure-and-layout.md` — required layout and structure.
-- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
-- `07-composition-and-patterns.md` — composition patterns and dependency wiring.
-- `08-security-naming-and-tagging.md` — security baseline and tags.
-- `09-testing-and-ci.md` — validation workflow and CI gates.
-- `10-examples.md` — examples and documentation expectations.

@@ -1,24 +1,11 @@
 ---
 page_title: Module Interfaces, Variables, and Validation
-description: >-
-  Defines how to design module inputs and outputs, structure variables and
-  validation, use Terraform meta-arguments safely, and present a stable,
-  composable interface.
+description: Defines how to design module inputs and outputs, structure variables and validation, use Terraform meta-arguments safely, and present a stable, composable interface.
 ---
 
 # Module Interfaces, Variables, and Validation
 
-## Audience
-
-Engineers designing inputs, outputs, variables, and calling patterns for
-modules.
-
-## Purpose
-
-Define best practices for variables, validation, outputs, meta-arguments
-(`for_each`, `count`, `depends_on`), dynamic nested blocks, and interface
-stability. This is the canonical guide for module interfaces, variables, and
-validation.
+Define best practices for variables, validation, outputs, meta-arguments (`for_each`, `count`, `depends_on`), dynamic nested blocks, and interface stability. This is the canonical guide for module interfaces, variables, and validation.
 
 ## Interface Design Principles
 
@@ -26,13 +13,10 @@ validation.
 - Prefer explicit types over implicit typing.
 - Use `nullable = false` where appropriate to avoid ambiguous defaults.
 - Keep interfaces stable; avoid frequent renames or breaking changes.
-- Document outputs with descriptions and mark sensitive outputs with
-  `sensitive = true`.
-- Keep interfaces environment-agnostic by default; accept environment-specific
-  values (regions, account IDs) as inputs when needed.
+- Document outputs with descriptions and mark sensitive outputs with `sensitive = true`.
+- Keep interfaces environment-agnostic by default; accept environment-specific values (regions, account IDs) as inputs when needed.
 
-For composition patterns and how interfaces are consumed at the root-module
-level, see `07-composition-and-patterns.md`.
+For composition patterns and how interfaces are consumed at the root-module level, see [07-composition-and-patterns.md](./references/07-composition-and-patterns.md).
 
 ## Root-to-Child Contract
 
@@ -81,12 +65,9 @@ variable "enable_logging" {
 ### Naming and Structure
 
 - Use `snake_case` for variable names.
-- Prefer objects and maps for grouped configuration over many loosely related
-  variables.
-- Avoid `any` except for advanced passthrough cases that are documented and
-  validated.
-- Keep variable names consumer-focused (for example, `enable_logging` rather
-  than an internal flag name).
+- Prefer objects and maps for grouped configuration over many loosely related variables.
+- Avoid `any` except for advanced passthrough cases that are documented and validated.
+- Keep variable names consumer-focused (for example, `enable_logging` rather than an internal flag name).
 
 Example (object variable with validation):
 
@@ -108,14 +89,12 @@ variable "subnet_config" {
 
 ### Sensitive Inputs
 
-If a variable may contain secrets (for example, passwords, tokens, or connection
-strings):
+If a variable may contain secrets (for example, passwords, tokens, or connection strings):
 
 - Treat it as sensitive in documentation and examples.
 - Avoid writing values to logs or outputs.
 - Ensure any related outputs are marked `sensitive = true`.
-- Follow the broader security and secret-handling rules in
-  `08-security-naming-and-tagging.md`.
+- Follow the broader security and secret-handling rules in [08-security-naming-and-tagging.md](./references/08-security-naming-and-tagging.md).
 
 ## Validation Guidance
 
@@ -152,13 +131,10 @@ Outputs define the contract between a module and its consumers.
 Guidelines:
 
 - Every output must include a `description` explaining its purpose.
-- Outputs should be stable over time; prefer adding new outputs over renaming
-  existing ones.
+- Outputs should be stable over time; prefer adding new outputs over renaming existing ones.
 - Use structured types (objects, maps, lists) when returning related values.
-- Mark outputs that may expose secrets or sensitive identifiers with
-  `sensitive = true`.
-- Use preconditions on outputs when they must only be exposed under specific
-  safe conditions.
+- Mark outputs that may expose secrets or sensitive identifiers with `sensitive = true`.
+- Use preconditions on outputs when they must only be exposed under specific safe conditions.
 
 Example with a precondition:
 
@@ -173,23 +149,19 @@ output "api_base_url" {
 }
 ```
 
-For versioning and refactor implications when changing outputs, see
-`06-sources-and-distribution.md`.
+For versioning and refactor implications when changing outputs, see [06-sources-and-distribution.md](./references/06-sources-and-distribution.md).
 
 ## Meta-Arguments in Modules
 
 Terraform meta-arguments let you scale configurations without duplicating code.
-Use them on `resource`, `data`, and `module` blocks as appropriate.
-
-Reusable modules must not contain `provider` blocks. They should declare
-provider requirements only in `required_providers` (typically in
-`versions.tf`). Modules that configure providers cannot be safely used with
-`for_each`, `count`, or `depends_on` on module calls.
+- Use them on `resource`, `data`, and `module` blocks as appropriate.
+- Reusable modules must not contain `provider` blocks. 
+- They should declare provider requirements only in `required_providers` (typically in `versions.tf`). 
+- Modules that configure providers cannot be safely used with `for_each`, `count`, or `depends_on` on module calls.
 
 ### `for_each`
 
-`for_each` creates one instance per element in a map or set of strings. Use it
-when each instance has a stable identity.
+`for_each` creates one instance per element in a map or set of strings. Use it when each instance has a stable identity.
 
 Typical uses:
 
@@ -281,8 +253,7 @@ Typical uses:
 - Simple replication where identity is not important.
 - Optional resources controlled by booleans (0 or 1 instance).
 
-Caveat: identity is tied to indices; changing `count` or ordering can cause
-replacement.
+Caveat: identity is tied to indices; changing `count` or ordering can cause replacement.
 
 Example: optional resource
 
@@ -312,9 +283,8 @@ resource "aws_instance" "worker" {
 
 ### `depends_on`
 
-Prefer implicit dependencies expressed via attribute references. Use
-`depends_on` only when there is no attribute reference or when API constraints
-require explicit ordering.
+Prefer implicit dependencies expressed via attribute references. 
+- Use `depends_on` only when there is no attribute reference or when API constraints require explicit ordering.
 
 Example:
 
@@ -331,8 +301,7 @@ resource "aws_cloudwatch_log_subscription_filter" "this" {
 
 ## Meta-Arguments on Module Calls
 
-`for_each`, `count`, and `depends_on` can be used on module blocks. Called
-modules must not define provider blocks.
+`for_each`, `count`, and `depends_on` can be used on module blocks. Called modules must not define provider blocks.
 
 Example: `for_each` on a module
 
@@ -382,9 +351,7 @@ Use `dynamic` blocks when a resource supports nested blocks that are:
 - Optional and should appear only when input is provided.
 - Repeated and should be generated from a list or map.
 
-Prefer static blocks when the nested block is always present or when only a
-single optional attribute can be handled with `null` or `try()` without
-conditional generation.
+Prefer static blocks when the nested block is always present or when only a single optional attribute can be handled with `null` or `try()` without conditional generation.
 
 ### Single Optional Nested Block
 
@@ -447,10 +414,8 @@ resource "aws_security_group" "this" {
 
 ### How Dynamic Blocks Affect Variables
 
-- Inputs should be structured as lists or maps of objects that match the nested
-  block schema.
-- Defaults should be empty (`[]` or `{}`) to avoid creating blocks
-  unintentionally.
+- Inputs should be structured as lists or maps of objects that match the nested block schema.
+- Defaults should be empty (`[]` or `{}`) to avoid creating blocks unintentionally.
 - Use `nullable = false` to keep evaluation predictable.
 - Add validation to enforce required fields and acceptable ranges.
 
@@ -487,20 +452,5 @@ Use `dynamic` blocks when:
 
 ## Refactoring Interfaces Safely
 
-Adding `for_each` or `count`, or restructuring variables and outputs, changes
-addresses and can trigger destructive plans. Use `moved` blocks to preserve
-state when refactoring.
-
-For semantic versioning policy, `moved` block patterns, and upgrade playbooks,
-see `06-sources-and-distribution.md`.
-
-## Related Guides
-
-- `01-overview-and-lifecycle.md` — documentation map and lifecycle overview.
-- `02-module-creation-and-fundamentals.md` — when to create vs extend modules.
-- `03-module-structure-and-layout.md` — required layout and structure.
-- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
-- `06-sources-and-distribution.md` — versioning and upgrade guidance.
-- `07-composition-and-patterns.md` — composition patterns and dependency inversion.
-- `08-security-naming-and-tagging.md` — security and tagging baseline.
-- `09-testing-and-ci.md` — validation workflow and CI gates.
+- Adding `for_each` or `count`, or restructuring variables and outputs, changes addresses and can trigger destructive plans. 
+- Use `moved` blocks to preserve state when refactoring.

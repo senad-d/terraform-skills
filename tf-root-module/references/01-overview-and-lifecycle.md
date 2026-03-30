@@ -1,26 +1,15 @@
 ---
 page_title: Terraform Root Module Documentation Overview
-description: >-
-  Entry point for the Terraform root module documentation set, describing the root module lifecycle, how to navigate the guides, and which document is authoritative for each topic.
+description: Entry point for the Terraform root module documentation set, describing the root module lifecycle, how to navigate the guides, and which document is authoritative for each topic.
 ---
 
 # Terraform Module Documentation Overview
 
-## Audience
-
-Module authors, reviewers, and tooling maintainers.
-
-## Purpose
-
-This guide is the entry point for the root module documentation set. It explains
-how to navigate the guides, outlines the root module lifecycle, and calls out
-which documents are authoritative for each topic.
+This guide is the entry point for the root module documentation set. It explains how to navigate the guides, outlines the root module lifecycle, and calls out which documents are authoritative for each topic.
 
 ## Scope
 
-Root modules in this repository compose reusable child modules from `modules/`
-into concrete stacks. They own provider and backend configuration and expose
-stable outputs for downstream stacks.
+Root modules in this repository compose reusable child modules from `modules/` into concrete stacks. They own provider and backend configuration and expose stable outputs for downstream stacks.
 
 ## Core Principles
 
@@ -29,10 +18,9 @@ stable outputs for downstream stacks.
 - Favor secure defaults, least privilege, and encryption at rest and in transit.
 - Pin Terraform and provider versions to stable constraints.
 - Prefer discoverable, repeatable patterns already used in this repository.
-- Use data sources for external or AWS-managed services; use
-  `terraform_remote_state` for internal stacks.
+- Use data sources for external or AWS-managed services; use `terraform_remote_state` for internal stacks.
 
-## Architecture Focus (Decision Order)
+## Architecture Focus
 
 - Account/environment boundaries.
 - Network topology and data ownership.
@@ -40,8 +28,7 @@ stable outputs for downstream stacks.
 - Observability and telemetry.
 - DR strategy and cost management.
 
-Authoritative architecture guidance lives in
-`05-infrastructure-architecture-guidelines.md`.
+Authoritative architecture guidance lives in [05-infrastructure-architecture-guidelines.md](./references/05-infrastructure-architecture-guidelines.md).
 
 ## Module Lifecycle
 
@@ -49,18 +36,18 @@ Authoritative architecture guidance lives in
 2. Design and interface definition
 3. Scaffold module structure and files
 4. Implement resources and logic
-5. Validate locally and in CI
+5. Validate locally
 6. Release, version, and maintain
 7. Refactor or deprecate safely
 
 Lifecycle automation touchpoints:
 
-- Scaffolding: `scripts/root-module.sh`
-- Validation: `scripts/test.sh`
+- Scaffolding: [create_script](./scripts/root-module.sh)
+- Validation: [test_script](./scripts/test.sh)
 
 ## Automation Scripts (Authoritative)
 
-All automation lives in `tf-root-module/scripts/`. Use these scripts instead of
+All automation lives in [scripts](./scripts) directory. Use these scripts instead of
 ad-hoc scaffolding or tests.
 
 ### `read.sh`
@@ -104,16 +91,22 @@ Purpose: create a standardized plan document before implementing a root module.
 
 Inputs:
 
-- `-m|--module`: module name (required)
-- `-g|--goal`: short goal (optional)
+- `-m|--module`: Module name (required). Use kebab-case. Used to derive the plan
+  filename and populate placeholders.
+- `-g|--goal`: Short, human-readable goal for the module (optional but
+  recommended). Included in the Summary section of the plan.
 
 Outputs:
 
-- `Plan/<YYYYMMDD>-<module_slug>.md` with a required template.
+- Creates a `Plan/` directory in the repository root if it does not already exist.
+- Generates `Plan/<YYYYMMDD>-<module_slug>.md`, where `module_slug` is a sanitized form of `<module_name>`.
+- Populates the file with a structured template.
 
-Safety notes:
+Failure modes:
 
-- Writes a new plan file. Do not edit Terraform code before this plan exists.
+- Missing `-m|--module` value.
+- Unknown or malformed flags.
+- Filesystem errors when creating the `Plan/` directory or writing the plan file.
 
 ### `root-module.sh`
 
@@ -183,21 +176,9 @@ Safety notes:
 
 ## Checklists and Quality Gates (Pointers)
 
-- Architecture and guardrails: `05-infrastructure-architecture-guidelines.md`
-- Security, naming, and tagging: `08-security-naming-and-tagging.md`
-- Testing and CI gates: `09-testing-and-ci.md`
-
-## Documentation Map
-
-- `02-module-creation-and-fundamentals.md` — when and why to create root modules.
-- `03-module-structure-and-layout.md` — required layout and structure.
-- `04-module-interfaces-and-arguments.md` — variables, validation, outputs.
-- `05-infrastructure-architecture-guidelines.md` — architecture baseline.
-- `06-sources-and-distribution.md` — sources, versioning, upgrades.
-- `07-composition-and-patterns.md` — composition patterns and dependency wiring.
-- `08-security-naming-and-tagging.md` — security baseline, naming, and tags.
-- `09-testing-and-ci.md` — validation workflow and CI requirements.
-- `10-examples.md` — example design and documentation expectations.
+- Architecture and guardrails: [05-infrastructure-architecture-guidelines.md](./references/05-infrastructure-architecture-guidelines.md)
+- Security, naming, and tagging: [08-security-naming-and-tagging.md](./references/08-security-naming-and-tagging.md)
+- Testing and CI gates: [09-testing-and-ci.md](./references/09-testing-and-ci.md)
 
 ## Sources of Truth
 

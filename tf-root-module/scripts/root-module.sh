@@ -126,7 +126,7 @@ for root_name in "${root_names[@]}"; do
   mkdir -p "${stack_dir}/backends"
 
   cat <<'EOF_VARIABLES_TFVARS' > "${stack_dir}/variables/test.tfvars"
-# TODO: update variable values after local tests are passing
+<-- TODO: update variable values after local tests are passing -->
 meta = {
   owner       = "<owner>"
   environment = "<env>"
@@ -134,12 +134,12 @@ meta = {
 }
 
 aws_region = "<region>"
-# TODO: prepare awailable keys.
+<-- TODO: prepare awailable keys. -->
 
 EOF_VARIABLES_TFVARS
 
   cat <<EOF_BACKENDS_TFVARS > "${stack_dir}/backends/test.tfvars"
-# TODO: configure backend settings after local tests are passing
+<-- TODO: configure backend settings after local tests are passing -->
 
 bucket       = "<project>-<env>-tf-state"
 key          = "<env>/<root_name>/terraform.tfstate"
@@ -165,19 +165,18 @@ EOF_MAIN
 module "${module_label}" {
   source = "../../../modules/${mod}"
 
-  # TODO: configure required inputs for ${mod}
-  # Example: tags_from_meta = module.naming.tags
+  <-- TODO: configure required inputs for ${mod} (Example: tags_from_meta = module.naming.tags) -->
 }
 EOF_MODULE
   done
 
     cat <<'EOF_LOCALS' > "${stack_dir}/locals.tf"
 locals {
-  # TODO: add locals and shared settings
+  <-- TODO: add locals and shared settings -->
 }
 EOF_LOCALS
     cat <<'EOF_ADV_NOTE' >> "${stack_dir}/main.tf"
-# TODO: add advanced wiring between modules and optional features
+<-- TODO: add advanced wiring between modules and optional features -->
 EOF_ADV_NOTE
 
   cat <<'EOF_VARIABLES' > "${stack_dir}/variables.tf"
@@ -213,7 +212,7 @@ variable "meta" {
 EOF_VARIABLES
 
   cat <<'EOF_OUTPUTS' > "${stack_dir}/outputs.tf"
-# TODO: add outputs as needed
+<-- TODO: add outputs as needed -->
 EOF_OUTPUTS
 
   cat <<EOF_VERSIONS > "${stack_dir}/versions.tf"
@@ -227,7 +226,7 @@ terraform {
     }
   }
 
-  ### Add after tests are passing: backend "s3" {}
+  <-- TODO: Add after tests are passing - backend "s3" {} -->
 }
 
 provider "aws" {
@@ -246,15 +245,15 @@ EOF_VERSIONS
 - ${modules_list}
 
 ## Key Defaults
-<-- TODO -->: include information about the default values for the module.
+<-- TODO: include information about the default values for the module. -->
 
 ## Usage
 \`\`\`hcl
-<-- TODO -->: variables examples
+<-- TODO: variables examples -->
 \`\`\`
 
 ## Notes
-<-- TODO -->: variables with values for examples
+<-- TODO: variables with values for examples -->
 
 ## Localstack Usage
 Set the profile and run Terraform locally. 

@@ -81,11 +81,11 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 Always read all guides.
 
-- [./references/01-overview-and-lifecycle.md](./references/01-overview-and-lifecycle.md) for overview, lifecycle, and map of the review guides.
-- [./references/02-review-methodology.md](./references/02-review-methodology.md) Review phases, evidence rules, severity rubric, and checklists.
-- [./references/03-remediation-and-evidence.md](./references/03-remediation-and-evidence.md) for investigation workflow, remediation patterns, and verification steps.
-- [./references/04-investigation-procedure.md](./references/04-investigation-procedure.md) for file discovery, automation scripts, and MCP reference gathering.
-- [./references/05-pillar-mapping.md](./references/05-pillar-mapping.md) for mapping findings to AWS Well-Architected pillars.
+- [01-overview-and-lifecycle.md](./references/01-overview-and-lifecycle.md) for overview, lifecycle, and map of the review guides.
+- [02-review-methodology.md](./references/02-review-methodology.md) Review phases, evidence rules, severity rubric, and checklists.
+- [03-remediation-and-evidence.md](./references/03-remediation-and-evidence.md) for investigation workflow, remediation patterns, and verification steps.
+- [04-investigation-procedure.md](./references/04-investigation-procedure.md) for file discovery, automation scripts, and MCP reference gathering.
+- [05-pillar-mapping.md](./references/05-pillar-mapping.md) for mapping findings to AWS Well-Architected pillars.
 
 
 ## DO NOT DO
