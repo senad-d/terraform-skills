@@ -9,142 +9,73 @@ description: Workflow and standards for updating the Terraform AWS Modules repos
 
 Follow the repository workflow for planning, implementing, validating, and documenting Terraform module changes with secure, reliable, and cost-aware defaults.
 
-## Skill path (set once)
+## Scripts
 
-Automation scripts:
+- Run the [read_script](./scripts/read.sh) to read files.
+- Run the [plan_script](./scripts/plan.sh) to create the plan.
+- Run the [child_script](./scripts/child-module.sh) to create a new child module template directories and files.
+- Run the [root_script](./scripts/root-module.sh) to create a new root module directories and files.
+- Run the [test_script](./scripts/test.sh) for any change, add or update an example under `<module_directory>/`.
+- Run the [document_script](./scripts/document.sh) to create the child module documentation
+- Run the [clean_script](./scripts/cleanup.sh) to clean up `<module_directory>/` terraform state after testing.
 
+### Examples:
 ```bash
-export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
-export READ="$CODEX_HOME/skills/terraform-aws-modules/scripts/read.sh"
-export PLAN="$CODEX_HOME/skills/terraform-aws-modules/scripts/plan.sh"
-export CREATE="$CODEX_HOME/skills/terraform-aws-modules/scripts/child-module.sh"
-export TEST="$CODEX_HOME/skills/terraform-aws-modules/scripts/test.sh"
-export EXAMPLE="$CODEX_HOME/skills/terraform-aws-modules/scripts/root-modules.sh"
-export DOCUMENT="$CODEX_HOME/skills/terraform-aws-modules/scripts/document.sh"
-export CLEAN_TF="$CODEX_HOME/skills/terraform-aws-modules/scripts/cleanup.sh"
+./scripts/read.sh -d <directory> [-n <name-pattern>]
+./scripts/plan.sh -m <module_name> [-g <short_goal>]
+./scripts/child-module.sh -m <module_name> [-rv <tf_required_version>] [-av <aws_provider_version>]
+./scripts/root-module.sh -m <module1,module2> -t <root-module-name[,another-name]> [-n <stack-name>] [-e <examples-root>] [-r <modules-root>] [-T <tf-required-version>] [-P <aws-provider-version>] [-f]
+./scripts/test.sh -m <module_directory> [--plan <true|false>]
+./scripts/document.sh -m <module_name>
+./scripts/cleanup.sh --quiet <module_directory>
 ```
 
 User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
-## Reading files
-
-- Use `read.sh` to read files by selecting a directory and optionally specifying the file name:
-
-```bash
-"$READ" -d <directory> [-n <name-pattern>]
-```
-
-## Planning Template
-
-- Use `plan.sh` to create the plan for new module:
-
-```bash
-"$PLAN" -m <module_name> [-g <short_goal>]
-```
-
-- `Plan/` holds required change plans before any Terraform edits.
-- `memory-bank/` stores project context and task history; read for background when needed.
-
-## Module Organization & Structure
-
-- To create a new module template directories and files, use the automation script:
-
-```bash
-"$CREATE" -m <module_name> [-rv <tf_required_version>] [-av <aws_provider_version>]
-```
-
-- To create a new module for testing in example directories, use the automation script:
-
-```bash
-"$EXAMPLE" -m <module1,module2> [-t <basic,advanced>] [-n <example-name>] [-e <examples-root>] [-r <modules-root>] [-f]
-```
-
-## Testing Guidelines
-
-- For any change, add or update an example under `modules/<module_name>/` and `examples/<module_name>/<example_type>/` run tests for that example only using `test.sh`, e.g.:
-
-```bash
-"$TEST" -m <module_name> [-t <example_type> ...]
-```
-
-## Terraform Module Documentation Rule
-
-- Create the <module_name> documentation by running this command:
-
-```bash
-"$DOCUMENT" -m <module_name>
-```
-
-After the file is cretaed, update the file folowing rules:
-
-- Read the module tf files to understand module purpes and features.
-- Read the new README.md file.
-- Update sections containing `<!-- TODO: ... -->` commnets with clear and concise documentation based on the requirements from that comment.
-- Title must use capital letters when appropriate. (e.g. Athena Module, API-Gateway Module...)
-- DO NOT use any fluff to increase the word count.
-- After the editing is done, run the `terraform-docs` command to compleate the file:
-
-```bash
-terraform-docs markdown table modules/<module_name> >> modules/<module_name>/README.md
-```
-
-## Terraform state cleanup
-
-- Use `cleanup.sh` to clean up terraform state after testing.
-
-```bash
-"$CLEAN_TF" --quiet examples/<module_name>
-```
-
 ## Required Workflow
 
-1. Investigate first via `$READ`
-   - Read `Rules/` and `$CODEX_HOME/skills/terraform-aws-modules/references` standards and review existing patterns before changing code.
-   - Confirm behavior against official Terraform and AWS documentation; capture links and findings in the plan.
+1. Investigate first via [read_script](./scripts/read.sh)
+
+   - Read `Rules/` and [./references](./references) standards and review existing patterns before changing code.
 
 2. Plan before code (hard gate)
-   - Ask the user to clarify the module name, the scope for the module, and the types of examples to create. Provide clear choices for all questions based on investigation, e.g.:
 
-     ```markdown
-     1. Name:
-        A) ...
-        B) ...
-        C) ...
-        D) Custom name.
-     2. Scope:
-        A) Module built entirely from Terraform resources, without relying on a community module.
-        B) Wrapper module around terraform-aws-modules if available, extended with additional resources where required.
-        C) Module from terraform-aws-modules if available, without modification.
-        D) Describe custom requirements.
-     3. Examples:
-        A) basic only
-        B) basic + advanced
-        C) basic + advanced + iclude any edge cases or complex setups
-        D) Describe custom requirements.
-        Reply with your picks (e.g., “1A, 2B, 3A”) and any extra constraints.
-     ```
-
-   - Create a plan file in the `Plan/` directory using the provided information along with the `$PLAN` automation script.
-   - Do not edit Terraform until the plan exists.
+   - Request clarification on the module name, its scope, and examples to create using the [question_template](./templates/QUESTION_TEMPLATE.md).
+   - Provide clear choices for all questions based on investigation.
+   - Create a plan file in the `Plan/` directory using the provided information along with the [plan_script](./scripts/plan.sh).
+   - Confirm behavior against official Terraform and AWS documentation; capture links and findings in the plan.
+   - Stop-gate: Do not edit Terraform until the plan exists.
 
 3. Prepare files
-   - Use automation scripts from this skill to create files and directories for new module and only basic example for testing the module.
-   - You may create files like `.tftpl`, `.tfvars`, and `.json` manually only if they are missing from the automation script.
+
+   - Use the [child_script](./scripts/child-module.sh) and [root_script](./scripts/root-module.sh) to create files and directories for new module and example for testing the module.
+   - You may create files like `.tftpl`, `.tfvars`, and `.json` manually if they are missing from the automation scripts.
 
 4. Implement in small, focused steps
    - Follow the plan.
    - Keep changes scoped and intentional; avoid unrelated refactors.
 
-5. Validate
-   - Use automation scripts from skill for running tests.
+5. Validate (hard gate)
+
+   - Use the [test_script](./scripts/test.sh) for running tests.
+   - Correct any issues found in the test, then run it again until fully resolved.
+   - If the issue cannot be resolved, ask the user for input using the following [resolve_template](./templates/RESOLVE_TEMPLATE.md).
    - Note assumptions or workarounds in the plan and docs.
+   - Stop-gate: Do not proceed to the next step until the validation passes successfully.
 
 6. Document
-   - Create module documentation using the `$DOCUMENT`, after development is done and tests pass.
-   - Update completed tasks in Plan and memory.
+
+   - Create module documentation using the [document_script](./scripts/document.sh), after development is done and tests pass.
+   - Use the `terraform-docs` command to compleate documentation.
 
 7. Cleanup
-   - Use `$CLEAN_TF` to clean up after testing and documentation is done.
+
+   - Use the [clean_script](./scripts/cleanup.sh) to clean up after testing and documentation is done.
+
+7. Close out.
+
+   - Update completed tasks in Plan.
+   - Utilize the [response_template](./templates/RESPONSE_TEMPLATE.md) to formulate ouput and fill in the variables with the appropriate information.
 
 ---
 
@@ -170,16 +101,16 @@ terraform-docs markdown table modules/<module_name> >> modules/<module_name>/REA
 
 Always read all references when planing.
 
-- `references/01-overview-and-lifecycle.md`: Navigation, lifecycle, and sources of truth.
-- `references/02-module-creation-and-fundamentals.md`: When to create a module, what a module is, and how it relates to root modules.
-- `references/03-module-structure-and-layout.md`: Required files, layout, and module and example directory structure.
-- `references/04-module-interfaces-and-arguments.md`: Inputs, outputs, types, and meta-argument usage.
-- `references/05-providers-state-and-backends.md`: Provider rules, backends, and state topology.
-- `references/06-sources-and-distribution.md`: Module source types and distribution strategy.
-- `references/07-composition-and-patterns.md`: Composition, shallow hierarchies, and data-only modules.
-- `references/08-security-naming-and-tagging.md`: Security baseline, naming, tagging, and meta module conventions.
-- `references/09-testing-and-ci.md`: Local testing workflow and CI gates.
-- `references/10-examples-and-docs-automation.md`: Example design and documentation automation scripts.
+- [01-overview-and-lifecycle.md](./references/01-overview-and-lifecycle.md): Navigation, lifecycle, and sources of truth.
+- [02-module-creation-and-fundamentals.md](./references/02-module-creation-and-fundamentals.md): When to create a module, what a module is, and how it relates to root modules.
+- [03-module-structure-and-layout.md](./references/03-module-structure-and-layout.md): Required files, layout, and module and example directory structure.
+- [04-module-interfaces-and-arguments.md](./references/04-module-interfaces-and-arguments.md): Inputs, outputs, types, and meta-argument usage.
+- [05-providers-state-and-backends.md](./references/05-providers-state-and-backends.md): Provider rules, backends, and state topology.
+- [06-sources-and-distribution.md](./references/06-sources-and-distribution.md): Module source types and distribution strategy.
+- [07-composition-and-patterns.md](./references/07-composition-and-patterns.md): Composition, shallow hierarchies, and data-only modules.
+- [08-security-naming-and-tagging.md](./references/08-security-naming-and-tagging.md): Security baseline, naming, tagging, and meta module conventions.
+- [09-testing-and-ci.md](./references/09-testing-and-ci.md): Local testing workflow and CI gates.
+- [10-examples-and-docs-automation.md](./references/10-examples-and-docs-automation.md): Example design and documentation automation scripts.
 
 ## DO NOT DO
 
@@ -188,5 +119,6 @@ Always read all references when planing.
 - DO NOT EXPOSE ANY SECRETS OR VARIABLES!
 - DO NOT COMMIT ANY CHANGES.
 - DO NOT RUN AWS CLI COMMANDS.
+- DO NOT use any fluff to increase the word count.
 - DO NOT create directories manually with `mkdir`.
 - YOU DO NOT NEED to read `scripts/*.sh` scripts.

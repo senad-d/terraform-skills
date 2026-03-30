@@ -1,16 +1,9 @@
 ---
 page_title: Terraform Module Documentation Overview
-description: >-
-  Entry point for the Terraform module documentation set, describing the module lifecycle, how to navigate the guides, and which document is authoritative for each topic.
+description: Entry point for the Terraform module documentation set, describing the module lifecycle, how to navigate the guides, and which document is authoritative for each topic.
 ---
 
 # Terraform Module Documentation Overview
-
-## Audience
-
-Module authors, reviewers, and tooling maintainers.
-
-## Purpose
 
 This guide is the entry point for the module documentation set. It explains how to navigate the guides, outlines the module lifecycle, and calls out which documents are authoritative for each topic.
 
@@ -36,10 +29,180 @@ This guide is the entry point for the module documentation set. It explains how 
 
 Lifecycle automation touchpoints:
 
-- Scaffolding: `scripts/child-module.sh`
-- Examples: `scripts/root-modules.sh`
-- Validation: `scripts/test.sh`
-- Documentation: `scripts/document.sh` and `terraform-docs`
+- Scaffolding: [child_script](./scripts/child-module.sh)
+- Examples: [root_script](./scripts/root-module.sh)
+- Validation: [test_script](./scripts/test.sh)
+- Cleanup: [clean_script](./scripts/cleanup.sh)
+- Documentation: [document_script](./scripts/document.sh) and `terraform-docs`
+
+## Automation Scripts (Authoritative)
+
+All automation lives in [scripts](./scripts) directory. Use these scripts instead of
+ad-hoc scaffolding or tests.
+
+### `read.sh`
+
+Purpose: read files from a directory (or filtered by pattern) and emit a single JSON document.
+
+Inputs:
+
+- `-d|--directory`: root directory to read (required)
+- `-n|--name-pattern`: `rg` pattern to filter file paths (optional)
+
+Outputs:
+
+- JSON with `root`, `generated_at`, `file_count`, and file contents.
+
+Safety notes:
+
+- Read-only; no changes to the repo.
+
+### `plan.sh`
+
+Purpose: create a standardized plan document before implementing a root module.
+
+Inputs:
+
+- `-m|--module`: Module name (required). Use kebab-case. Used to derive the plan
+  filename and populate placeholders.
+- `-g|--goal`: Short, human-readable goal for the module (optional but
+  recommended). Included in the Summary section of the plan.
+
+Outputs:
+
+- Creates a `Plan/` directory in the repository root if it does not already exist.
+- Generates `Plan/<YYYYMMDD>-<module_slug>.md`, where `module_slug` is a sanitized form of `<module_name>`.
+- Populates the file with a structured template.
+
+Failure modes:
+
+- Missing `-m|--module` value.
+- Unknown or malformed flags.
+- Filesystem errors when creating the `Plan/` directory or writing the plan file.
+
+### `child-module.sh`
+
+Purpose: scaffold a new child module directory with baseline Terraform files.
+
+Inputs:
+
+- `-m|--module`: module name (required). Used for directory name and TODO text.
+- `-rv|--required-version`: Terraform required version constraint (optional; default `>= 1.14.3`).
+- `-av|--aws-version`: AWS provider version constraint (optional; default `>= 6.14.1`).
+- `-h|--help`: show usage and exit.
+
+Outputs:
+
+- Creates `modules/<module_name>/` containing `main.tf`, `outputs.tf`, `variables.tf`, `versions.tf`.
+- Writes TODO placeholders in `main.tf`, `outputs.tf`, and `variables.tf`.
+- Prints `Created modules/<module_name>` on success.
+- If module already exists, prints a skip message and exits without changes.
+
+Failure modes:
+
+- Missing `-m|--module` value.
+- Missing value for `-rv|--required-version` or `-av|--aws-version`.
+- Unknown or malformed flags.
+- Filesystem errors when creating the module directory or writing files.
+
+### `root-module.sh`
+
+Purpose: scaffold root module examples and wiring for existing child modules.
+
+Inputs:
+
+- `-m`: comma-separated child module names (required, must exist in `modules/`)
+- `-t`: root module name(s) (required)
+- `-n`: stack name (optional; defaults to concatenated module names)
+- `-e`: examples root (default `examples`)
+- `-r`: modules root (default `modules`)
+- `-T`: Terraform required version
+- `-P`: AWS provider version
+- `-f`: overwrite existing example (dangerous)
+
+Outputs:
+
+- Example scaffolding under `examples/<module_name>/<root_name>/` with
+  `main.tf`, `locals.tf`, `variables.tf`, `outputs.tf`, `versions.tf`, `README.md`.
+
+Safety notes:
+
+- Never creates AWS resources. It only writes files.
+- Fails fast if referenced child modules do not exist.
+
+### `test.sh`
+
+Purpose: validate examples consistently and generate a Markdown-style report.
+
+Inputs:
+
+- `-m|--module`: module name (required)
+- `-t|--type`: example type(s) (optional; defaults to `basic`)
+- `-p|--plan`: `true` or `false` for `terraform plan` (optional; default `true`)
+
+Behavior:
+
+- Runs `terraform fmt -recursive`.
+- Runs `terraform init -backend=false` and `terraform validate` per example.
+- Runs `tfsec` and `tflint` when installed.
+- Runs `terraform plan` unless disabled.
+
+Safety notes:
+
+- Uses `AWS_PROFILE=localstack` by default.
+- Do not use for real AWS changes; it is validation-only.
+
+### `cleanup.sh`
+
+Purpose: remove Terraform artifacts (`.terraform/`, `.terraform.lock.hcl`) under
+a directory tree.
+
+Inputs:
+
+- `--dry-run`, `--log-level`, `--debug`, `--quiet`, plus a `MAIN_DIR` and
+  optional subdirectories.
+
+Outputs:
+
+- Deletes Terraform artifacts; supports dry-run reporting.
+
+Safety notes:
+
+- Destructive by design; use `--dry-run` first.
+- Skips common vendor/build directories while scanning.
+
+### `document.sh`
+
+Purpose: create a README template for a specific child module.
+
+Inputs:
+
+- `-m|--module`: module name (required; must exist under `modules/`)
+- `-h|--help`: show usage and exit
+
+Outputs:
+
+- Overwrites `modules/<module_name>/README.md` with a documentation template.
+- Prints a confirmation message with the README path.
+
+Failure modes:
+
+- Missing `-m|--module` value.
+- Unknown flags.
+- `terraform-docs` missing from `PATH`.
+- Module directory does not exist.
+- Filesystem errors when writing the README.
+
+Once the files are created, update them according to the following rules:
+
+- Read the module `.tf` files to understand module purpes and features.
+- Read the new README.md file for child module.
+- Update sections containing `<!-- TODO: ... -->` with clear and concise documentation based on the requirements from that comment.
+- Title must use capital letters when appropriate. (e.g. Athena Module, API-Gateway Module...)
+- After the editing is done, run the `terraform-docs` command to compleate the file:
+   ```bash
+   terraform-docs markdown table modules/<module_name> >> modules/<module_name>/README.md
+   ```
 
 ## Production Readiness Checklist
 
@@ -72,44 +235,6 @@ Lifecycle automation touchpoints:
 - CI checks pass, including formatting and security scans.
 - Versioning and upgrade notes are recorded when changes are breaking.
 - After implementation and documentation are complete, update all relevant Plan files and memory files for the task. The task is not done until Plan and memory are fully updated.
-
-## Documentation Map
-
-### Decide and Design
-
-- `02-module-creation-and-fundamentals.md`: Module fundamentals and design principles (when and why to create a module, what belongs in a module vs a root module).
-- `07-composition-and-patterns.md`: Composition patterns and root module design (canonical guide for how modules are combined).
-
-### Implement
-
-- `03-module-structure-and-layout.md`: Module structure and repository layout (root module files, nested modules, and examples directory structure).
-- `04-module-interfaces-and-arguments.md`: Module interfaces, variables, and validation (canonical guide for inputs, outputs, types, and validation rules).
-- `05-providers-state-and-backends.md`: Providers, state, backends, and environments (canonical guide for provider configuration and remote state layout).
-- `08-security-naming-and-tagging.md`: Security, naming, and tagging guidelines (canonical security and tagging guide).
-- `10-examples-and-docs-automation.md`: Examples, documentation, and user-facing docs (canonical guide for examples and documentation workflow).
-
-### Publish and Evolve
-
-- `06-sources-and-distribution.md`: Module distribution, versioning, and upgrades (canonical guide for source selection, versioning policy, and upgrade playbooks).
-- Supporting references:
-  - `05-providers-state-and-backends.md` for backend and environment layouts.
-  - `07-composition-and-patterns.md` for composition implications.
-  - `08-security-naming-and-tagging.md` for security and tagging impact.
-
-### Test and Operate
-
-- `09-testing-and-ci.md`: Testing, examples, and CI automation (canonical testing and CI guide).
-- `10-examples-and-docs-automation.md`: Examples as documentation and test assets; documentation generation workflow.
-
-### Topic Canonical Guides
-
-- Interfaces, variables, and validation → `04-module-interfaces-and-arguments.md`.
-- Providers, state, backends, and environments → `05-providers-state-and-backends.md`.
-- Composition and root module design → `07-composition-and-patterns.md`.
-- Security, naming, and tagging → `08-security-naming-and-tagging.md`.
-- Distribution, versioning, and upgrades → `06-sources-and-distribution.md`.
-- Testing and CI → `09-testing-and-ci.md`.
-- Examples and documentation → `10-examples-and-docs-automation.md`.
 
 ## Sources of Truth
 

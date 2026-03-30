@@ -71,12 +71,10 @@ fi
 
 mkdir -p "${module_dir}"
 
-todo_comment="# TODO: configure required inputs for ${module_name}"
+todo_comment="<!-- TODO: configure required blocks for ${module_name} -->"
 
-# main.tf
 printf '%s\n\n' "${todo_comment}" > "${module_dir}/main.tf"
 
-# outputs.tf
 printf '%s\n\n' "${todo_comment}" > "${module_dir}/outputs.tf"
 
 cat > "${module_dir}/variables.tf" <<EOF

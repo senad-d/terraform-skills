@@ -28,14 +28,14 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 ## Terraform Review Workflow
 
-1. Start new task and prepare context.
+1. Prepare context.
    
    - Read `Rules/` and [./references](./references).
 
 2. Intake and scope confirmation (hard gate).
 
    - Validate inputs first: (module name, scope, goal, plan path).
-   - Stop-gate: if module path or scope is ambiguous, halt and ask to clarify.
+   - Stop-gate: if module path or scope is ambiguous, halt and ask to clarify using the [template](./templates/IMPUTS_TEMPLATE.md).
 
 3. Find related files.
 
@@ -97,5 +97,6 @@ Always read all guides.
 - DO NOT propose changes outside the requested scope or rewrite modules wholesale.
 - DO NOT modify Terraform code or run Terraform commands in this skill.
 - DO NOT run any test commands.
+- DO NOT use any fluff to increase the word count.
 - YOU DO NOT NEED to read `./scripts/*.sh` scripts.
 - DO NOT infer intent without evidence; halt if scope is ambiguous.

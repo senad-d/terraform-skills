@@ -5,7 +5,7 @@ description: Standards and workflow for planning, composing, validating, and doc
 
 # Terraform Root module Generator
 
-- Provides a repeatable root-module workflow with enterprise-grade guardrails for planning, composition, and validation.
+Provides a repeatable root-module workflow with enterprise-grade guardrails for planning, composition, and validation.
 
 ## Scripts
 
@@ -34,7 +34,6 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
    - Read `Rules/` and [./references](./references) standards and review existing patterns before changing code.
    - Examine the `modules/` directory to locate appropriate child and wrapper modules for constructing the root module via [find_script](./scripts/find.sh).
-   - Confirm behavior against official Terraform and AWS documentation; capture links and findings in the plan.
 
 2. Plan before code (hard gate)
 
@@ -42,6 +41,7 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
    - Provide clear choices for all questions based on investigation.
    - Utilize the [question_template](./templates/QUESTION_TEMPLATE.md) to formulate inquiries and fill in the data sections with the appropriate information.
    - Create a plan file using the [plan_script](./scripts/plan.sh) and the provided information from the investigation context.
+   - Confirm behavior against official Terraform and AWS documentation; capture links and findings in the plan.
    - Stop-gate: Do not edit Terraform until the plan exists.
 
 3. Prepare files
@@ -118,5 +118,6 @@ Always read all references when planning.
 - DO NOT CREATE ANY AWS resources!
 - DO NOT EXPOSE ANY SECRETS OR VARIABLES!
 - DO NOT RUN AWS CLI COMMANDS.
+- DO NOT use any fluff to increase the word count.
 - DO NOT create directories manually with `mkdir`; use `$CREATE`.
 - YOU DO NOT NEED to read `scripts/*.sh` scripts.

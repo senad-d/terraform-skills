@@ -1,32 +1,17 @@
 ---
 page_title: Module Distribution, Versioning, and Upgrades
-description: >-
-  Defines how to use the module source argument, when to use local paths vs
-  registries, and how modules are versioned, pinned, and safely refactored and
-  upgraded internally and externally.
+description: Defines how to use the module source argument, when to use local paths vs registries, and how modules are versioned, pinned, and safely refactored and upgraded internally and externally.
 ---
 
 # Module Distribution, Versioning, and Upgrades
 
-## Audience
-
-Engineers composing stacks from modules and deciding how to distribute modules,
-manage versions, and plan safe upgrades.
-
-## Purpose
-
-Normalize guidance on the `source` argument, registry usage, internal module
-distribution, version pinning, semantic versioning policy, and safe refactor and
-upgrade patterns.
+Normalize guidance on the `source` argument, registry usage, internal module distribution, version pinning, semantic versioning policy, and safe refactor and upgrade patterns.
 
 ## Source Selection Guidance
 
-- Use local relative paths (`./` or `../`) for closely related modules within the
-  same repository.
-- Use a Terraform module registry for modules intended to be shared across
-  multiple configurations.
-- Avoid absolute filesystem paths because they are treated like remote packages
-  and couple configs to a specific machine layout.
+- Use local relative paths (`./` or `../`) for closely related modules within the same repository.
+- Use a Terraform module registry for modules intended to be shared across multiple configurations.
+- Avoid absolute filesystem paths because they are treated like remote packages and couple configs to a specific machine layout.
 
 ## Supported Source Types
 
@@ -55,8 +40,7 @@ module "consul" {
 }
 ```
 
-A local path must begin with `./` or `../`. Absolute filesystem paths are
-treated as remote packages and are not recommended.
+A local path must begin with `./` or `../`. Absolute filesystem paths are treated as remote packages and are not recommended.
 
 ## Terraform Registry
 
@@ -81,8 +65,7 @@ module "consul" {
 }
 ```
 
-Registry modules support version constraints and require appropriate
-credentials for private registries.
+Registry modules support version constraints and require appropriate credentials for private registries.
 
 ## GitHub
 
@@ -168,9 +151,7 @@ module "vpc" {
 }
 ```
 
-The module installer downloads the entire package but reads the module from the
-subdirectory. Submodules can safely use local paths to other modules in the same
-package.
+The module installer downloads the entire package but reads the module from the subdirectory. Submodules can safely use local paths to other modules in the same package.
 
 ## Version Pinning and Constraints
 
@@ -182,10 +163,8 @@ package.
 
 When using registry or VCS sources:
 
-- Pin to a minimum compatible version using `>=` constraints when you control
-  both producer and consumer.
-- Pin to exact versions or narrow ranges when modules are shared broadly or
-  across teams to avoid unplanned breaking changes.
+- Pin to a minimum compatible version using `>=` constraints when you control both producer and consumer.
+- Pin to exact versions or narrow ranges when modules are shared broadly or across teams to avoid unplanned breaking changes.
 
 Example (registry source with constraint):
 
@@ -204,13 +183,11 @@ module "vpc" {
 }
 ```
 
-Document version policies in module READMEs so consumers understand upgrade
-expectations.
+Document version policies in module READMEs so consumers understand upgrade expectations.
 
 ## `moved` Blocks and Safe Refactors
 
-Terraform interprets address changes as destroy and recreate unless you add
-`moved` blocks. Use `moved` to preserve state across refactors.
+Terraform interprets address changes as destroy and recreate unless you add `moved` blocks. Use `moved` to preserve state across refactors.
 
 Example:
 
@@ -223,8 +200,7 @@ moved {
 
 ### Requirements
 
-- Terraform v1.1+ is required for `moved` blocks. Use `terraform state mv` only
-  when you cannot use `moved`.
+- Terraform v1.1+ is required for `moved` blocks. Use `terraform state mv` only when you cannot use `moved`.
 
 ### Refactor Scenarios
 
@@ -239,8 +215,7 @@ moved {
 
 #### Enable `for_each` or `count` for a Resource
 
-Switching from single-instance to multiple instances requires mapping the old
-address to a specific key or index.
+Switching from single-instance to multiple instances requires mapping the old address to a specific key or index.
 
 Example:
 
@@ -299,9 +274,7 @@ moved {
 
 #### Split a Module
 
-When splitting a module into multiple modules, use a shim module that calls the
-new modules and includes `moved` blocks to map old resource addresses to their
-new locations.
+When splitting a module into multiple modules, use a shim module that calls the new modules and includes `moved` blocks to map old resource addresses to their new locations.
 
 Example:
 
@@ -322,12 +295,9 @@ moved {
 
 ## Removing `moved` Blocks
 
-Removing a `moved` block is a breaking change. Retain historical `moved` blocks
-whenever possible to preserve upgrade paths for existing users.
+Removing a `moved` block is a breaking change. Retain historical `moved` blocks whenever possible to preserve upgrade paths for existing users.
 
-If you must remove them, do so only when you are confident all consumers have
-applied the newer module version. If you rename the same object multiple times,
-chain `moved` blocks to preserve the full history.
+If you must remove them, do so only when you are confident all consumers have applied the newer module version. If you rename the same object multiple times, chain `moved` blocks to preserve the full history.
 
 Example:
 
@@ -351,10 +321,3 @@ moved {
 - Update examples and README usage to the new interface.
 - Call out required actions for consumers (renames, new inputs, removed outputs).
 - Ensure validation and CI run against updated examples.
-
-## Related Guides
-
-- `04-module-interfaces-and-arguments.md` for interface change implications.
-- `05-providers-state-and-backends.md` for state layout considerations.
-- `07-composition-and-patterns.md` for composition and wiring implications.
-- `08-security-naming-and-tagging.md` for security and tagging policy.

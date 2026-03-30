@@ -47,13 +47,11 @@ Lifecycle automation touchpoints:
 
 ## Automation Scripts (Authoritative)
 
-All automation lives in [scripts](./scripts) directory. Use these scripts instead of
-ad-hoc scaffolding or tests.
+All automation lives in [scripts](./scripts) directory. Use these scripts instead of ad-hoc scaffolding or tests.
 
 ### `read.sh`
 
-Purpose: read files from a directory (or filtered by pattern) and emit a single
-JSON document.
+Purpose: read files from a directory (or filtered by pattern) and emit a single JSON document.
 
 Inputs:
 

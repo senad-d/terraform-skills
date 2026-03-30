@@ -145,8 +145,7 @@ EOF_MAIN
 module "${module_label}" {
   source = "../../../modules/${mod}"
 
-  # TODO: configure required inputs for ${mod}
-  # Example: tags_from_meta = module.naming.tags
+  <!-- TODO: configure required inputs for ${mod} (Example: tags_from_meta = module.naming.tags) -->
 }
 EOF_MODULE
   done
@@ -154,12 +153,12 @@ EOF_MODULE
   if [[ "${example_type}" == "advanced" ]]; then
     cat <<'EOF_LOCALS' > "${example_dir}/locals.tf"
 locals {
-  # TODO: add advanced locals and shared settings
+  <!-- TODO: add advanced locals and shared settings -->
 }
 EOF_LOCALS
     cat <<'EOF_ADV_NOTE' >> "${example_dir}/main.tf"
 
-# TODO: add advanced wiring between modules and optional features
+<!-- TODO: add advanced wiring between modules and optional features -->
 EOF_ADV_NOTE
   fi
 
@@ -177,7 +176,7 @@ variable "aws_region" {
 EOF_VARIABLES
 
   cat <<'EOF_OUTPUTS' > "${example_dir}/outputs.tf"
-# TODO: add outputs as needed
+<!-- TODO: add outputs as needed -->
 EOF_OUTPUTS
 
   cat <<EOF_VERSIONS > "${example_dir}/versions.tf"
