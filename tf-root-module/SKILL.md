@@ -68,7 +68,7 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 7. Close out.
 
    - Update completed tasks in Plan.
-   - Create output using the following response [template](./templates/RESPONSE_TEMPLATE.md)
+   - Utilize the [response_template](./templates/RESPONSE_TEMPLATE.md) to formulate ouput and fill in the variables with the appropriate information.
 
 ---
 

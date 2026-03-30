@@ -9,8 +9,12 @@ Missing child modules (based on plain resources): {missing_child_modules}
 Plan: {plan_file_path}
 Task log: {task_file_path}
 
+**Tests**
+Testing done with: {test_command}
+
 **Next Steps**
-1. Run the `tf-review` skill against `{module_name}`.
-2. We are done.
+1. Run review skill, e.g.: `new task -> review terraform module {module_name} using $tf-review`.
+2. Request additional changes.
+3. Done.
 
 Reply with which option you want and I will proceed.

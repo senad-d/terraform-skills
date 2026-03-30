@@ -8,6 +8,10 @@ Review: {review_file_path}
 Plan: {plan_file_path}
 Task log: {task_file_path}
 
+**Assumptions**
+
+{assumptions}
+
 **Next Steps:**
   
   1. Challenge the review.

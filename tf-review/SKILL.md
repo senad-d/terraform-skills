@@ -30,9 +30,7 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 1. Start new task and prepare context.
    
-   - Update memory-bank files.
-   - Read `Rules/` and skill [./references](./references).
-
+   - Read `Rules/` and [./references](./references).
 
 2. Intake and scope confirmation (hard gate).
 
@@ -71,7 +69,7 @@ User-scoped skills install under `$CODEX_HOME/skills` (default: `skills`).
 
 9. Close out.
 
-   - Update completed tasks in Plan and memory-bank.
+   - Update completed tasks in Plan.
    - Create output using the following response [template](./templates/RESPONSE_TEMPLATE.md)
    - Use the prompt [template](./templates/PROMPT_TEMPLATE.md) only if the user decides to work on the findings from the review.
 
@@ -97,8 +95,7 @@ Always read all guides.
 - DO NOT suggest breaking changes without calling out the blast radius and required updates across references.
 - DO NOT hand-wave fixes like "run terraform fmt" without identifying the drifted file and the specific block.
 - DO NOT propose changes outside the requested scope or rewrite modules wholesale.
-- DO NOT modify Terraform code or run Terraform commands/tests in this skill.
+- DO NOT modify Terraform code or run Terraform commands in this skill.
+- DO NOT run any test commands.
 - YOU DO NOT NEED to read `./scripts/*.sh` scripts.
-- DO NOT modify Terraform code or documentation with this skill.
-- DO NOT run Terraform commands or tests (plan, validate, apply, fmt, etc.).
 - DO NOT infer intent without evidence; halt if scope is ambiguous.
