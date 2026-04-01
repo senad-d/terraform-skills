@@ -1,7 +1,3 @@
-**Findings (ordered by severity):**
-
-{per_finding}
-
 **Artifacts created:**
 
 Plan: {plan_file_path}
@@ -14,3 +10,4 @@ Plan: {plan_file_path}
   
   1. Update the plan.
   2. Planning compleat.
+  3. Use different skills to execute the plan.

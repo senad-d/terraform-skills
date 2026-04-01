@@ -1,12 +1,12 @@
 **Scope Clarification:**
 
 1. Plan type: 
-   A) architecture 
-   B) new-module 
-   C) edit-module
+   A) new-module 
+   B) edit-module
+   C) architecture 
 
-2. Short goal for the plan (1-2 sentences): {goal}
+2. Description (goal):
 
 3. Module name (new/edit only):
 
-Reply with your selections (e.g., “1. A, 2. {goal}”) and any additional information you think is necessary.
+Reply with your selections (e.g., “1. A, 2. Child module for...”) and any additional information you think is necessary.
