@@ -1,5 +1,5 @@
 ---
-page_title: Composition Patterns and Root Module Design
+page_title: Composition Patterns and Design
 description: Defines how to compose modules into larger systems, design root modules from a consumer perspective, enforce shallow hierarchies, and use data-only modules and remote state for wiring.
 ---
 
@@ -12,7 +12,7 @@ root module responsibilities from a consumer perspective.
 
 Root modules represent concrete stacks or environments. They are responsible for:
 
-- Configuring providers and backends (see [05-infrastructure-architecture-guidelines.md](./references/05-infrastructure-architecture-guidelines.md)).
+- Configuring providers and backends.
 - Composing reusable modules into a coherent topology.
 - Supplying environment and account-specific values to child modules.
 - Wiring data-only modules and remote state to share information between stacks.
