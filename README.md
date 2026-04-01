@@ -7,6 +7,7 @@ flowchart LR
     %% TF skills memory bank workflow
 
     A([Repo]) --> B[Bootstrap shared memory]
+    A --> P[Plan Terraform work]
     B --> C[Create reusable modules]
     C --> D[Create root modules]
 
@@ -15,11 +16,18 @@ flowchart LR
         D
     end
 
+    subgraph TF Planning Skill
+        P
+    end
+
     MB((Shared memory bank and rules))
 
     C --> MB
     D --> MB
     B --> MB
+    P -. optional .-> C
+    P -. optional .-> D
+    P -. optional .-> MB
 
 ```
 
@@ -36,6 +44,9 @@ flowchart LR
 
 - **Terraform root module workflows**  
   Standards and scripts for planning, composing, validating, and documenting Terraform root modules that integrate child modules with secure defaults.
+
+- **Terraform planning workflows**  
+  Structured planning for new modules, edits, or AWS architecture changes without touching code, with clear inputs and plan outputs.
 
 - **Terraform review workflows**  
   Structured Terraform code review guidance focused on security, reliability, cost, and correctness with strict evidence requirements.
@@ -85,6 +96,15 @@ This repository contains multiple skills that are meant to be used together as a
     - [`tf-review/scripts/plan.sh`](tf-review/scripts/plan.sh) – create a required review plan
     - [`tf-review/scripts/find.sh`](tf-review/scripts/find.sh) – locate module directories for review
 
+- [`tf-plan`](tf-plan/SKILL.md)  
+  Planning workflows for Terraform module changes or AWS architecture updates without changing code.
+  - Key files:
+    - [`tf-plan/SKILL.md`](tf-plan/SKILL.md) – skill overview and usage details
+    - [`tf-plan/references/`](tf-plan/references/) – planning guides, methodology, and architecture references
+    - [`tf-plan/scripts/find.sh`](tf-plan/scripts/find.sh) – locate modules for planning context
+    - [`tf-plan/scripts/read.sh`](tf-plan/scripts/read.sh) – read files into planning context
+    - [`tf-plan/scripts/plan.sh`](tf-plan/scripts/plan.sh) – create a plan output
+
 The top-level [`LICENSE`](LICENSE) applies to the content in this repository.
 
 ## Prerequisites
@@ -113,13 +133,13 @@ Clone this repository into a location where you manage your CODEX skills:
 git clone https://github.com/senad-d/terraform-skills.git 
 
 cd terraform-skills && [ -d "$HOME/.codex" ] && \
-cp -R memory-bank-bootstrap tf-child-modules tf-root-module "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
+cp -R memory-bank-bootstrap tf-child-modules tf-root-module tf-plan "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
 ```
 
 To include the review skill as well:
 
 ```bash
-cp -R memory-bank-bootstrap tf-child-modules tf-root-module tf-review "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
+cp -R memory-bank-bootstrap tf-child-modules tf-root-module tf-review tf-plan "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
 ```
 
 ## Configuration
@@ -223,7 +243,21 @@ Typical scripts include:
 - [`tf-root-module/scripts/root-module.sh`](tf-root-module/scripts/root-module.sh)
 - [`tf-root-module/scripts/test.sh`](tf-root-module/scripts/test.sh)
 
-### 4. Iterate with memory-backed context
+### 4. Plan Terraform work
+
+Use the `tf-plan` skill to create a structured plan for new modules, edits, or architecture updates without changing code. For example:
+
+```text
+new task -> create a plan for a new module using $tf-plan
+```
+
+Typical scripts include:
+
+- [`tf-plan/scripts/find.sh`](tf-plan/scripts/find.sh)
+- [`tf-plan/scripts/read.sh`](tf-plan/scripts/read.sh)
+- [`tf-plan/scripts/plan.sh`](tf-plan/scripts/plan.sh)
+
+### 5. Iterate with memory-backed context
 
 As you create modules, the memory bank accumulates:
 
@@ -234,7 +268,7 @@ As you create modules, the memory bank accumulates:
 
 Subsequent CODEX tasks (for example, refactoring an existing module or adding a new one) can reuse this context automatically, reducing duplication and helping maintain consistency across your Terraform codebase.
 
-### 5. Perform Terraform reviews
+### 6. Perform Terraform reviews
 
 Use the `tf-review` skill to run structured reviews that require evidence and remediation steps. For example:
 
