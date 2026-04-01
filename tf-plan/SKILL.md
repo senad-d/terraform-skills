@@ -5,13 +5,13 @@ description: Planning Terraform code.
 
 # Terraform Planning
 
-Use this Terraform Planning skill to <!-- TODO: -->
+Use this Terraform Planning skill to produce a structured plan for Terraform module work or AWS architecture planning based on the user's goals, without changing code.
 
-## Planning scenarios
+## Planning options
 
-1. Create a new module with `new-module` when user mentiones `new`.
-2. Update existing module with `edit-module` when user mentiones `edit`.
-3. Architecture ideas with `architecture` when user mentiones `architecture` and `designe`.
+- Create a new module with `new-module` when user mentiones `new`.
+- Update existing module with `edit-module` when user mentiones `edit`.
+- Architecture ideas with `architecture` when user mentiones `architecture` and `designe`.
 
 ## Scripts
 
@@ -59,15 +59,15 @@ Always read all guides.
 
 - [01-overview-and-lifecycle.md](./references/01-overview-and-lifecycle.md) for overview, lifecycle, and map of the planning guides.
 - [02-plan-methodology.md](./references/02-plan-methodology.md) planning phases, evidence rules, severity rubric, and checklists.
-- [03-composition-and-patterns](./references/03-composition-and-patterns.md) <!-- TODO: -->
+- [03-composition-and-patterns](./references/03-composition-and-patterns.md) for composition patterns, root module design, flat hierarchy rules, dependency inversion, and data-only/remote-state wiring.
 - [04-investigation-procedure.md](./references/04-investigation-procedure.md) for file discovery, automation scripts, and MCP reference gathering.
 - [05-pillar-mapping.md](./references/05-pillar-mapping.md) for mapping findings to AWS Well-Architected pillars.
-- [06-arhitecture.md](./references/06-arhitecture.md) <!-- TODO: -->
+- [06-arhitecture.md](./references/06-arhitecture.md) for architecture planning guidelines, core rules, security/IAM, and validation checklist.
 
 
 ## DO NOT DO
 
-- <!-- TODO: -->
+- DO NOT proceed without confirming the plan type, a short goal, and the module name when required.
 - DO NOT give vague or subjective feedback.
 - DO NOT create and modify Terraform code.
 - DO NOT run Terraform commands in this skill.

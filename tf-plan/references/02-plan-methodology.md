@@ -5,31 +5,53 @@ description: How to execute Terraform planning, capture evidence, and produce co
 
 # Terraform Planning Methodology
 
-<!-- TODO: -->
+Use this methodology to produce consistent, defensible Terraform plans. The goal is to identify impacts, risks, and required approvals without modifying code or running Terraform. Plans should be repeatable by a second reviewer and result in clear evidence, decisions, and next actions.
 
 ## Scope
 
-<!-- TODO: -->
+Define the precise boundaries of the plan before review work begins. Scope must be explicit enough that a second reviewer would reach the same conclusions.
+
+- In scope: target modules, environments, accounts, regions, and versions.
+- Out of scope: resources or environments not impacted by the change set.
+- Inputs: request context, constraints, dependencies, and required approvals.
+- Outputs: expected plan artifacts, evidence, and decision criteria.
+- Assumptions: any missing data or defaults that affect the analysis.
 
 ## Planning Phases
 
-<!-- TODO: -->
+1. Intake and context: capture the request, target environment, constraints, and success criteria.
+2. Inventory and baseline: enumerate impacted modules, state, dependencies, and existing resources.
+3. Change analysis: map proposed changes to concrete resources, inputs, and outputs.
+4. Risk and safety checks: identify destructive actions, data loss risks, and blast radius.
+5. Evidence capture: document assumptions, expected diffs, and required approvals.
+6. Review and feedback: provide findings, required fixes, and readiness decision.
 
 ## Critical Thinking Gates
 
 Use these gates to challenge the code, not just read it:
 
-<!-- TODO: -->
+1. Intent gate: can you restate the change goal and confirm the code actually achieves it?
+2. Delta gate: what resources, inputs, outputs, and dependencies change compared to baseline?
+3. Safety gate: any destructive actions, data loss risk, or irreversible changes?
+4. Exposure gate: does the change widen access, public surface, or trust boundaries?
+5. Operability gate: are logs, metrics, alarms, and runbook updates required?
+6. Approval gate: do any changes trigger policy, compliance, or cost approvals?
 
 ## Well-Architected Pillar Mapping
 
 - Map each planning step to at least one AWS Well-Architected pillar.
-- Use the pillar mapping [guide](./05-pillar-mapping.md) to keep
+- Use the pillar mapping [guide](./references/05-pillar-mapping.md) to keep
   labeling consistent.
 
 ## Constructive Feedback Rules
 
-<!-- TODO: -->
+- Start with the most impactful risk or gap, not minor style issues.
+- Be specific: cite the exact file, resource, or block you are referencing.
+- Explain the consequence (security, reliability, cost, or operability impact).
+- Offer a concrete fix or an acceptable alternative.
+- Separate facts from opinions; label assumptions explicitly.
+- Keep feedback concise and actionable; avoid broad re-architecture unless required.
+- When a change is optional, say why and note the tradeoff.
 
 ## Planning Checklists
 

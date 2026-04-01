@@ -5,15 +5,24 @@ description: Research the topic using scripts and MCP servers to obtain authorit
 
 # Investigation Procedure
 
-<!-- TODO: -->
+Use this procedure to quickly scope the work, inventory resources, and gather authoritative references before drafting findings or recommendations. Favor direct evidence from Terraform configuration and MCP documentation, and avoid speculative assumptions.
 
 ## Confirm Scope
 
-<!-- TODO: -->
+Quickly confirm the exact target, intent, and constraints before scanning code:
+
+1. Capture the objective (plan draft, remediation, review, or investigation) and expected outputs.
+2. List explicit out-of-scope items and ask for confirmation if anything is ambiguous.
 
 ## Build a Resource Inventory
 
-<!-- TODO: -->
+Build the inventory directly from code and avoid deep interpretation:
+
+1. Use `rg --files -g '*.tf'` (and `-g '*.tfvars'` if needed) to list Terraform files by module path.
+2. Use `rg -n '^(resource|data|provider|module)\\s+\"'` to capture resource, data source, provider, and module declarations with file+line.
+3. Normalize entries into a quick list of unique resource/data source types and providers; keep counts optional if it slows you down.
+4. Flag external dependencies: `module` sources, `terraform_remote_state`, and `data` lookups that imply cross-account or cross-region references.
+5. Record version constraints from `required_providers` and `required_version` blocks without resolving them further.
 
 ### Resource Inventory Format
 

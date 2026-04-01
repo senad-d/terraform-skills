@@ -3,11 +3,11 @@
 1. Confirm edit requirements (hard gate).
 
    - Extract the target module name, the explicit change goal, constraints, and success criteria from the user prompt.
-   - Verify the module exists in the repo and identify its root path; stop and ask if unclear.
+   - Verify the module exists using the [find_script](./scripts/find.sh) in the repo and identify its root path; stop and ask if unclear.
 
 2. Inspect the current module.
 
-   - Read module README, variables, outputs, main resources, and examples to understand intent and interface.
+   - Read module README, variables, outputs, main resources, and examples to understand intent and interface usnig the [read_script](./scripts/read.sh).
    - Note current dependencies, providers, and resource inventory that will be touched.
 
 3. Define the change set.
@@ -25,7 +25,6 @@
    - Fill the plan template with the change list mapped to AWS Well-Architected pillars.
    - Document impact, backward compatibility, migrations, rollout strategy, risks, and rollback.
    - Stop-gate: do not proceed until risks and rollback are explicitly captured.
-
 
 6. Close out.
 

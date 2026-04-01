@@ -8,7 +8,8 @@
 
 2. Inventory existing patterns and dependencies.
 
-   - Check for similar modules in the repo and note conventions for naming, providers, tags, and structure.
+   - Use the [find_script](./scripts/find.sh) to locate the similar modules.
+   - Read for similar modules using the [read_script](./scripts/read.sh) and note conventions for naming, providers, tags, and structure.
    - Identify shared modules, policies, and standards the new module must align with.
 
 3. Define the module interface and resources.
@@ -26,7 +27,6 @@
    - Fill the plan template with the module design mapped to AWS Well-Architected pillars.
    - Document impact, backward compatibility expectations, rollout strategy, risks, and rollback.
    - Stop-gate: do not proceed until risks and rollback are explicitly captured.
-
 
 6. Close out.
 
