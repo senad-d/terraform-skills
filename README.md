@@ -8,6 +8,7 @@ flowchart LR
 
     A([Repo]) --> B[Bootstrap shared memory]
     A --> P[Plan Terraform work]
+    A --> R[Review Terraform code]
     B --> C[Create reusable modules]
     C --> D[Create root modules]
 
@@ -18,13 +19,14 @@ flowchart LR
 
     subgraph TF Planning Skill
         P
+        R
     end
 
     MB((Shared memory bank and rules))
 
+    B --> MB
     C --> MB
     D --> MB
-    B --> MB
     P -. optional .-> C
     P -. optional .-> D
     P -. optional .-> MB
