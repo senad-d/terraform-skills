@@ -3,6 +3,7 @@ Source:
 - References: skills/tf-plan/references
 - Templates: skills/tf-plan/templates
 - Scripts: skills/tf-plan/scripts
+- Sub Workflows: skills/tf-plan/sub_workflows
 
 Licensed under the Apache License, Version 2.0.
 See LICENSE.txt in this directory.
