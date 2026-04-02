@@ -222,7 +222,7 @@ After the memory bank is created, a `Rules/` directory is added at the root of t
 Use the `tf-child-modules` skill to plan, scaffold, and refine child modules. For example, in CODEX you might start a task like:
 
 ```text
-create aws module for vpc using $tf-child-modules
+Create aws module for vpc using $tf-child-modules
 ```
 
 Behind the scenes, CODEX can leverage scripts such as:
@@ -240,7 +240,7 @@ These workflows encourage consistent module structure, testing, and documentatio
 Use the `tf-root-module` skill to plan and assemble root modules that compose multiple child modules. For example:
 
 ```text
-create module for shared networking using $tf-root-module
+Create module for shared networking using $tf-root-module
 ```
 
 Typical scripts include:
@@ -279,7 +279,7 @@ Subsequent CODEX tasks (for example, refactoring an existing module or adding a 
 Use the `tf-review` skill to run structured reviews that require evidence and remediation steps. For example:
 
 ```text
-new task -> review module for iam policies using $tf-review
+Review module for iam policies using $tf-review
 ```
 
 Typical scripts include:
