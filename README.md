@@ -29,7 +29,6 @@ flowchart LR
     D --> MB
     P -. optional .-> C
     P -. optional .-> D
-    P -. optional .-> MB
 
 ```
 
