@@ -211,14 +211,18 @@ $memory-bank-bootstrap
 
 This sets up the `memory-bank/` directory and AGENTS rules that CODEX can reuse across subsequent tasks.
 
-After the memory bank is created, a `Rules/` directory is added at the root of this repository. The `$tf-child-modules` and `$tf-root-module` skills automatically read any files in this directory as additional, project-specific rules, in addition to the default rules they ship with.
+After the memory bank is created, a `Rules/` directory is added at the root of this repository. The skills automatically read any files in this directory as additional, project-specific rules, in addition to the default rules they ship with.
+
+> Note: The memory bank is optional, but recommended for larger projects.
+
+> Recommendation: To ensure the memory bank is used, start your prompt with `new task ->`.
 
 ### 2. Create Terraform AWS child modules
 
 Use the `tf-child-modules` skill to plan, scaffold, and refine child modules. For example, in CODEX you might start a task like:
 
 ```text
-new task -> create aws module for vpc using $tf-child-modules
+create aws module for vpc using $tf-child-modules
 ```
 
 Behind the scenes, CODEX can leverage scripts such as:
@@ -236,7 +240,7 @@ These workflows encourage consistent module structure, testing, and documentatio
 Use the `tf-root-module` skill to plan and assemble root modules that compose multiple child modules. For example:
 
 ```text
-new task -> create module for shared networking using $tf-root-module
+create module for shared networking using $tf-root-module
 ```
 
 Typical scripts include:
@@ -250,7 +254,7 @@ Typical scripts include:
 Use the `tf-plan` skill to create a structured plan for new modules, edits, or architecture updates without changing code. For example:
 
 ```text
-new task -> create a plan for a new module using $tf-plan
+$tf-plan
 ```
 
 Typical scripts include:
