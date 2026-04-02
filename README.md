@@ -34,79 +34,29 @@ flowchart LR
 
 ## Features
 
-- **MCP-aware Terraform workspace**  
-  Use Model Context Protocol (MCP) servers to stream in AWS, Terraform, and code-search context directly into your CODEX tasks.
+- **MCP-aware Terraform workspace**
+  Use Model Context Protocol (MCP) servers to stream in AWS, Terraform, and code-search context directly into your agent tasks.
 
-- **Persistent memory bank**  
+- **Persistent memory bank**
   One-time bootstrap initializes a `memory-bank/` directory with agents and project-specific context so future tasks can reuse past plans, decisions, and constraints.
 
-- **Terraform child module workflows**  
-  Guided flows for planning, scaffolding, testing, and documenting Terraform AWS child modules, aligned with the popular `terraform-aws-modules` conventions.
+- **Terraform child module workflows**
+  Guided flows for planning, scaffolding, testing, and documenting Terraform AWS child modules.
 
-- **Terraform root module workflows**  
-  Standards and scripts for planning, composing, validating, and documenting Terraform root modules that integrate child modules with secure defaults.
+- **Terraform root module workflows**
+  Standards and scripts for planning, composing, and validating Terraform root modules that integrate child modules with secure defaults.
 
-- **Terraform planning workflows**  
+- **Terraform planning workflows**
   Structured planning for new modules, edits, or AWS architecture changes without touching code, with clear inputs and plan outputs.
 
-- **Terraform review workflows**  
+- **Terraform review workflows**
   Structured Terraform code review guidance focused on security, reliability, cost, and correctness with strict evidence requirements.
 
-- **Ready-to-run scripts**  
+- **Ready-to-run scripts**
   Shell scripts for creating modules, examples, plans, tests, and documentation so you can focus on design and correctness instead of boilerplate.
 
 - **Opinionated, repeatable process**  
   Encourages consistent patterns across modules (structure, interfaces, testing, docs) that are easy to scale across teams.
-
-## Repository Structure
-
-This repository contains multiple skills that are meant to be used together as a bundle:
-
-- [`memory-bank-bootstrap`](memory-bank-bootstrap/SKILL.md)  
-  Bootstrap scripts and agent definitions for creating and maintaining a project-specific memory bank. This seeds the workspace with context that CODEX can reuse across all Terraform module tasks.
-  - Key files:
-    - [`memory-bank-bootstrap/SKILL.md`](memory-bank-bootstrap/SKILL.md) – high-level description of the skill
-    - [`memory-bank-bootstrap/scripts/create-memory.sh`](memory-bank-bootstrap/scripts/create-memory.sh) – initializes the memory bank for this repo
-    - [`memory-bank-bootstrap/scripts/add-agents.sh`](memory-bank-bootstrap/scripts/add-agents.sh) – registers AGENTS rules for this project
-
-- [`tf-child-modules`](tf-child-modules/SKILL.md)  
-  Opinionated workflows and scripts that help you plan, scaffold, test, and document Terraform AWS child modules.
-  - Key files:
-    - [`tf-child-modules/SKILL.md`](tf-child-modules/SKILL.md) – skill overview and usage details
-    - [`tf-child-modules/references/`](tf-child-modules/references/) – reference docs on module lifecycle, structure, testing, versioning, etc.
-    - [`tf-child-modules/scripts/create-module.sh`](tf-child-modules/scripts/create-module.sh) – scaffold a new module
-    - [`tf-child-modules/scripts/create-examples.sh`](tf-child-modules/scripts/create-examples.sh) – generate examples for a module
-    - [`tf-child-modules/scripts/create-documentation.sh`](tf-child-modules/scripts/create-documentation.sh) – generate documentation
-    - [`tf-child-modules/scripts/test-module.sh`](tf-child-modules/scripts/test-module.sh) – run tests for a module
-
-- [`tf-root-module`](tf-root-module/SKILL.md)  
-  Standards and scripts for planning, composing, validating, and documenting Terraform root modules that integrate child modules with secure defaults.
-  - Key files:
-    - [`tf-root-module/SKILL.md`](tf-root-module/SKILL.md) – skill overview and usage details
-    - [`tf-root-module/references/`](tf-root-module/references/) – reference docs on root module design, structure, and testing
-    - [`tf-root-module/scripts/root-module.sh`](tf-root-module/scripts/root-module.sh) – scaffold a new root module
-    - [`tf-root-module/scripts/plan.sh`](tf-root-module/scripts/plan.sh) – create a required change plan
-    - [`tf-root-module/scripts/test.sh`](tf-root-module/scripts/test.sh) – test root module examples
-
-- [`tf-review`](tf-review/SKILL.md)  
-  Structured workflows and references for Terraform module reviews with strict evidence and remediation guidance.
-  - Key files:
-    - [`tf-review/SKILL.md`](tf-review/SKILL.md) – skill overview and usage details
-    - [`tf-review/references/`](tf-review/references/) – review lifecycle, methodology, remediation, and investigation guides
-    - [`tf-review/scripts/review.sh`](tf-review/scripts/review.sh) – generate a review template
-    - [`tf-review/scripts/plan.sh`](tf-review/scripts/plan.sh) – create a required review plan
-    - [`tf-review/scripts/find.sh`](tf-review/scripts/find.sh) – locate module directories for review
-
-- [`tf-plan`](tf-plan/SKILL.md)  
-  Planning workflows for Terraform module changes or AWS architecture updates without changing code.
-  - Key files:
-    - [`tf-plan/SKILL.md`](tf-plan/SKILL.md) – skill overview and usage details
-    - [`tf-plan/references/`](tf-plan/references/) – planning guides, methodology, and architecture references
-    - [`tf-plan/scripts/find.sh`](tf-plan/scripts/find.sh) – locate modules for planning context
-    - [`tf-plan/scripts/read.sh`](tf-plan/scripts/read.sh) – read files into planning context
-    - [`tf-plan/scripts/plan.sh`](tf-plan/scripts/plan.sh) – create a plan output
-
-The top-level [`LICENSE`](LICENSE) applies to the content in this repository.
 
 ## Prerequisites
 
