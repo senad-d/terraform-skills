@@ -84,12 +84,6 @@ Clone this repository into a location where you manage your CODEX skills:
 git clone https://github.com/senad-d/terraform-skills.git 
 
 cd terraform-skills && [ -d "$HOME/.codex" ] && \
-cp -R memory-bank-bootstrap tf-child-modules tf-root-module tf-plan "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
-```
-
-To include the review skill as well:
-
-```bash
 cp -R memory-bank-bootstrap tf-child-modules tf-root-module tf-review tf-plan "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
 ```
 
