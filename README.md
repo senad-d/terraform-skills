@@ -216,7 +216,15 @@ After the memory bank is created, a `Rules/` directory is added at the root of t
 
 > Recommendation: To ensure the memory bank is used, start your prompt with `new task ->`.
 
-### 2. Create Terraform AWS child modules
+### 2. Plan Terraform work
+
+Use the `tf-plan` skill to create a structured plan for new modules, edits, or architecture updates without changing code. For example:
+
+```text
+$tf-plan
+```
+
+### 3. Create Terraform AWS child modules
 
 Use the `tf-child-modules` skill to plan, scaffold, and refine child modules. For example, in CODEX you might start a task like:
 
@@ -226,7 +234,7 @@ Create aws module for vpc using $tf-child-modules
 
 These workflows encourage consistent module structure, testing, and documentation aligned with `terraform-aws-modules` best practices.
 
-### 3. Compose Terraform root modules
+### 4. Compose Terraform root modules
 
 Use the `tf-root-module` skill to plan and assemble root modules that compose multiple child modules. For example:
 
@@ -234,31 +242,12 @@ Use the `tf-root-module` skill to plan and assemble root modules that compose mu
 Create module for shared networking using $tf-root-module
 ```
 
-### 4. Plan Terraform work
-
-Use the `tf-plan` skill to create a structured plan for new modules, edits, or architecture updates without changing code. For example:
-
-```text
-$tf-plan
-```
-
-### 5. Iterate with memory-backed context
-
-As you create modules, the memory bank accumulates:
-
-- Architectural decisions
-- Constraints and non-functional requirements
-- Naming and tagging conventions
-- Testing and rollout strategies
-
-Subsequent CODEX tasks (for example, refactoring an existing module or adding a new one) can reuse this context automatically, reducing duplication and helping maintain consistency across your Terraform codebase.
-
-### 6. Perform Terraform reviews
+### 5. Perform Terraform reviews
 
 Use the `tf-review` skill to run structured reviews that require evidence and remediation steps. For example:
 
 ```text
-Review module for iam policies using $tf-review
+Review module for iam-user using $tf-review
 ```
 
 ## Contributing
