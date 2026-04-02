@@ -1,6 +1,6 @@
-# Terraform Skills for CODEX CLI
+# Terraform Skills
 
-Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that turns a blank Terraform/AWS repository into a guided, MCP-aware workspace. It provides a reusable memory bank, opinionated workflows, and ready-to-run scripts for designing, testing, and documenting high-quality Terraform AWS modules with minimal boilerplate.
+Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that packages five Terraform workflows: bootstrap a reusable memory bank, plan changes, create child modules, compose root modules, and run evidence-based reviews. Each skill comes with strict gates, templates, and scripts that drive consistent planning, validation, and documentation. The benefit is faster, more reliable Terraform AWS delivery with shared context and guardrails that reduce rework and keep standards consistent across teams.
 
 ```mermaid
 flowchart LR
@@ -224,14 +224,6 @@ Use the `tf-child-modules` skill to plan, scaffold, and refine child modules. Fo
 Create aws module for vpc using $tf-child-modules
 ```
 
-Behind the scenes, CODEX can leverage scripts such as:
-
-- [`tf-child-modules/scripts/child-module.sh`](tf-child-modules/scripts/child-module.sh)
-- [`tf-child-modules/scripts/root-module.sh`](tf-child-modules/scripts/root-module.sh)
-- [`tf-child-modules/scripts/plan.sh`](tf-child-modules/scripts/plan.sh)
-- [`tf-child-modules/scripts/test.sh`](tf-child-modules/scripts/test.sh)
-- [`tf-child-modules/scripts/document.sh`](tf-child-modules/scripts/document.sh)
-
 These workflows encourage consistent module structure, testing, and documentation aligned with `terraform-aws-modules` best practices.
 
 ### 3. Compose Terraform root modules
@@ -242,12 +234,6 @@ Use the `tf-root-module` skill to plan and assemble root modules that compose mu
 Create module for shared networking using $tf-root-module
 ```
 
-Typical scripts include:
-
-- [`tf-root-module/scripts/plan.sh`](tf-root-module/scripts/plan.sh)
-- [`tf-root-module/scripts/root-module.sh`](tf-root-module/scripts/root-module.sh)
-- [`tf-root-module/scripts/test.sh`](tf-root-module/scripts/test.sh)
-
 ### 4. Plan Terraform work
 
 Use the `tf-plan` skill to create a structured plan for new modules, edits, or architecture updates without changing code. For example:
@@ -255,12 +241,6 @@ Use the `tf-plan` skill to create a structured plan for new modules, edits, or a
 ```text
 $tf-plan
 ```
-
-Typical scripts include:
-
-- [`tf-plan/scripts/find.sh`](tf-plan/scripts/find.sh)
-- [`tf-plan/scripts/read.sh`](tf-plan/scripts/read.sh)
-- [`tf-plan/scripts/plan.sh`](tf-plan/scripts/plan.sh)
 
 ### 5. Iterate with memory-backed context
 
@@ -280,13 +260,6 @@ Use the `tf-review` skill to run structured reviews that require evidence and re
 ```text
 Review module for iam policies using $tf-review
 ```
-
-Typical scripts include:
-
-- [`tf-review/scripts/find.sh`](tf-review/scripts/find.sh)
-- [`tf-review/scripts/read.sh`](tf-review/scripts/read.sh)
-- [`tf-review/scripts/plan.sh`](tf-review/scripts/plan.sh)
-- [`tf-review/scripts/review.sh`](tf-review/scripts/review.sh)
 
 ## Contributing
 
