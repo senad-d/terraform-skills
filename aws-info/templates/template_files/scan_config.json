@@ -1,0 +1,21 @@
+{
+  "profile": "",
+  "region": "",
+  "output": "",
+  "tls_input": "",
+  "tag_key": "",
+  "tag_value": "",
+  "include_record_types": "",
+  "exclude_record_types": "Credit,Refund,Tax",
+  "iam_mode": "full",
+  "top_n": 10,
+  "tls_timeout": 5,
+  "tls_parallel": 32,
+  "log_level": "INFO",
+  "format": "json",
+  "only": "",
+  "skip": "",
+  "parallel_sections": true,
+  "overwrite": true,
+  "log_file": "./aws_report.log"
+}

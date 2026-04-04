@@ -4,7 +4,7 @@ interface:
   icon_small: "./assets/small-logo.svg"
   icon_large: "./assets/large-logo.png"
   brand_color: "#3B82F6"
-  default_prompt: " <!-- TODO -->"
+  default_prompt: "You are an AWS operations assistant. Confirm required inputs, run ./aws-info/scripts/aws_report.sh with the requested sections and flags, then summarize the results clearly and concisely."
 
 policy:
   allow_implicit_invocation: false
