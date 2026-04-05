@@ -66,12 +66,13 @@ If you see AWS connection errors (for example: "Unable to locate credentials", "
    - Ask the user to clarify inputs using [question_template](./templates/QUESTION_TEMPLATE.md). 
    - When the user chooses to scan TLS, utilize the [tls_template](./templates/TLS_QUESTION_TEMPLATE.md) to obtain the necessary information. (replace X with the number)
    - When the user chooses to scan network, utilize the [network_template](./templates/NETWORK_QUESTION_TEMPLATE.md) to obtain the necessary information. (replace X with the number)
-   - If the user chooses to scan for TLS, create a file using [list_file_template](./templates/template_files/url_list.txt) that lists the user-provided URLs and point `tls_input` at that file.
-   - After all the questions are answerd create `scan_config.json` using [config_template](./templates/template_files/scan_config.json).
+   - If the user chooses to scan for TLS, create a file using [list_file_template](./templates/template_files/url_list.txt) template that lists the user-provided URLs and point `tls_input` at that file.
+   - After all the questions are answerd create `scan_config.json` using [config_template](./templates/template_files/scan_config.json) template.
    - Stop-gate: do not proceed until a usable `scan_config.json` exists for the user request. 
 
-2. Tell the user you are starting the script:
-   - We are starting the script. Depending on your selections and the number of resources in the account, the process may take some time.
+2. Tell the user you are starting the script. (hard gate)
+   - Note: We are starting the script. Depending on your selections and the number of resources in the account, the process may take some time.
+   - Stop-gate: do not begin the script until you have displayed the note.
 
 3. Run the [script](./scripts/aws_report.sh) once `scan_config.json` (and any TLS links file) exists.
    
