@@ -1,6 +1,12 @@
 ---
 name: tf-root-module
-description: Standards and workflow for planning, composing, validating, and documenting Terraform root modules that integrate child modules with secure defaults.
+description: >-
+   Use when creating Terraform root modules in this repo.
+metadata:
+  category: terraform-skills
+  source:
+    repository: 'https://github.com/senad-d/terraform-skills'
+    path: aws-root-module
 ---
 
 # Terraform Root module Generator

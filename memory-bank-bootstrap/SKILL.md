@@ -1,6 +1,12 @@
 ---
 name: memory-bank-bootstrap
-description: Initialize a repository memory-bank directory. 
+description: >-
+   Use when asked to add or bootstrap a memory-bank.
+metadata:
+  category: terraform-skills
+  source:
+    repository: 'https://github.com/senad-d/terraform-skills'
+    path: memory-bank-bootstrap
 ---
 
 # Memory Bank Bootstrap

@@ -1,13 +1,19 @@
 ---
 name: tf-child-modules
-description: Workflow and standards for updating the Terraform AWS Modules repository. Use when adding, modifying, or reviewing Terraform modules, variables, outputs, documentation, or validation in this repo, especially when planning changes or enforcing security, reliability, and cost-aware defaults.
+description: >-
+   Use this skill when creating Terraform AWS child modules in this repository.
+metadata:
+  category: terraform-skills
+  source:
+    repository: 'https://github.com/senad-d/terraform-skills'
+    path: tf-child-modules
 ---
 
 # Terraform AWS Modules
 
 ## Overview
 
-Follow the repository workflow for planning, implementing, validating, and documenting Terraform module changes with secure, reliable, and cost-aware defaults.
+Follow the repository workflow for implementing, validating, and documenting Terraform module changes with secure, reliable, and cost-aware defaults.
 
 ## Scripts
 

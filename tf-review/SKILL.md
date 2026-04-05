@@ -1,6 +1,14 @@
 ---
 name: tf-review
-description: Review Terraform code.
+description: >-
+  Use when a user asks to review Terraform code, modules, plans, or uses the
+  phrase "review terraform" and needs a structured IaC review focused on
+  security, reliability, cost, and best practices.
+metadata:
+  category: terraform-skills
+  source:
+    repository: 'https://github.com/senad-d/terraform-skills'
+    path: aws-review
 ---
 
 # Terraform Review

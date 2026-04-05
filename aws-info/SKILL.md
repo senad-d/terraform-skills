@@ -1,6 +1,12 @@
 ---
 name: aws-info
-description: Generate a consolidated AWS report.
+description: >-
+   Use when you need a quick, consistent AWS account snapshot for cost deltas, IAM posture, cert health, or network inventory.
+metadata:
+  category: terraform-skills
+  source:
+    repository: 'https://github.com/senad-d/terraform-skills'
+    path: aws-info
 ---
 
 # AWS Info

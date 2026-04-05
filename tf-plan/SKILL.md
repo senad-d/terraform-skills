@@ -1,6 +1,12 @@
 ---
 name: tf-plan
-description: Planning Terraform code.
+description: >-
+  Use when the user asks for a Terraform plan, planning workflow, or architecture plan without changing code, including requests to create a new module plan, edit an existing module plan, or draft AWS architecture planning based on goals.
+metadata:
+  category: terraform-skills
+  source:
+    repository: 'https://github.com/senad-d/terraform-skills'
+    path: tf-plan
 ---
 
 # Terraform Planning
