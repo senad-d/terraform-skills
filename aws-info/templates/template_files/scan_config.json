@@ -1,8 +1,8 @@
 {
   "profile": "",
   "region": "",
-  "output": "",
-  "tls_input": "",
+  "output": "./tmp/s-<DDMMHM>/<output_file>",
+  "tls_input": "./tmp/s-<DDMMHM>/<tls_input_file>",
   "tag_key": "",
   "tag_value": "",
   "include_record_types": "",
@@ -17,5 +17,5 @@
   "skip": "",
   "parallel_sections": true,
   "overwrite": true,
-  "log_file": "./aws_report.log"
+  "log_file": "./tmp/s-<DDMMHM>/aws_report.log"
 }
