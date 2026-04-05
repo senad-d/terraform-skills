@@ -1,6 +1,8 @@
 # Terraform Skills
 
-Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that packages five Terraform workflows: bootstrap a reusable memory bank, plan changes, create child modules, compose root modules, and run evidence-based reviews. Each skill comes with strict gates, templates, and scripts that drive consistent planning, validation, and documentation. The benefit is faster, more reliable Terraform AWS delivery with shared context and guardrails that reduce rework and keep standards consistent across teams.
+Skill bundle for [CODEX CLI](https://github.com/topics/codex-cli) that packages Terraform workflows plus an AWS reporting skill: bootstrap a reusable memory bank, plan changes, create child modules, compose root modules, run evidence-based reviews, and generate AWS account reports. Each skill comes with strict gates, templates, and scripts that drive consistent planning, validation, and documentation. The benefit is faster, more reliable Terraform AWS delivery with shared context and guardrails that reduce rework and keep standards consistent across teams.
+
+Skils pipeline:
 
 ```mermaid
 flowchart LR
@@ -32,6 +34,28 @@ flowchart LR
 
 ```
 
+AWS Info pipeline:
+
+```mermaid
+flowchart TD
+    %% AWS info reporting workflow
+
+    A([User request]) --> D[Gather inputs]
+    D --> E[Report output]
+
+    subgraph "AWS Data Sources"
+        S1[(Cost Explorer)]
+        S2[(IAM)]
+        S3[(TLS endpoints)]
+        S4[(Network inventory)]
+    end
+
+    D --> S1
+    D --> S2
+    D --> S3
+    D --> S4
+```
+
 ## Features
 
 - **MCP-aware Terraform workspace**
@@ -52,6 +76,9 @@ flowchart LR
 - **Terraform review workflows**
   Structured Terraform code review guidance focused on security, reliability, cost, and correctness with strict evidence requirements.
 
+- **AWS account reporting**
+  Generates a consolidated AWS report for cost, IAM, TLS, and network snapshots.
+
 - **Ready-to-run scripts**
   Shell scripts for creating modules, examples, plans, tests, and documentation so you can focus on design and correctness instead of boilerplate.
 
@@ -64,6 +91,7 @@ Before using these skills, ensure you have:
 
 - **Terraform** (compatible with the AWS modules you intend to use)
 - **AWS account** with credentials configured locally (e.g., via `aws configure` or environment variables)
+- **AWS CLI profile configured** (required for the `aws-info` skill)
 - **CODEX CLI** installed and available on your `PATH`
 - **MCP-capable environment** (CODEX configured to talk to MCP servers)
 - **Tooling** installed `tflint`, `tfsec`, `rg`, `yq` (It is optional, but it is recommended to use loclastack.)
@@ -84,7 +112,7 @@ Clone this repository into a location where you manage your CODEX skills:
 git clone https://github.com/senad-d/terraform-skills.git 
 
 cd terraform-skills && [ -d "$HOME/.codex" ] && \
-cp -R memory-bank-bootstrap tf-child-modules tf-root-module tf-review tf-plan "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
+cp -R aws-info memory-bank-bootstrap tf-child-modules tf-root-module tf-review tf-plan "$HOME/.codex"/ || echo '$HOME/.codex does not exist'
 ```
 
 ## Configuration
@@ -192,6 +220,14 @@ Use the `tf-review` skill to run structured reviews that require evidence and re
 
 ```text
 Review module for iam-user using $tf-review
+```
+
+### 6. Generate AWS account reports
+
+Use the `aws-info` skill to generate consolidated AWS reports for cost, IAM, TLS, and network inventory. This skill requires a configured AWS CLI profile.
+
+```text
+Create AWS account report using $aws-info
 ```
 
 ## Contributing
