@@ -7,5 +7,5 @@
 <based on the information gathered, create an overview of all services scanned in a few short sentences.>
 
 **Report**
-<if markdown: paste the report contents verbatim>
-<if json: paste the report in a tables format>
+<if markdown: render the report contents verbatim>
+<if json: render the report in a tables format>
