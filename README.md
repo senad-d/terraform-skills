@@ -224,10 +224,11 @@ Review module for iam-user using $tf-review
 
 ### 6. Generate AWS account reports
 
-Use the `aws-info` skill to generate consolidated AWS reports for cost, IAM, TLS, and network inventory. This skill requires a configured AWS CLI profile.
+Use the `aws-info` skill to generate consolidated AWS reports for Cost, IAM, TLS, and Network inventory. 
+> This skill requires a configured AWS CLI profile.
 
 ```text
-Create AWS account report using $aws-info
+$aws-info
 ```
 
 ## Contributing
